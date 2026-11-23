@@ -1,100 +1,116 @@
-# TRIPIN — AI-Powered Travel Itinerary Planner
+# TRPIN — Adaptive Travel Itinerary Planner
 
-A modern, premium frontend for an AI travel itinerary planner built with React.js and Tailwind CSS.
+> **Status: frontend prototype / simulated itinerary engine.** TRPIN currently demonstrates trip planning, curated Indonesian destinations, itinerary editing, budget visualization, and Google Maps handoff. It is **not yet** a production AI planner or a verified booking/navigation service.
 
-## 🚀 Quick Start
+TRPIN helps travelers turn preferences into a structured travel itinerary, compare optimization priorities, discover Indonesian destinations and local businesses, and adjust plans when circumstances change. The product aims to make travel planning more practical **while increasing visibility of local UMKM** (relevant to SDG 8).
+
+![TRPIN logo](public/logo-full.png)
+
+## What works today
+
+| Capability | Current implementation |
+| --- | --- |
+| Landing, dashboard, discovery, saved places, settings | React UI with demonstration/local data |
+| Trip creation | Guided fields and free-text input; generator uses curated/static data, **not a live LLM** |
+| Daily itinerary and budget | Generated activity schedules and cost estimates; values are illustrative |
+| Modes: budget / time / explore | Local ordering and scoring helpers; **not a proven global route optimum** |
+| Edit and reschedule | Move/add/remove/replace activities and scenario-based local adjustments |
+| Map | Leaflet + OpenStreetMap |
+| Google Maps handoff | Opens a Maps directions URL containing selected day's stops; waypoint behavior depends on client limits |
+| Discovery | Google Places Text Search when configured, Nominatim fallback and curated catalog |
+| Persistence | Browser `localStorage`; no account synchronization |
+
+**Important caveats:** some example ratings, opening hours, prices, labels and economic-impact values are placeholders or estimates. The application can fall back to unrelated curated destinations for unknown cities. **Do not treat the current itinerary as verified travel advice.**
+
+## Quick start
+
+Prerequisites: Node.js and npm (a current Node LTS release is recommended).
 
 ```bash
-# 1. Install dependencies
-npm install
-
-# 2. Start development server
+git clone https://github.com/muhfajri24/trpin.git
+cd trpin
+git switch dev
+npm ci
 npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open http://localhost:3000.
 
-## 📁 Project Structure
+Production build:
 
-```
-src/
-├── components/          # Reusable UI components
-│   ├── Sidebar.js       # Fixed/collapsible navigation sidebar
-│   ├── Navbar.js        # Top navigation bar
-│   ├── DestinationCard.js
-│   ├── ItineraryTimeline.js
-│   ├── MapView.js       # Leaflet + OpenStreetMap
-│   ├── BudgetCard.js
-│   ├── RecommendationCard.js
-│   ├── OptimizationSelector.js
-│   ├── RescheduleModal.js
-│   ├── SearchInput.js
-│   ├── EmptyState.js
-│   └── LoadingSkeleton.js
-│
-├── layouts/
-│   └── AppLayout.js     # Main layout with sidebar + navbar
-│
-├── pages/               # Route pages
-│   ├── LandingPage.js
-│   ├── DashboardPage.js
-│   ├── CreateItineraryPage.js
-│   ├── ItineraryResultPage.js
-│   ├── ItineraryEditorPage.js
-│   ├── SmartReschedulerPage.js
-│   ├── BudgetOverviewPage.js
-│   ├── ExplorePage.js
-│   ├── MyItinerariesPage.js
-│   ├── SavedPlacesPage.js
-│   └── SettingsPage.js
-│
-├── data/
-│   └── mockData.js      # All mock data (replace with API calls)
-│
-├── App.js               # Router + routes
-└── index.css            # Global styles + Tailwind directives
+```bash
+npm run build
 ```
 
-## 🎨 Design System
+There is currently no `npm test` script in `package.json`; automated testing and CI are pending.
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Warm Coral | `#FF6B5E` | Primary accent, CTAs |
-| Sunshine Yellow | `#FFC857` | Highlights, badges |
-| Deep Teal | `#176B67` | Navigation, secondary buttons |
-| Sky Blue | `#EAF4F4` | Backgrounds, tags |
-| Warm Cream | `#FFF9F0` | Main background |
-| Charcoal | `#253238` | Main text |
+### Optional environment configuration
 
-## 🗺️ Pages & Navigation
+Create `.env.local` **only if needed**:
+
+```dotenv
+REACT_APP_GOOGLE_PLACES_KEY=your_restricted_browser_key
+```
+
+The current Places integration calls Google Places directly from the browser. A `REACT_APP_*` variable is embedded into the client bundle and **must not be treated as a secret**. Restrict a browser key by website referrer, API, and quota/budget alerts. Do **not** put an unrestricted key or an LLM secret in frontend variables. Future server integrations should use server-side secret storage.
+
+Without a Google Places key, search may use the public Nominatim endpoint or local example data. The public services are subject to usage policies and are unsuitable as an unrestricted production backend. OSRM public routing is also a best-effort demo dependency.
+
+## App routes
 
 | Route | Page |
-|-------|------|
-| `/` | Landing Page |
+| --- | --- |
+| `/` | Landing |
 | `/dashboard` | Dashboard |
-| `/explore` | Explore Destinations |
-| `/my-itineraries` | My Itineraries |
-| `/create` | Create Itinerary |
-| `/itinerary/:id` | Itinerary Results |
-| `/itinerary/:id/edit` | Itinerary Editor |
-| `/itinerary/:id/reschedule` | Smart Rescheduler |
-| `/itinerary/:id/budget` | Budget Overview |
-| `/saved` | Saved Places |
+| `/discovery` | Local discovery |
+| `/create` | Create itinerary |
+| `/my-itineraries` | Saved/generated itineraries |
+| `/itinerary/:id` | Itinerary result, map and budget tab |
+| `/itinerary/:id/edit` | Editor and scenario-based rescheduler |
+| `/saved` | Saved places |
 | `/settings` | Settings |
 
-## 🔌 Connecting to a Real Backend
+Legacy URLs `/explore`, `/itinerary/:id/reschedule`, and `/itinerary/:id/budget` redirect to current pages.
 
-All mock data is in `src/data/mockData.js`. To connect to a real API:
+## Source layout
 
-1. Replace the mock data exports with API calls
-2. Each function returns the same shape as the mock data
-3. Add a `.env` file: `REACT_APP_API_URL=https://your-api.com`
+```text
+public/                 Static assets and page shell
+src/
+  App.js                Client routes
+  assets/               Brand assets
+  components/           Reusable UI (map, timeline, budget, etc.)
+  data/mockData.js      Curated demo records, generator, persistence, calculations
+  layouts/AppLayout.js  Application shell
+  pages/                Landing, planner, results, editor, discovery, etc.
+  services/
+    placesService.js    Google Places / Nominatim / curated fallbacks
+    regionService.js    Indonesian regions and destination resolution
+    routingService.js   Public OSRM and approximate fallback
+  index.css             Global styles
+tailwind.config.js      Theme tokens
+```
 
-## 📦 Dependencies
+## Product and engineering documents
 
-- `react-router-dom` — Client-side routing
-- `react-leaflet` + `leaflet` — Interactive maps (OpenStreetMap)
-- `lucide-react` — Icons
-- `clsx` — Conditional class names
-- `tailwindcss` — Utility-first CSS
+- [Product scope, actors, scenarios and acceptance criteria](docs/PRODUCT.md)
+- [Engineering notes, data flow, limitations and safety](docs/ARCHITECTURE.md)
+- [Repository audit and prioritized backlog](docs/AUDIT.md)
 
+### MVP focus for a three-person / seven-day build
+
+1. **Reliable structured input:** parse user intent or provide a fallback form; preserve destination, activities, budget, dates, transportation and party size.
+2. **Grounded candidates:** retrieve and normalize places, show source/freshness, and never silently substitute another city.
+3. **Feasible itinerary:** enforce hard constraints (time windows, duration, budget and travel mode) before ranking alternatives.
+4. **Explainable adjustments:** make one-change rescheduling recalculate and explain affected stops.
+5. **Navigable output:** export a valid, bounded sequence of stops to Google Maps and provide a safe fallback if waypoints exceed limits.
+
+## Collaboration
+
+The repository's default branch is `dev`. Make changes on short-lived feature/docs branches and open pull requests to `dev`. Document assumptions, avoid committing API keys and distinguish mock values from live information.
+
+**Naming note:** the GitHub repository is `trpin`; the current UI and package still use `TRIPIN` / `tripin`. A final brand spelling should be agreed before renaming public-facing assets or package identifiers.
+
+## License
+
+No license file has been added yet. Do not assume redistribution rights. The team should choose a license explicitly if it wants to open-source this work.
