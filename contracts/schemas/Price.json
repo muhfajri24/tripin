@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "sourceType": {
+          "enum": [
+            "curated",
+            "provider",
+            "user"
+          ],
+          "title": "Sourcetype",
+          "type": "string"
+        },
+        "sourceRef": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sourceref"
+        },
+        "checkedAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Checkedat"
+        },
+        "status": {
+          "enum": [
+            "checked",
+            "estimated",
+            "unverified"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sourceType",
+        "sourceRef",
+        "checkedAt",
+        "status"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "amountIdr": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Amountidr"
+    },
+    "basis": {
+      "enum": [
+        "person",
+        "group",
+        "room_night",
+        "vehicle_day",
+        "vehicle_km"
+      ],
+      "title": "Basis",
+      "type": "string"
+    },
+    "evidence": {
+      "$ref": "#/$defs/Evidence"
+    }
+  },
+  "required": [
+    "amountIdr",
+    "basis",
+    "evidence"
+  ],
+  "title": "Price",
+  "type": "object"
+}

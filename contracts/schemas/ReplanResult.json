@@ -1,0 +1,1228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "BeforeAfter": {
+      "additionalProperties": false,
+      "properties": {
+        "costDeltaIdr": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Costdeltaidr"
+        },
+        "travelDeltaMin": {
+          "title": "Traveldeltamin",
+          "type": "integer"
+        },
+        "removedOptionalStops": {
+          "minimum": 0,
+          "title": "Removedoptionalstops",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "costDeltaIdr",
+        "travelDeltaMin",
+        "removedOptionalStops"
+      ],
+      "title": "BeforeAfter",
+      "type": "object"
+    },
+    "Budget": {
+      "additionalProperties": false,
+      "properties": {
+        "totalIdr": {
+          "exclusiveMinimum": 0,
+          "title": "Totalidr",
+          "type": "integer"
+        },
+        "originalBasis": {
+          "enum": [
+            "person",
+            "group"
+          ],
+          "title": "Originalbasis",
+          "type": "string"
+        },
+        "reserveIdr": {
+          "minimum": 0,
+          "title": "Reserveidr",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "totalIdr",
+        "originalBasis",
+        "reserveIdr"
+      ],
+      "title": "Budget",
+      "type": "object"
+    },
+    "Coordinates": {
+      "additionalProperties": false,
+      "properties": {
+        "lat": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Lat",
+          "type": "number"
+        },
+        "lng": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Lng",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lat",
+        "lng"
+      ],
+      "title": "Coordinates",
+      "type": "object"
+    },
+    "DateException": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Date",
+          "type": "string"
+        },
+        "closed": {
+          "title": "Closed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "date",
+        "closed"
+      ],
+      "title": "DateException",
+      "type": "object"
+    },
+    "DayWindow": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Date",
+          "type": "string"
+        },
+        "start": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "Start",
+          "type": "string"
+        },
+        "end": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "End",
+          "type": "string"
+        }
+      },
+      "required": [
+        "date",
+        "start",
+        "end"
+      ],
+      "title": "DayWindow",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "sourceType": {
+          "enum": [
+            "curated",
+            "provider",
+            "user"
+          ],
+          "title": "Sourcetype",
+          "type": "string"
+        },
+        "sourceRef": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sourceref"
+        },
+        "checkedAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Checkedat"
+        },
+        "status": {
+          "enum": [
+            "checked",
+            "estimated",
+            "unverified"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sourceType",
+        "sourceRef",
+        "checkedAt",
+        "status"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "Itinerary": {
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "revision": {
+          "exclusiveMinimum": 0,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "request": {
+          "$ref": "#/$defs/TravelRequest"
+        },
+        "datasetVersion": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Datasetversion",
+          "type": "string"
+        },
+        "plannerVersion": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Plannerversion",
+          "type": "string"
+        },
+        "places": {
+          "items": {
+            "$ref": "#/$defs/Place"
+          },
+          "title": "Places",
+          "type": "array"
+        },
+        "days": {
+          "items": {
+            "$ref": "#/$defs/ItineraryDay"
+          },
+          "title": "Days",
+          "type": "array"
+        },
+        "ledger": {
+          "items": {
+            "$ref": "#/$defs/LedgerItem"
+          },
+          "title": "Ledger",
+          "type": "array"
+        },
+        "totals": {
+          "$ref": "#/$defs/Totals"
+        },
+        "feasibility": {
+          "enum": [
+            "satisfied",
+            "violated",
+            "undetermined"
+          ],
+          "title": "Feasibility",
+          "type": "string"
+        },
+        "searchOutcome": {
+          "enum": [
+            "plan_found",
+            "proven_conflict",
+            "no_plan_found"
+          ],
+          "title": "Searchoutcome",
+          "type": "string"
+        },
+        "violations": {
+          "items": {
+            "$ref": "#/$defs/Violation"
+          },
+          "title": "Violations",
+          "type": "array"
+        },
+        "uncertainties": {
+          "items": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Uncertainties",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "revision",
+        "request",
+        "datasetVersion",
+        "plannerVersion",
+        "places",
+        "days",
+        "ledger",
+        "totals",
+        "feasibility",
+        "searchOutcome",
+        "violations",
+        "uncertainties"
+      ],
+      "title": "Itinerary",
+      "type": "object"
+    },
+    "ItineraryDay": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Date",
+          "type": "string"
+        },
+        "startAnchor": {
+          "$ref": "#/$defs/Coordinates"
+        },
+        "endAnchor": {
+          "$ref": "#/$defs/Coordinates"
+        },
+        "stops": {
+          "items": {
+            "$ref": "#/$defs/ScheduledStop"
+          },
+          "title": "Stops",
+          "type": "array"
+        },
+        "finalLeg": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TravelLeg"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "date",
+        "startAnchor",
+        "endAnchor",
+        "stops",
+        "finalLeg"
+      ],
+      "title": "ItineraryDay",
+      "type": "object"
+    },
+    "LedgerItem": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "ticket",
+            "food",
+            "transport",
+            "lodging"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "placeId": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Placeid"
+        },
+        "quantity": {
+          "exclusiveMinimum": 0,
+          "title": "Quantity",
+          "type": "integer"
+        },
+        "unitAmountIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unitamountidr"
+        },
+        "totalIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Totalidr"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        }
+      },
+      "required": [
+        "id",
+        "category",
+        "placeId",
+        "quantity",
+        "unitAmountIdr",
+        "totalIdr",
+        "evidence"
+      ],
+      "title": "LedgerItem",
+      "type": "object"
+    },
+    "Lodging": {
+      "additionalProperties": false,
+      "properties": {
+        "placeId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Placeid",
+          "type": "string"
+        },
+        "rooms": {
+          "exclusiveMinimum": 0,
+          "title": "Rooms",
+          "type": "integer"
+        },
+        "nights": {
+          "maximum": 2,
+          "minimum": 1,
+          "title": "Nights",
+          "type": "integer"
+        },
+        "checkInAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Checkinat"
+        }
+      },
+      "required": [
+        "placeId",
+        "rooms",
+        "nights",
+        "checkInAt"
+      ],
+      "title": "Lodging",
+      "type": "object"
+    },
+    "OpeningWindow": {
+      "additionalProperties": false,
+      "properties": {
+        "weekday": {
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Weekday",
+          "type": "integer"
+        },
+        "opens": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "Opens",
+          "type": "string"
+        },
+        "closes": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "Closes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "weekday",
+        "opens",
+        "closes"
+      ],
+      "title": "OpeningWindow",
+      "type": "object"
+    },
+    "PeriodPreference": {
+      "additionalProperties": false,
+      "properties": {
+        "period": {
+          "enum": [
+            "morning",
+            "afternoon",
+            "evening"
+          ],
+          "title": "Period",
+          "type": "string"
+        },
+        "categories": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Categories",
+          "type": "array"
+        }
+      },
+      "required": [
+        "period",
+        "categories"
+      ],
+      "title": "PeriodPreference",
+      "type": "object"
+    },
+    "Place": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "destinationId": {
+          "const": "yogyakarta",
+          "title": "Destinationid",
+          "type": "string"
+        },
+        "coordinates": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Coordinates"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "address": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Address"
+        },
+        "categories": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Categories",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "attraction",
+            "food",
+            "local_business",
+            "lodging"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "visitDurationMin": {
+          "exclusiveMinimum": 0,
+          "title": "Visitdurationmin",
+          "type": "integer"
+        },
+        "durationEvidence": {
+          "$ref": "#/$defs/Evidence"
+        },
+        "openingWindows": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OpeningWindow"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Openingwindows"
+        },
+        "dateExceptions": {
+          "items": {
+            "$ref": "#/$defs/DateException"
+          },
+          "title": "Dateexceptions",
+          "type": "array"
+        },
+        "prices": {
+          "items": {
+            "$ref": "#/$defs/Price"
+          },
+          "minItems": 1,
+          "title": "Prices",
+          "type": "array"
+        },
+        "openingEvidence": {
+          "$ref": "#/$defs/Evidence"
+        },
+        "locationEvidence": {
+          "$ref": "#/$defs/Evidence"
+        },
+        "identityEvidence": {
+          "$ref": "#/$defs/Evidence"
+        },
+        "isLocalBusiness": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Islocalbusiness"
+        },
+        "localBusinessEvidence": {
+          "$ref": "#/$defs/Evidence"
+        },
+        "googlePlaceId": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Googleplaceid"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "destinationId",
+        "coordinates",
+        "address",
+        "categories",
+        "kind",
+        "visitDurationMin",
+        "durationEvidence",
+        "openingWindows",
+        "dateExceptions",
+        "prices",
+        "openingEvidence",
+        "locationEvidence",
+        "identityEvidence",
+        "isLocalBusiness",
+        "localBusinessEvidence",
+        "googlePlaceId"
+      ],
+      "title": "Place",
+      "type": "object"
+    },
+    "Price": {
+      "additionalProperties": false,
+      "properties": {
+        "amountIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Amountidr"
+        },
+        "basis": {
+          "enum": [
+            "person",
+            "group",
+            "room_night",
+            "vehicle_day",
+            "vehicle_km"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        }
+      },
+      "required": [
+        "amountIdr",
+        "basis",
+        "evidence"
+      ],
+      "title": "Price",
+      "type": "object"
+    },
+    "ScheduledStop": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "placeId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Placeid",
+          "type": "string"
+        },
+        "dayIndex": {
+          "maximum": 2,
+          "minimum": 0,
+          "title": "Dayindex",
+          "type": "integer"
+        },
+        "arrivalAt": {
+          "format": "date-time",
+          "title": "Arrivalat",
+          "type": "string"
+        },
+        "departureAt": {
+          "format": "date-time",
+          "title": "Departureat",
+          "type": "string"
+        },
+        "visitDurationMin": {
+          "exclusiveMinimum": 0,
+          "title": "Visitdurationmin",
+          "type": "integer"
+        },
+        "incomingLeg": {
+          "$ref": "#/$defs/TravelLeg"
+        },
+        "status": {
+          "enum": [
+            "planned",
+            "completed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "lock": {
+          "$ref": "#/$defs/StopLock"
+        },
+        "selectionReasons": {
+          "items": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Selectionreasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "placeId",
+        "dayIndex",
+        "arrivalAt",
+        "departureAt",
+        "visitDurationMin",
+        "incomingLeg",
+        "status",
+        "lock",
+        "selectionReasons"
+      ],
+      "title": "ScheduledStop",
+      "type": "object"
+    },
+    "StopChange": {
+      "additionalProperties": false,
+      "properties": {
+        "stopId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Stopid",
+          "type": "string"
+        },
+        "action": {
+          "enum": [
+            "retained",
+            "moved",
+            "removed",
+            "replaced"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "reasonCode": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Reasoncode",
+          "type": "string"
+        },
+        "explanation": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "stopId",
+        "action",
+        "reasonCode",
+        "explanation"
+      ],
+      "title": "StopChange",
+      "type": "object"
+    },
+    "StopLock": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "none",
+            "place_day",
+            "place_time"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "arrivalAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Arrivalat"
+        }
+      },
+      "required": [
+        "type",
+        "arrivalAt"
+      ],
+      "title": "StopLock",
+      "type": "object"
+    },
+    "Totals": {
+      "additionalProperties": false,
+      "properties": {
+        "knownCostIdr": {
+          "minimum": 0,
+          "title": "Knowncostidr",
+          "type": "integer"
+        },
+        "unknownCostItems": {
+          "minimum": 0,
+          "title": "Unknowncostitems",
+          "type": "integer"
+        },
+        "travelMin": {
+          "minimum": 0,
+          "title": "Travelmin",
+          "type": "integer"
+        },
+        "distanceMeters": {
+          "minimum": 0,
+          "title": "Distancemeters",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "knownCostIdr",
+        "unknownCostItems",
+        "travelMin",
+        "distanceMeters"
+      ],
+      "title": "Totals",
+      "type": "object"
+    },
+    "TravelLeg": {
+      "additionalProperties": false,
+      "properties": {
+        "fromId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Fromid",
+          "type": "string"
+        },
+        "toId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Toid",
+          "type": "string"
+        },
+        "mode": {
+          "const": "driving",
+          "title": "Mode",
+          "type": "string"
+        },
+        "distanceMeters": {
+          "minimum": 0,
+          "title": "Distancemeters",
+          "type": "integer"
+        },
+        "estimatedDurationMin": {
+          "minimum": 0,
+          "title": "Estimateddurationmin",
+          "type": "integer"
+        },
+        "schedulingBufferMin": {
+          "minimum": 0,
+          "title": "Schedulingbuffermin",
+          "type": "integer"
+        },
+        "source": {
+          "enum": [
+            "curated_road_matrix",
+            "provider",
+            "haversine"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        }
+      },
+      "required": [
+        "fromId",
+        "toId",
+        "mode",
+        "distanceMeters",
+        "estimatedDurationMin",
+        "schedulingBufferMin",
+        "source",
+        "evidence"
+      ],
+      "title": "TravelLeg",
+      "type": "object"
+    },
+    "TravelRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "destinationId": {
+          "const": "yogyakarta",
+          "title": "Destinationid",
+          "type": "string"
+        },
+        "startDate": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Startdate",
+          "type": "string"
+        },
+        "days": {
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Days",
+          "type": "integer"
+        },
+        "timezone": {
+          "const": "Asia/Jakarta",
+          "title": "Timezone",
+          "type": "string"
+        },
+        "travelers": {
+          "$ref": "#/$defs/Travelers"
+        },
+        "transportMode": {
+          "const": "driving",
+          "title": "Transportmode",
+          "type": "string"
+        },
+        "budget": {
+          "$ref": "#/$defs/Budget"
+        },
+        "dayWindows": {
+          "items": {
+            "$ref": "#/$defs/DayWindow"
+          },
+          "title": "Daywindows",
+          "type": "array"
+        },
+        "arrivalAnchor": {
+          "$ref": "#/$defs/Coordinates"
+        },
+        "departureAnchor": {
+          "$ref": "#/$defs/Coordinates"
+        },
+        "lodging": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Lodging"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "interests": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Interests",
+          "type": "array"
+        },
+        "periodPreferences": {
+          "items": {
+            "$ref": "#/$defs/PeriodPreference"
+          },
+          "title": "Periodpreferences",
+          "type": "array"
+        },
+        "mustVisitPlaceIds": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Mustvisitplaceids",
+          "type": "array"
+        },
+        "excludedPlaceIds": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Excludedplaceids",
+          "type": "array"
+        },
+        "objective": {
+          "enum": [
+            "balanced",
+            "budget",
+            "travel_time"
+          ],
+          "title": "Objective",
+          "type": "string"
+        },
+        "allowUnverifiedData": {
+          "title": "Allowunverifieddata",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "destinationId",
+        "startDate",
+        "days",
+        "timezone",
+        "travelers",
+        "transportMode",
+        "budget",
+        "dayWindows",
+        "arrivalAnchor",
+        "departureAnchor",
+        "lodging",
+        "interests",
+        "periodPreferences",
+        "mustVisitPlaceIds",
+        "excludedPlaceIds",
+        "objective",
+        "allowUnverifiedData"
+      ],
+      "title": "TravelRequest",
+      "type": "object"
+    },
+    "Travelers": {
+      "additionalProperties": false,
+      "properties": {
+        "adults": {
+          "maximum": 6,
+          "minimum": 1,
+          "title": "Adults",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "adults"
+      ],
+      "title": "Travelers",
+      "type": "object"
+    },
+    "Violation": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Code",
+          "type": "string"
+        },
+        "dayIndex": {
+          "anyOf": [
+            {
+              "maximum": 2,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Dayindex"
+        },
+        "stopIds": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Stopids",
+          "type": "array"
+        },
+        "message": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "dayIndex",
+        "stopIds",
+        "message"
+      ],
+      "title": "Violation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "enum": [
+        "repaired",
+        "needs_user_decision",
+        "no_plan_found"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "revised": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Itinerary"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "disruptedOriginalViolations": {
+      "items": {
+        "$ref": "#/$defs/Violation"
+      },
+      "title": "Disruptedoriginalviolations",
+      "type": "array"
+    },
+    "changes": {
+      "items": {
+        "$ref": "#/$defs/StopChange"
+      },
+      "title": "Changes",
+      "type": "array"
+    },
+    "beforeAfter": {
+      "$ref": "#/$defs/BeforeAfter"
+    }
+  },
+  "required": [
+    "status",
+    "revised",
+    "disruptedOriginalViolations",
+    "changes",
+    "beforeAfter"
+  ],
+  "title": "ReplanResult",
+  "type": "object"
+}

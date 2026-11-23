@@ -1,0 +1,330 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Coordinates": {
+      "additionalProperties": false,
+      "properties": {
+        "lat": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Lat",
+          "type": "number"
+        },
+        "lng": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Lng",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lat",
+        "lng"
+      ],
+      "title": "Coordinates",
+      "type": "object"
+    },
+    "DateException": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Date",
+          "type": "string"
+        },
+        "closed": {
+          "title": "Closed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "date",
+        "closed"
+      ],
+      "title": "DateException",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "sourceType": {
+          "enum": [
+            "curated",
+            "provider",
+            "user"
+          ],
+          "title": "Sourcetype",
+          "type": "string"
+        },
+        "sourceRef": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sourceref"
+        },
+        "checkedAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Checkedat"
+        },
+        "status": {
+          "enum": [
+            "checked",
+            "estimated",
+            "unverified"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sourceType",
+        "sourceRef",
+        "checkedAt",
+        "status"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "OpeningWindow": {
+      "additionalProperties": false,
+      "properties": {
+        "weekday": {
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Weekday",
+          "type": "integer"
+        },
+        "opens": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "Opens",
+          "type": "string"
+        },
+        "closes": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "Closes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "weekday",
+        "opens",
+        "closes"
+      ],
+      "title": "OpeningWindow",
+      "type": "object"
+    },
+    "Price": {
+      "additionalProperties": false,
+      "properties": {
+        "amountIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Amountidr"
+        },
+        "basis": {
+          "enum": [
+            "person",
+            "group",
+            "room_night",
+            "vehicle_day",
+            "vehicle_km"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        }
+      },
+      "required": [
+        "amountIdr",
+        "basis",
+        "evidence"
+      ],
+      "title": "Price",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "maxLength": 100,
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+      "title": "Id",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "destinationId": {
+      "const": "yogyakarta",
+      "title": "Destinationid",
+      "type": "string"
+    },
+    "coordinates": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Coordinates"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "address": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Address"
+    },
+    "categories": {
+      "items": {
+        "maxLength": 100,
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Categories",
+      "type": "array"
+    },
+    "kind": {
+      "enum": [
+        "attraction",
+        "food",
+        "local_business",
+        "lodging"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "visitDurationMin": {
+      "exclusiveMinimum": 0,
+      "title": "Visitdurationmin",
+      "type": "integer"
+    },
+    "durationEvidence": {
+      "$ref": "#/$defs/Evidence"
+    },
+    "openingWindows": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/OpeningWindow"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Openingwindows"
+    },
+    "dateExceptions": {
+      "items": {
+        "$ref": "#/$defs/DateException"
+      },
+      "title": "Dateexceptions",
+      "type": "array"
+    },
+    "prices": {
+      "items": {
+        "$ref": "#/$defs/Price"
+      },
+      "minItems": 1,
+      "title": "Prices",
+      "type": "array"
+    },
+    "openingEvidence": {
+      "$ref": "#/$defs/Evidence"
+    },
+    "locationEvidence": {
+      "$ref": "#/$defs/Evidence"
+    },
+    "identityEvidence": {
+      "$ref": "#/$defs/Evidence"
+    },
+    "isLocalBusiness": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Islocalbusiness"
+    },
+    "localBusinessEvidence": {
+      "$ref": "#/$defs/Evidence"
+    },
+    "googlePlaceId": {
+      "anyOf": [
+        {
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Googleplaceid"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "destinationId",
+    "coordinates",
+    "address",
+    "categories",
+    "kind",
+    "visitDurationMin",
+    "durationEvidence",
+    "openingWindows",
+    "dateExceptions",
+    "prices",
+    "openingEvidence",
+    "locationEvidence",
+    "identityEvidence",
+    "isLocalBusiness",
+    "localBusinessEvidence",
+    "googlePlaceId"
+  ],
+  "title": "Place",
+  "type": "object"
+}
