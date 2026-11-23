@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "datasetVersion": "yogyakarta-v0_1_0",
+  "destinationId": "yogyakarta",
+  "places": [
+    {
+      "id": "yog-museum-kereta",
+      "name": "Museum Kereta Kraton Ngayogyakarta Hadiningrat",
+      "destinationId": "yogyakarta",
+      "coordinates": {
+        "lat": -7.805456,
+        "lng": 110.362751
+      },
+      "address": "Jalan Rotowijayan 2 Blok No.1, Panembahan, Kraton, Yogyakarta",
+      "categories": [
+        "attraction",
+        "culture"
+      ],
+      "kind": "attraction",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": null,
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "person",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/1322/museum-kereta-kraton-yogyakarta",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/1322/museum-kereta-kraton-yogyakarta",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    },
+    {
+      "id": "yog-gudeg-yu-djum-pusat",
+      "name": "Gudeg Yu Djum Pusat",
+      "destinationId": "yogyakarta",
+      "coordinates": null,
+      "address": "Jl. Kaliurang Km. 4,5 CT III/22 Gang Cokrowolo Karangasem, Mbarek, Sleman",
+      "categories": [
+        "food"
+      ],
+      "kind": "food",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": null,
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "person",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://gudegyudjumpusat.com/",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    },
+    {
+      "id": "yog-kedhaton",
+      "name": "Kagungan Dalem Kedhaton",
+      "destinationId": "yogyakarta",
+      "coordinates": null,
+      "address": "Jl. Rotowijayan No. 1, Panembahan, Kraton, Yogyakarta",
+      "categories": [
+        "attraction",
+        "culture"
+      ],
+      "kind": "attraction",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": null,
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "person",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://tourism.kratonjogja.id/id-ID/destination/3-kagungan-dalem-kedhaton/",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    },
+    {
+      "id": "yog-phoenix",
+      "name": "The Phoenix Hotel Yogyakarta",
+      "destinationId": "yogyakarta",
+      "coordinates": null,
+      "address": "Jl Jenderal Sudirman 9, Yogyakarta",
+      "categories": [
+        "lodging"
+      ],
+      "kind": "lodging",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": null,
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "room_night",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://all.accor.com/hotel/5451/index.en.shtml",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    }
+  ]
+}

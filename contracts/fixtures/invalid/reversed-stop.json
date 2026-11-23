@@ -1,0 +1,31 @@
+{
+  "id": "stop-1",
+  "placeId": "fixture-museum",
+  "dayIndex": 0,
+  "arrivalAt": "2026-12-01T09:00:00+07:00",
+  "departureAt": "2026-12-01T08:00:00+07:00",
+  "visitDurationMin": 60,
+  "incomingLeg": {
+    "fromId": "arrival-anchor",
+    "toId": "fixture-museum",
+    "mode": "driving",
+    "distanceMeters": 1000,
+    "estimatedDurationMin": 10,
+    "schedulingBufferMin": 5,
+    "source": "haversine",
+    "evidence": {
+      "sourceType": "curated",
+      "sourceRef": "Synthetic fixture",
+      "checkedAt": null,
+      "status": "estimated"
+    }
+  },
+  "status": "planned",
+  "lock": {
+    "type": "place_time",
+    "arrivalAt": "2026-12-01T09:00:00+07:00"
+  },
+  "selectionReasons": [
+    "Synthetic fixture"
+  ]
+}

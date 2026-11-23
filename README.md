@@ -98,3 +98,8 @@ All mock data is in `src/data/mockData.js`. To connect to a real API:
 - `clsx` — Conditional class names
 - `tailwindcss` — Utility-first CSS
 
+
+## Backend foundation (Phase 1)
+
+FastAPI dan canonical contracts tersedia di [backend/README.md](backend/README.md). Panduan tersebut menjelaskan startup, tests, schema export, dan keterbatasan dataset. Frontend lama belum terintegrasi dengan backend.
+

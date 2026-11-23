@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "destinationId": "yogyakarta",
+  "startDate": "2026-12-01",
+  "days": 2,
+  "timezone": "UTC",
+  "travelers": {
+    "adults": 2
+  },
+  "transportMode": "driving",
+  "budget": {
+    "totalIdr": 2000000,
+    "originalBasis": "group",
+    "reserveIdr": 100000
+  },
+  "dayWindows": [
+    {
+      "date": "2026-12-01",
+      "start": "08:00",
+      "end": "20:00"
+    },
+    {
+      "date": "2026-12-02",
+      "start": "08:00",
+      "end": "20:00"
+    }
+  ],
+  "arrivalAnchor": {
+    "lat": -7.8,
+    "lng": 110.36
+  },
+  "departureAnchor": {
+    "lat": -7.8,
+    "lng": 110.36
+  },
+  "lodging": {
+    "placeId": "fixture-hotel",
+    "rooms": 1,
+    "nights": 1,
+    "checkInAt": "2026-12-01T17:00:00+07:00"
+  },
+  "interests": [
+    "culture",
+    "food"
+  ],
+  "periodPreferences": [
+    {
+      "period": "morning",
+      "categories": [
+        "food"
+      ]
+    }
+  ],
+  "mustVisitPlaceIds": [],
+  "excludedPlaceIds": [],
+  "objective": "balanced",
+  "allowUnverifiedData": true
+}

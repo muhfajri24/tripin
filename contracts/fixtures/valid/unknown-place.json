@@ -1,0 +1,58 @@
+{
+  "id": "yog-gudeg-yu-djum-pusat",
+  "name": "Gudeg Yu Djum Pusat",
+  "destinationId": "yogyakarta",
+  "coordinates": null,
+  "address": "Jl. Kaliurang Km. 4,5 CT III/22 Gang Cokrowolo Karangasem, Mbarek, Sleman",
+  "categories": [
+    "food"
+  ],
+  "kind": "food",
+  "visitDurationMin": 60,
+  "durationEvidence": {
+    "sourceType": "curated",
+    "sourceRef": "Editorial planning assumption; not provider visit duration",
+    "checkedAt": null,
+    "status": "estimated"
+  },
+  "openingWindows": null,
+  "dateExceptions": [],
+  "prices": [
+    {
+      "amountIdr": null,
+      "basis": "person",
+      "evidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      }
+    }
+  ],
+  "openingEvidence": {
+    "sourceType": "curated",
+    "sourceRef": null,
+    "checkedAt": null,
+    "status": "unverified"
+  },
+  "locationEvidence": {
+    "sourceType": "curated",
+    "sourceRef": null,
+    "checkedAt": null,
+    "status": "unverified"
+  },
+  "identityEvidence": {
+    "sourceType": "curated",
+    "sourceRef": "https://gudegyudjumpusat.com/",
+    "checkedAt": "2026-11-24T12:00:00+07:00",
+    "status": "checked"
+  },
+  "isLocalBusiness": null,
+  "localBusinessEvidence": {
+    "sourceType": "curated",
+    "sourceRef": null,
+    "checkedAt": null,
+    "status": "unverified"
+  },
+  "googlePlaceId": null
+}
