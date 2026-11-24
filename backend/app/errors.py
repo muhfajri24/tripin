@@ -3,6 +3,7 @@ from uuid import uuid4
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 from fastapi.responses import JSONResponse
+from app.repositories.supabase_places import PlaceSourceError
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +54,11 @@ def install_error_handlers(app):
         return error(
             request, exc.status_code, "HTTP_ERROR", str(exc.detail), headers=exc.headers
         )
+
+    @app.exception_handler(PlaceSourceError)
+    async def place_source_unavailable(request, exc):
+        logger.warning("Place repository unavailable: %s", exc)
+        return error(request, 503, "PLACE_SOURCE_UNAVAILABLE", "Sumber data tempat tidak tersedia. Periksa koneksi atau pengaturan database.")
 
     @app.exception_handler(Exception)
     async def unexpected(request, exc):
