@@ -77,3 +77,21 @@ Client snapshots are structurally validated and canonical place data is loaded s
 Revision matching is snapshot consistency only; no server-side concurrency/persistence exists.
 Guest itineraries are never stored server-side. Parser is free rule-based extraction and is
 limited to explicit Indonesian patterns; no LLM, network fetching or unbounded scraping.
+
+## Reproducible competition demo (one origin)
+
+After `npm run build` in frontend, run from backend PowerShell:
+
+```powershell
+$env:TRPIN_PLACE_SOURCE='local'
+$env:TRPIN_SERVE_FRONTEND='true'
+.venv/Scripts/python -m uvicorn app.main:app --host 127.0.0.1 --port 8015 --no-proxy-headers
+```
+
+Open http://127.0.0.1:8015. API and React build share an origin; SPA deep links fall back to index.html, unknown API/assets stay 404. No CRA server/proxy is required in this mode. Restart/rebuild after changes. This local HTTP target is not a public HTTPS deployment.
+
+POST bodies are bounded to 256 KiB, including streamed bodies. A bounded, in-memory per-client-IP window permits 30 POST requests/minute and returns canonical 429/Retry-After. State is per process, resets at restart, is not a distributed DDoS control, and shared NAT/proxy clients share limits. Do not trust arbitrary forwarded IPs; configure trusted proxy behavior deliberately on deployment. The local command disables proxy header trust.
+
+Source preflight: `.venv/Scripts/python -m scripts.check_place_source` (GET only, no key output). Live canonical source requires approved schema and least-privilege key; local success does not prove Supabase. HTTP evidence: `python -m scripts.smoke_http --base http://127.0.0.1:8015/api/v1 --output ../qa/release/http-smoke.json --snapshots ../qa/release/demo-snapshots.json`.
+
+Python lint: `ruff check app tests scripts` and `ruff format --check app tests scripts` (sprint verified using Ruff 0.15.22 installed locally). Pytest remains the contract/behavior gate.

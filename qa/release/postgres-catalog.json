@@ -1,0 +1,14 @@
+{
+  "engine": "local disposable postgres:16-alpine",
+  "checks": [
+    "migration and seed run; identical seed rerun remains 9 rows",
+    "anon/authenticated can select; INSERT UPDATE DELETE and view writes rejected",
+    "RLS enabled and view security_invoker=true",
+    "existing public.saved_places unchanged",
+    "conflicting existing seed record rejected without upsert overwrite"
+  ],
+  "status": "passed",
+  "liveSupabase": false,
+  "network": "none; no published ports",
+  "containerRemoved": true
+}

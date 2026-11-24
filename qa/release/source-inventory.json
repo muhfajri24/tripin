@@ -1,0 +1,154 @@
+[
+  {
+    "file": "frontend/src/App.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/components/BudgetCard.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/components/DestinationCard.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/components/EmptyState.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/components/GuestUI.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/components/ImpactCard.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/components/ItineraryTimeline.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/components/LoadingSkeleton.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/components/MapView.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/components/Navbar.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/components/OptimizationSelector.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/components/PreferenceForm.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/components/RecommendationCard.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/components/SearchInput.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/components/Sidebar.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/components/TripView.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/data/mockData.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/EditorReload.test.js",
+    "classification": "test"
+  },
+  {
+    "file": "frontend/src/GuestFlow.test.js",
+    "classification": "test"
+  },
+  {
+    "file": "frontend/src/index.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/LayoutNavigation.test.js",
+    "classification": "test"
+  },
+  {
+    "file": "frontend/src/layouts/AppLayout.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/pages/CreateItineraryPage.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/pages/DashboardPage.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/pages/ItineraryEditorPage.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/pages/ItineraryResultPage.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/pages/LandingPage.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/pages/LocalDiscoveryPage.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/pages/MyItinerariesPage.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/pages/SavedPlacesPage.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/pages/SettingsPage.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/services/googleMapsService.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/services/guestContracts.test.js",
+    "classification": "test"
+  },
+  {
+    "file": "frontend/src/services/itineraryStorage.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/services/placesService.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/services/plannerApi.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/services/regionService.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/services/routingService.js",
+    "classification": "unused_by_active_entry"
+  }
+]

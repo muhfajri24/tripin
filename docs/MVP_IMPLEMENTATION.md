@@ -1,4 +1,6 @@
-﻿# Current MVP implementation
+> Checkpoint sebelumnya; status master sprint terbaru: [MASTER_COMPLETION.md](MASTER_COMPLETION.md). Artefak browser/HTTP di qa/release diperbarui pada run master sprint.
+
+# Current MVP implementation
 
 This document supersedes original prototype architecture statements in PRODUCT/ARCHITECTURE/
 AUDIT for current implemented behavior. Historical audit findings are retained for traceability.
