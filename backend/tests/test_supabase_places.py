@@ -169,3 +169,29 @@ def test_expired_cache_does_not_hide_outage(monkeypatch):
     monkeypatch.setattr("app.repositories.supabase_places.urlopen", fail)
     with pytest.raises(PlaceSourceError):
         repo.list_places("yogyakarta")
+
+
+def test_empty_catalog_is_unavailable_without_local_substitution(monkeypatch):
+    from fastapi.testclient import TestClient
+    from app.config import Settings
+    from app.main import create_app
+
+    monkeypatch.setattr(
+        "app.repositories.supabase_places.urlopen", lambda *a, **k: FakeResponse([])
+    )
+    client = TestClient(
+        create_app(
+            Settings(
+                _env_file=None,
+                place_source="supabase",
+                supabase_url="https://example.supabase.co",
+                supabase_anon_key="sb_publishable_test",
+                supabase_places_view="approved_places_view",
+                supabase_dataset_version="test-v1",
+            )
+        )
+    )
+    response = client.get("/api/v1/places")
+    assert response.status_code == 503
+    assert response.json()["error"]["code"] == "PLACE_SOURCE_UNAVAILABLE"
+    assert "places" not in response.json()

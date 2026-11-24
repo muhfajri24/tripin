@@ -58,10 +58,79 @@ Estimasi fokus (belum termasuk perubahan scope): Shakira **29 jam / 11 issue**, 
 ## Definition of Done dan scope cuts
 
 - Setiap issue mempunyai primary owner, file scope, dependencies native GitHub, priority, effort, target, AC dan tes. **Done** memerlukan bukti; coding selesai bukan otomatis acceptance selesai.
-- **Blocked** harus menyebut kebutuhan spesifik. Supabase schema/seed sudah diuji PostgreSQL lokal; hosted apply/read-key/HTTP masih perlu akses. Local source tersedia eksplisit, tidak boleh silent fallback/mixing atau mock-as-live.
+- **Blocked** harus menyebut kebutuhan spesifik. Supabase schema/seed sudah diuji PostgreSQL lokal; hosted apply/read-key/parity/HTTP kini terverifikasi pada audit lokal 24 November 2026 (lihat catatan tinjauan di bawah). Acceptance frontend masih terpisah. Local source tersedia eksplisit, tidak boleh silent fallback/mixing atau mock-as-live.
 - Jika live Supabase/hosting belum tersedia, PM boleh menyetujui demo **local-mode** dengan keterbatasan jelas. Issue live tetap Blocked; jangan ditutup sebagai connected. QA lokal/fallback tidak menunggu host publik.
 - P0: functional data-backed guest flow, constraints/ledger/replan, storage, browser QA dan reproducible demo. P1: enrichment/UX/SDG evidence. P2: routing/area/interaksi lanjutan hanya setelah scope baru disetujui. Booking/login/collaboration bukan tambahan otomatis.
 - Unknown tetap null/unverified; no fabricated price/hours/rating/UMKM, paid service, realtime/booking/global-optimal atau economic-impact claim. Tidak menaruh key/PII pada issue/commit.
 - CI/tes/build harus dijalankan pada SHA release terbaru. Screenshot atau 109 BE/14 FE tests pada versi lama bukan bukti redesign terbaru lulus. Full Maps external rendering perlu uji perangkat/jaringan nyata.
 
 Panduan aktif ini satu MD. Detail backlog dan status dipelihara di Project/issue; laporan lama tetap jejak historis, tidak perlu MD baru untuk setiap task. Audit sebelum redesign tersimpan pada [commit c98d3e1](https://github.com/muhfajri24/tripin/blob/c98d3e1/docs/MASTER_COMPLETION.md).
+
+## Paket tinjauan lokal Fajri — 24 November 2026
+
+Atas permintaan pengguna, seluruh 18 issue yang assigned ke `muhfajri24` diaudit; dua sudah closed (#4/#5), 15 issue sprint masih open, dan #39 tetap P2/parked. Matriks per issue, hasil pekerjaan, bukti, serta langkah membuka blocker ada di [owner-backlog-review.json](../qa/release/owner-backlog-review.json). **Rekomendasi lokal ini tidak mengubah status GitHub/Project dan bukan acceptance manusia. Belum ada commit/push/deploy/merge.** Basis `ee3c90e` dengan working tree kotor; perubahan planner/limits/launcher/CI yang sudah ada saat mulai tetap dipertahankan dan diverifikasi. Ini belum frozen release SHA.
+
+### Hasil yang dapat ditinjau
+
+- #6: kontrak/fixture 1–3 hari dan export tidak drift; payload nyata ada di [snapshot API Supabase](../qa/release/owner-live-demo-snapshots.json). Approval FE/DE belum diberikan.
+- #14: read live Supabase, list/filter/detail, plan 1/2/3 hari dan replan closure berhasil; parity isi + versi local/live cocok. Respons katalog kosong yang sebelumnya 200 kini ditolak sebagai 503 tanpa fallback (regresi direproduksi sebelum fix). Bagian integrasi frontend tetap blocked #42.
+- #15/#16/#25: perubahan ledger/anchor/invalid-price candidate yang sudah ada, adaptive replan, body/rate/CORS/error dan outage diverifikasi. Tinjau diff backend; jangan menyebut frozen cost sebagai actual spending.
+- #26: draft CI dengan action SHA terverifikasi dan quality gate data; belum ada actual remote run. FE tests akan merah sampai #42 selesai; jangan mengaktifkan required checks sebagai sudah green.
+- #28: launcher demo satu origin dan explicit source tersedia, startup proses baru serta HTTP local/live lulus. Clean checkout setelah commit/push dan penerimaan UI masih harus diuji.
+- Bantuan #7/#9/#13/#24: project Supabase TRIPPIN terverifikasi Free, 9 canonical rows, RLS/select-only/security_invoker benar, saved_places lama tetap 1 record. Pemeriksaan parity dengan checksum dan quality gate otomatis ditambahkan. Tidak melakukan write test pada produksi.
+
+[Hasil validasi](../qa/release/owner-validation.json): **127 BE tests passed**, Ruff check/format passed, pip check passed, schema/seed tanpa drift, production build passed. **FE 12 passed / 2 failed** pada GuestFlow. Browser build terbaru desktop 1440×960 dan mobile emulation 390×844 mengonfirmasi storage kosong tetapi riwayat Labuan Bajo/Toba/Bandung muncul, input brief/parse hilang, dan tidak ada panggilan API. Bukti: [baseline browser](../qa/release/owner-browser-baseline.json), [desktop](../qa/release/owner-desktop-fictional-history.png), [mobile](../qa/release/owner-mobile-create-boundary.png). Tidak ada klaim semua halaman bebas error atau full E2E lulus.
+
+### Blocker dan keputusan yang diperlukan
+
+| Issue | Alasan aktual | Yang membuka blocker |
+|---|---|---|
+| #14, #29, bagian browser #31 | FE #42 masih memakai mocked guest flow | Handoff Shakira untuk canonical API/storage; ulang desktop dan outage E2E |
+| #30 | FE belum lolos; belum ada perangkat fisik yang diuji | Selesaikan #29, lalu catat device/browser/network dan buktikan full Maps render |
+| #26 | Workflow masih lokal, tidak ada remote CI run; dua tes FE gagal | Review/push ke dev setelah fix, jalankan CI pada SHA itu |
+| #27 | Inventaris Vercel terhubung hanya ai-office/citezy, belum ada target Tripin | Pilih/buat target, cek exact free-plan quota, konfigurasi env/origin dan validasi HTTPS; deploy belum dilakukan |
+| #34/#36 | Belum ada frozen SHA, FE P0/physical QA/data final/CI belum diterima | Tutup gate tersebut melalui review; jangan release build ini |
+| #37/#38 | Acceptance belum lolos, tanggal demo/pembicara belum ditetapkan, dua rehearsal manusia belum dilakukan | Konfirmasi demo dan review, lakukan rehearsal lalu PR dev→main sesuai gate |
+| #39 | Road routing adalah P2 setelah MVP | Tinjau proposal benchmark di bawah; tidak ada implementasi atau layanan baru |
+| Uji PostgreSQL disposable ulang | Docker Desktop Linux engine tidak aktif/pipe tidak tersedia | Aktifkan Docker, jalankan ulang script; hasil PostgreSQL lama bukan hasil baru |
+
+### Catatan bantuan data Tianisa
+
+Tidak ditemukan commit Tianisa pada riwayat yang diperiksa atau komentarnya pada issue yang diambil. **Ini tidak membuktikan ia belum bekerja di lokal/branch lain/Dashboard.** Isi aktual tersedia, tetapi belum lengkap: aktif v0.3 memiliki 9 identitas/kategori, 7 koordinat, 5 alamat, 3 jadwal, 1 harga; status local business seluruhnya unknown.
+
+Saya membantu menyiapkan [kandidat v0.4](../backend/app/data/proposals/yogyakarta-v0.4.0.json): alamat Vredeburg, ibis Styles dan Bebek Cak Koting, serta jadwal Vredeburg. Kandidat lolos quality gate, **belum aktif dan belum di-seed ke live**; arsip/seed/env v0.3 tidak diubah. Kelengkapan kandidat menjadi 8 alamat dan 4 jadwal; harga/koordinat/status bisnis tidak ditebak. [Catatan data dan sumber](../qa/release/owner-data-review.json) memuat kebijakan check-in/out dua hotel, keterbatasan model, provenance dan daftar sumber yang perlu dikonfirmasi.
+
+Tianisa/Fajri perlu meninjau: harga Vredeburg bergantung hari/jam sehingga tidak aman diwakili satu tarif; tarif/operasional Wahanarata belum dikonfirmasi untuk tanggal demo (ticket endpoint 403 dan ada lead penutupan yang belum terkonfirmasi sumber primer); koordinat/jam/menu food masih sebagian unknown; hotel belum mempunyai rate/availability aktual; holiday exceptions dan tanggal demo belum final. Alamat Cak Koting bersumber artikel pemerintah tahun 2017, bukan konfirmasi operasional 2026. `checkInAt` pada request tetap deadline kedatangan pengguna; jangan menggantinya dengan waktu mulai check-in hotel.
+
+Aktivasi kandidat perlu review lalu pembaruan versi/view-policy/seed/env secara konsisten dan parity + QA ulang. Tidak melakukan perubahan diam-diam di bawah versi v0.3 yang sama.
+
+### Perintah tinjauan
+
+Dari `backend`, dengan dependency dev terpasang:
+
+```powershell
+.venv/Scripts/python -m pytest -q
+.venv/Scripts/python -m ruff check app tests scripts
+.venv/Scripts/python -m ruff format --check app tests scripts
+.venv/Scripts/python -m scripts.check_catalog_quality
+.venv/Scripts/python -m scripts.check_place_source --compare-local
+.venv/Scripts/python -m scripts.check_catalog_quality --dataset app/data/proposals/yogyakarta-v0.4.0.json
+.venv/Scripts/python -m scripts.serve_demo --source local --port 8015
+```
+
+Dengan server itu aktif, terminal kedua dari `backend`: `.venv/Scripts/python -m scripts.smoke_http --base http://127.0.0.1:8015/api/v1`. Untuk live, jalankan launcher dengan `--source supabase` dan `.env` lokal; jangan commit key. Dari `frontend`: `npm test -- --runInBand` (saat audit masih dua kegagalan #42) dan `npm run build`.
+
+### Draft rehearsal dan proposal P2
+
+Draft rehearsal 3–5 menit, setelah FE #42/gate selesai: 0:00–0:45 parse brief Yogyakarta dua hari/dua orang/Rp500.000 per orang; 0:45–1:30 review budget group Rp1.000.000, hotel/anchor, user estimates dan unknown; 1:30–2:15 plan/save/reload dan ledger; 2:15–3:15 laporkan closure dan tampilkan response asli/revised/reasons; 3:15–4:00 jelaskan unknown, travel heuristic, source dan Maps; sisa waktu untuk explicit local fallback. Snapshot uji memakai 1–2 Desember 2026, **bukan tanggal demo yang sudah disetujui**. Actual v0.3 API snapshot menghasilkan known cost Rp470.000 dengan tiga unknown cost items; costDelta null sehingga tidak boleh mengklaim nominal penghematan. Belum ada dua rehearsal manusia atau penetapan pembicara.
+
+Proposal #39 tetap parked: setelah MVP, bandingkan routing dengan input/stop order/mode identik, ukur selisih waktu/jarak dan error/latency pada rute uji yang sama, cek lisensi/atribusi/quota/biaya serta failure policy, dan pastikan respons menandai asal estimasi. Jangan menambahkan provider atau mengklaim optimalitas sebelum hasil benchmark dan scope baru disetujui.
+
+
+## Crosscheck dan sinkronisasi board setelah izin push bersyarat
+
+Pengguna mengizinkan push ke dev **hanya jika semua benar-benar aman**. Crosscheck ulang masih menemukan dua kegagalan GuestFlow (riwayat fiktif dan input brief hilang); tidak ada perubahan frontend pada paket ini. Karena syarat belum terpenuhi, push/commit/release tetap ditahan. Backend 127 passed, Ruff/format/pip dan build passed, canonical seed/schema tanpa drift, live source parity 9 record passed; HEAD dan remote dev masih `ee3c90e`.
+
+Board kini disinkronkan berdasarkan bukti itu; catatan tinjauan lokal di atas menjadi riwayat, bukan lagi status board terkini. #6/#15/#16/#25/#28 masuk Review **lokal, belum dipublish/disetujui**. #14/#26/#27/#29/#30/#31/#34/#36/#37/#38 Blocked dengan nama yang ditunggu dan kendala di komentar issue. #4/#5 tetap Done, #39 tetap Parked. Tidak ada issue baru ditutup atau assignee diubah. Bukti URL komentar dan hasil edit tersimpan di `qa/release/owner-backlog-sync.json`.
+
+Menunggu Shakira: pemulihan canonical API/storage #42 serta handoff untuk E2E. Menunggu Tianisa: review kandidat/sumber/data final dan konfirmasi operasional sesuai tanggal demo. Menunggu Fajri/PM: tanggal/pembicara demo, perangkat fisik/Maps, target hosting, actual CI pada SHA yang dipush, serta release gate. Draft CI belum dianggap green karena belum dipublish dan FE masih gagal. Approval untuk push tidak perlu diminta ulang setelah kondisi semua gate aman terpenuhi; crosscheck dan fetch ulang tetap diperlukan.

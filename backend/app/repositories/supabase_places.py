@@ -129,6 +129,10 @@ class SupabasePlaceRepository:
             rows = json.loads(raw)
             if not isinstance(rows, list):
                 raise ValueError("Expected list")
+            if not rows:
+                # PilotDataset requires at least one place. A missing seed or RLS
+                # hiding every row must not look like a healthy configured source.
+                raise PlaceSourceError("Supabase canonical catalog is empty")
             if len(rows) >= _MAX_ROWS:
                 raise PlaceSourceError(
                     "Supabase result reached row limit; paging is required"

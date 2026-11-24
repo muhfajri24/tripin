@@ -39,7 +39,21 @@ Valid but unsuccessful heuristic search returns 200 + no_plan_found, not a mathe
 `TRPIN_APP_NAME`, JSON-array `TRPIN_CORS_ORIGINS`, `TRPIN_PLACE_SOURCE=local`.
 Optional `.env` is read from the backend working directory. Default allowed origins are
 localhost:3000 and 127.0.0.1:3000. Explicitly add another frontend origin if using another port.
-No credentials are required. Supabase source fails explicitly until teammate schema approval.
+Local mode requires no credentials. Supabase mode uses the configured public read key
+and fails explicitly on source errors; it never silently substitutes the local catalog.
+
+Verify the selected source and canonical parity from `backend`:
+
+```powershell
+.venv/Scripts/python -m scripts.check_place_source --compare-local
+.venv/Scripts/python -m scripts.check_catalog_quality
+```
+
+For a built single-origin demo, run `npm ci` and `npm run build` in `frontend`, then
+from `backend` run `.venv/Scripts/python -m scripts.serve_demo --source local --port 8015`.
+Select `--source supabase` explicitly for live reads using the ignored local `.env`.
+This is loopback HTTP; map tiles and Google Maps handoff still require internet.
+Use `--check` to check build presence only. UI acceptance is tracked separately from startup.
 
 ## Domain rules
 

@@ -1,0 +1,8 @@
+{
+  "datasetVersion": "yogyakarta-v0_3_0",
+  "rows": 9,
+  "status": "passed",
+  "errors": [],
+  "seedParity": "checked",
+  "note": "Checks structure/evidence consistency, not current provider operations or metadata completeness."
+}

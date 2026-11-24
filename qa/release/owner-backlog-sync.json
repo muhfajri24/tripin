@@ -1,0 +1,197 @@
+{
+  "push": "held: two frontend test failures; user requires all gates safe",
+  "updates": [
+    {
+      "number": 6,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/6#issuecomment-7131248717",
+      "statusUpdated": true
+    },
+    {
+      "number": 14,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/14#issuecomment-7131250125",
+      "statusUpdated": true
+    },
+    {
+      "number": 15,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/15#issuecomment-7131251632",
+      "statusUpdated": true
+    },
+    {
+      "number": 16,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/16#issuecomment-7131253214",
+      "statusUpdated": true
+    },
+    {
+      "number": 25,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/25#issuecomment-7131254820",
+      "statusUpdated": true
+    },
+    {
+      "number": 26,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/26#issuecomment-7131256352",
+      "statusUpdated": true
+    },
+    {
+      "number": 27,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/27#issuecomment-7131258134",
+      "statusUpdated": true
+    },
+    {
+      "number": 28,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/28#issuecomment-7131259653",
+      "statusUpdated": true
+    },
+    {
+      "number": 29,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/29#issuecomment-7131261245",
+      "statusUpdated": true
+    },
+    {
+      "number": 30,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/30#issuecomment-7131263100",
+      "statusUpdated": true
+    },
+    {
+      "number": 31,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/31#issuecomment-7131264702",
+      "statusUpdated": true
+    },
+    {
+      "number": 34,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/34#issuecomment-7131266694",
+      "statusUpdated": true
+    },
+    {
+      "number": 36,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/36#issuecomment-7131274733",
+      "statusUpdated": true
+    },
+    {
+      "number": 37,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/37#issuecomment-7131276050",
+      "statusUpdated": true
+    },
+    {
+      "number": 38,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/38#issuecomment-7131277768",
+      "statusUpdated": true
+    },
+    {
+      "number": 39,
+      "status": "Parked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/39#issuecomment-7131279117",
+      "statusUpdated": true
+    },
+    {
+      "number": 7,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/7#issuecomment-7131280597",
+      "statusUpdated": true
+    },
+    {
+      "number": 9,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/9#issuecomment-7131282007",
+      "statusUpdated": true
+    },
+    {
+      "number": 10,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/10#issuecomment-7131283425",
+      "statusUpdated": true
+    },
+    {
+      "number": 11,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/11#issuecomment-7131284640",
+      "statusUpdated": true
+    },
+    {
+      "number": 12,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/12#issuecomment-7131285878",
+      "statusUpdated": true
+    },
+    {
+      "number": 13,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/13#issuecomment-7131287665",
+      "statusUpdated": true
+    },
+    {
+      "number": 24,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/24#issuecomment-7131289246",
+      "statusUpdated": true
+    },
+    {
+      "number": 33,
+      "status": "Review",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/33#issuecomment-7131290685",
+      "statusUpdated": true
+    },
+    {
+      "number": 35,
+      "status": "Blocked",
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/35#issuecomment-7131292374",
+      "statusUpdated": true
+    },
+    {
+      "number": 42,
+      "status": null,
+      "commentPosted": true,
+      "commentUrl": "https://github.com/muhfajri24/tripin/issues/42#issuecomment-7131293815"
+    }
+  ],
+  "verifiedAt": "2026-11-24T19:20:31+07:00",
+  "boardReadback": "passed: all 25 requested status updates verified",
+  "commentsPosted": 26,
+  "fajriStatusCounts": {
+    "Done": 2,
+    "Review": 5,
+    "Blocked": 10,
+    "Parked": 1
+  },
+  "assigneesChanged": false,
+  "issuesClosed": false
+}

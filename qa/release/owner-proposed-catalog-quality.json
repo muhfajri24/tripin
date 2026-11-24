@@ -1,0 +1,8 @@
+{
+  "datasetVersion": "yogyakarta-v0_4_0",
+  "rows": 9,
+  "status": "passed",
+  "errors": [],
+  "seedParity": "not applicable: proposal is not active",
+  "note": "Checks structure/evidence consistency, not current provider operations or metadata completeness."
+}

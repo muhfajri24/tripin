@@ -1,0 +1,38 @@
+{
+  "base": "http://127.0.0.1:8016",
+  "scope": "Fajri QA baseline; stop at broken frontend/backend boundary; no FE edits",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 960,
+      "storageKeys": [],
+      "fictionalHistoryWithEmptyStorage": [
+        "Labuan Bajo",
+        "Danau Toba",
+        "Bandung"
+      ],
+      "pageErrors": [],
+      "apiCalls": [],
+      "briefTextareaCount": 0,
+      "parseButtonCount": 0,
+      "status": "blocked_by_FE_00"
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "storageKeys": [],
+      "fictionalHistoryWithEmptyStorage": [
+        "Labuan Bajo",
+        "Danau Toba",
+        "Bandung"
+      ],
+      "pageErrors": [],
+      "apiCalls": [],
+      "briefTextareaCount": 0,
+      "parseButtonCount": 0,
+      "status": "blocked_by_FE_00"
+    }
+  ]
+}

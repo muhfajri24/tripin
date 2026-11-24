@@ -1,0 +1,679 @@
+{
+  "schemaVersion": 1,
+  "datasetVersion": "yogyakarta-v0_4_0",
+  "destinationId": "yogyakarta",
+  "places": [
+    {
+      "id": "yog-museum-kereta",
+      "name": "Museum Kereta Kraton Ngayogyakarta Hadiningrat",
+      "destinationId": "yogyakarta",
+      "coordinates": {
+        "lat": -7.805456,
+        "lng": 110.362751
+      },
+      "address": "Jalan Rotowijayan 2 Blok No.1, Panembahan, Kraton, Yogyakarta",
+      "categories": [
+        "attraction",
+        "culture"
+      ],
+      "kind": "attraction",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": [
+        {
+          "weekday": 1,
+          "opens": "09:00",
+          "closes": "15:00"
+        },
+        {
+          "weekday": 2,
+          "opens": "09:00",
+          "closes": "15:00"
+        },
+        {
+          "weekday": 3,
+          "opens": "09:00",
+          "closes": "15:00"
+        },
+        {
+          "weekday": 4,
+          "opens": "09:00",
+          "closes": "15:00"
+        },
+        {
+          "weekday": 5,
+          "opens": "09:00",
+          "closes": "15:00"
+        },
+        {
+          "weekday": 6,
+          "opens": "09:00",
+          "closes": "15:00"
+        }
+      ],
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "person",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://tourism.kratonjogja.id/id-ID/destination/4-kagungan-dalem-wahanarata/",
+        "checkedAt": "2026-11-24T13:57:09+07:00",
+        "status": "checked"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/1322/museum-kereta-kraton-yogyakarta",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/1322/museum-kereta-kraton-yogyakarta",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    },
+    {
+      "id": "yog-gudeg-yu-djum-pusat",
+      "name": "Gudeg Yu Djum Pusat",
+      "destinationId": "yogyakarta",
+      "coordinates": null,
+      "address": "Jl. Kaliurang Km. 4,5 CT III/22 Gang Cokrowolo Karangasem, Mbarek, Sleman",
+      "categories": [
+        "food"
+      ],
+      "kind": "food",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": null,
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "person",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://gudegyudjumpusat.com/",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    },
+    {
+      "id": "yog-kedhaton",
+      "name": "Kagungan Dalem Kedhaton",
+      "destinationId": "yogyakarta",
+      "coordinates": null,
+      "address": "Jl. Rotowijayan No. 1, Panembahan, Kraton, Yogyakarta",
+      "categories": [
+        "attraction",
+        "culture"
+      ],
+      "kind": "attraction",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": [
+        {
+          "weekday": 1,
+          "opens": "08:30",
+          "closes": "14:30"
+        },
+        {
+          "weekday": 2,
+          "opens": "08:30",
+          "closes": "14:30"
+        },
+        {
+          "weekday": 3,
+          "opens": "08:30",
+          "closes": "14:30"
+        },
+        {
+          "weekday": 4,
+          "opens": "08:30",
+          "closes": "14:30"
+        },
+        {
+          "weekday": 5,
+          "opens": "08:30",
+          "closes": "14:30"
+        },
+        {
+          "weekday": 6,
+          "opens": "08:30",
+          "closes": "14:30"
+        }
+      ],
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "person",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://tourism.kratonjogja.id/id-ID/destination/3-kagungan-dalem-kedhaton/",
+        "checkedAt": "2026-11-24T13:57:09+07:00",
+        "status": "checked"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://tourism.kratonjogja.id/id-ID/destination/3-kagungan-dalem-kedhaton/",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    },
+    {
+      "id": "yog-phoenix",
+      "name": "The Phoenix Hotel Yogyakarta",
+      "destinationId": "yogyakarta",
+      "coordinates": {
+        "lat": -7.782697,
+        "lng": 110.368393
+      },
+      "address": "Jl Jenderal Sudirman 9, Yogyakarta",
+      "categories": [
+        "lodging"
+      ],
+      "kind": "lodging",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": null,
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "room_night",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://all.accor.com/hotel/5451/index.en.shtml",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://all.accor.com/hotel/5451/index.en.shtml",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    },
+    {
+      "id": "yog-vredeburg",
+      "name": "Museum Benteng Vredeburg",
+      "destinationId": "yogyakarta",
+      "coordinates": {
+        "lat": -7.800277,
+        "lng": 110.36611
+      },
+      "address": "Jalan Margo Mulyo No. 6, Yogyakarta 55121",
+      "categories": [
+        "culture",
+        "attraction"
+      ],
+      "kind": "attraction",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": [
+        {
+          "weekday": 1,
+          "opens": "08:00",
+          "closes": "20:00"
+        },
+        {
+          "weekday": 2,
+          "opens": "08:00",
+          "closes": "20:00"
+        },
+        {
+          "weekday": 3,
+          "opens": "08:00",
+          "closes": "20:00"
+        },
+        {
+          "weekday": 4,
+          "opens": "08:00",
+          "closes": "21:00"
+        },
+        {
+          "weekday": 5,
+          "opens": "08:00",
+          "closes": "21:00"
+        },
+        {
+          "weekday": 6,
+          "opens": "08:00",
+          "closes": "21:00"
+        }
+      ],
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "person",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://vredeburg.id/ticket-information/page/waktu-kunjungan",
+        "checkedAt": "2026-11-24T16:14:43+07:00",
+        "status": "checked"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/4327/benteng-vredeburg",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://vredeburg.id/ticket-information/page/waktu-kunjungan",
+        "checkedAt": "2026-11-24T16:14:43+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    },
+    {
+      "id": "yog-ibis-styles",
+      "name": "ibis Styles Yogyakarta",
+      "destinationId": "yogyakarta",
+      "coordinates": {
+        "lat": -7.793635,
+        "lng": 110.3614
+      },
+      "address": "Jalan Dagen 109, Yogyakarta 55271, Indonesia",
+      "categories": [
+        "lodging"
+      ],
+      "kind": "lodging",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": null,
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "room_night",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://all.accor.com/hotel/7460/index.en.shtml",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://all.accor.com/hotel/7460/index.en.shtml",
+        "checkedAt": "2026-11-24T16:14:43+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    },
+    {
+      "id": "yog-sonobudoyo",
+      "name": "Museum Sonobudoyo Unit I",
+      "destinationId": "yogyakarta",
+      "coordinates": {
+        "lat": -7.80275,
+        "lng": 110.36380555555554
+      },
+      "address": "Jl. Trikora / Pangurakan No. 6, Yogyakarta 55122",
+      "categories": [
+        "culture",
+        "attraction"
+      ],
+      "kind": "attraction",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": [
+        {
+          "weekday": 1,
+          "opens": "08:00",
+          "closes": "21:00"
+        },
+        {
+          "weekday": 2,
+          "opens": "08:00",
+          "closes": "21:00"
+        },
+        {
+          "weekday": 3,
+          "opens": "08:00",
+          "closes": "21:00"
+        },
+        {
+          "weekday": 4,
+          "opens": "08:00",
+          "closes": "21:00"
+        },
+        {
+          "weekday": 5,
+          "opens": "08:00",
+          "closes": "21:00"
+        },
+        {
+          "weekday": 6,
+          "opens": "08:00",
+          "closes": "21:00"
+        }
+      ],
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": 10000,
+          "basis": "person",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": "https://www.indonesia.travel/id/id/destination/java/yogyakarta/museum-sonobudoyo",
+            "checkedAt": "2026-11-24T12:00:00+07:00",
+            "status": "checked"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://sonobudoyo.jogjaprov.go.id/id/hubungi",
+        "checkedAt": "2026-11-24T13:57:09+07:00",
+        "status": "checked"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://repositori.kemendikdasmen.go.id/26873/1/Katalog%20museum%20NAsional%20Jilid%202.pdf",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://repositori.kemendikdasmen.go.id/26873/1/Katalog%20museum%20NAsional%20Jilid%202.pdf",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    },
+    {
+      "id": "yog-bebek-cak-koting",
+      "name": "Bebek Cak Koting",
+      "destinationId": "yogyakarta",
+      "coordinates": {
+        "lat": -7.792,
+        "lng": 110.3777
+      },
+      "address": "Jalan Dr. Sutomo, selatan jembatan layang Lempuyangan, Yogyakarta",
+      "categories": [
+        "food"
+      ],
+      "kind": "food",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": null,
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "person",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://repo.unwim.ac.id/1096/1/715-Article%20Text-3276-1-10-20240527.pdf",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://visitingjogja.jogjaprov.go.id/12838/bebek-cak-koting/",
+        "checkedAt": "2026-11-24T16:14:43+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    },
+    {
+      "id": "yog-malioboro",
+      "name": "Kawasan Malioboro",
+      "destinationId": "yogyakarta",
+      "coordinates": {
+        "lat": -7.7926,
+        "lng": 110.3658
+      },
+      "address": null,
+      "categories": [
+        "culture",
+        "attraction"
+      ],
+      "kind": "attraction",
+      "visitDurationMin": 60,
+      "durationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "Editorial planning assumption; not provider visit duration",
+        "checkedAt": null,
+        "status": "estimated"
+      },
+      "openingWindows": null,
+      "dateExceptions": [],
+      "prices": [
+        {
+          "amountIdr": null,
+          "basis": "person",
+          "evidence": {
+            "sourceType": "curated",
+            "sourceRef": null,
+            "checkedAt": null,
+            "status": "unverified"
+          }
+        }
+      ],
+      "openingEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "locationEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://repo.unwim.ac.id/1096/1/715-Article%20Text-3276-1-10-20240527.pdf",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "identityEvidence": {
+        "sourceType": "curated",
+        "sourceRef": "https://repo.unwim.ac.id/1096/1/715-Article%20Text-3276-1-10-20240527.pdf",
+        "checkedAt": "2026-11-24T12:00:00+07:00",
+        "status": "checked"
+      },
+      "isLocalBusiness": null,
+      "localBusinessEvidence": {
+        "sourceType": "curated",
+        "sourceRef": null,
+        "checkedAt": null,
+        "status": "unverified"
+      },
+      "googlePlaceId": null
+    }
+  ]
+}
