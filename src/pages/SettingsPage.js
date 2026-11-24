@@ -142,11 +142,13 @@ function SettingsPage() {
 
       {/* About TRIPIN */}
       <div className="bg-white rounded-2xl shadow-soft p-5 border border-gray-100 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
-        <img
-          src="/logo-full.png"
-          alt="TRIPIN"
-          className="h-10 w-auto object-contain drop-shadow-sm flex-shrink-0"
-        />
+        <div className="bg-charcoal px-3.5 py-2 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
+          <img
+            src="/logo-full.png"
+            alt="TRIPIN"
+            className="h-8 w-auto object-contain"
+          />
+        </div>
         <div className="flex-1">
           <div className="flex items-center justify-center sm:justify-start gap-2">
             <h4 className="font-bold text-charcoal text-sm">TRIPIN App</h4>

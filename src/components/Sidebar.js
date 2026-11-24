@@ -65,7 +65,7 @@ function SidebarContent({ collapsed, onToggleCollapse, navigate, isMobile, onClo
             <img
               src="/logo-full.png"
               alt="TRIPIN"
-              className="h-9 w-auto max-w-[160px] object-contain drop-shadow"
+              className="h-10 w-auto max-w-[165px] object-contain drop-shadow"
             />
           </button>
         )}
@@ -74,7 +74,7 @@ function SidebarContent({ collapsed, onToggleCollapse, navigate, isMobile, onClo
             <img
               src="/logo-icon.png"
               alt="TRIPIN"
-              className="w-8 h-8 object-contain drop-shadow"
+              className="w-9 h-9 object-contain drop-shadow"
             />
           </button>
         )}
