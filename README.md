@@ -5,8 +5,9 @@ A modern, premium frontend for an AI travel itinerary planner built with React.j
 ## 🚀 Quick Start
 
 ```bash
-# 1. Install dependencies
-npm install
+# 1. Masuk folder frontend dan install dependencies
+cd frontend
+npm ci
 
 # 2. Start development server
 npm start
@@ -17,7 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## 📁 Project Structure
 
 ```
-src/
+frontend/src/
 ├── components/          # Reusable UI components
 │   ├── Sidebar.js       # Fixed/collapsible navigation sidebar
 │   ├── Navbar.js        # Top navigation bar
@@ -84,7 +85,7 @@ src/
 
 ## 🔌 Connecting to a Real Backend
 
-All mock data is in `src/data/mockData.js`. To connect to a real API:
+All mock data is in `frontend/src/data/mockData.js`. To connect to a real API:
 
 1. Replace the mock data exports with API calls
 2. Each function returns the same shape as the mock data
@@ -103,3 +104,14 @@ All mock data is in `src/data/mockData.js`. To connect to a real API:
 
 FastAPI dan canonical contracts tersedia di [backend/README.md](backend/README.md). Panduan tersebut menjelaskan startup, tests, schema export, dan keterbatasan dataset. Frontend lama belum terintegrasi dengan backend.
 
+
+## Repository layout
+
+```text
+frontend/       React: src/, public/, package.json, Tailwind config
+backend/        FastAPI, canonical models, dataset, dan tests
+contracts/      JSON schemas dan contract fixtures
+```
+
+Jalankan perintah npm dari `frontend/`. Backend tetap dijalankan dari `backend/`;
+lihat [panduan backend](backend/README.md). Kedua aplikasi belum terintegrasi.
