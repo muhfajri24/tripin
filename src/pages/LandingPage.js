@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plane, ArrowRight, Sparkles, Map, Store, Wallet, Star, ChevronDown, Leaf, Award } from 'lucide-react';
+import { Plane, ArrowRight, Sparkles, Map, Store, Wallet, Star, ChevronDown, Award } from 'lucide-react';
 import { mockRecommendations } from '../data/mockData';
 
 const heroDestinations = [
@@ -108,11 +108,6 @@ function LandingPage() {
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 w-full">
           <div className="max-w-2xl animate-fadeInUp">
-            <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md border border-white/25 rounded-full px-4 py-2 text-white text-xs sm:text-sm font-semibold mb-6">
-              <Leaf size={14} className="text-emerald-300" />
-              AI Sustainable Travel & Local Business Discovery (SDG 8)
-            </div>
-
             <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4 tracking-tight">
               Jelajahi Negeri,<br />
               <span className="text-yellow-trip">Berdayakan UMKM Lokal.</span>
