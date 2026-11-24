@@ -104,7 +104,7 @@ function LandingPage() {
           </button>
           <button
             onClick={() => navigate('/create')}
-            className="bg-coral hover:bg-coral-dark text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-coral transition-all"
+            className="bg-coral hover:bg-coral-dark text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-md shadow-black/20 hover:shadow-lg transition-all"
           >
             Mulai Perjalanan
           </button>
@@ -155,7 +155,7 @@ function LandingPage() {
               </div>
               <button
                 onClick={() => handleStart()}
-                className="bg-gradient-to-r from-coral to-coral-dark text-white font-bold px-6 py-3 rounded-xl hover:shadow-coral transition-all flex items-center gap-2 whitespace-nowrap text-sm sm:text-base"
+                className="bg-gradient-to-r from-coral to-coral-dark text-white font-bold px-6 py-3 rounded-xl shadow-md shadow-black/15 hover:shadow-lg transition-all flex items-center gap-2 whitespace-nowrap text-sm sm:text-base"
               >
                 Susun Rute
                 <ArrowRight size={16} />
@@ -214,7 +214,7 @@ function LandingPage() {
           </p>
           <button
             onClick={() => navigate('/create')}
-            className="bg-coral hover:bg-coral-dark text-white font-bold text-base px-8 py-3.5 rounded-2xl shadow-coral transition-all inline-flex items-center gap-2"
+            className="bg-coral hover:bg-coral-dark text-white font-bold text-base px-8 py-3.5 rounded-2xl shadow-lg shadow-black/20 hover:scale-[1.02] transition-all inline-flex items-center gap-2"
           >
             Buat Itinerary Pertama
             <ArrowRight size={18} />

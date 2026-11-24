@@ -40,7 +40,7 @@ module.exports = {
         soft: '0 4px 20px rgba(37, 50, 56, 0.08)',
         card: '0 8px 30px rgba(37, 50, 56, 0.10)',
         hover: '0 20px 40px rgba(23, 107, 103, 0.15)',
-        coral: '0 8px 24px rgba(255, 107, 94, 0.3)',
+        coral: '0 4px 14px rgba(229, 90, 78, 0.12)',
         teal: '0 8px 24px rgba(23, 107, 103, 0.3)',
       },
       backgroundImage: {

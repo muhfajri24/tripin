@@ -119,6 +119,6 @@ body {
 
 /* Hero gradient overlay */
 .hero-overlay {
-  background: linear-gradient(135deg, rgba(23,107,103,0.85) 0%, rgba(255,107,94,0.4) 100%);
+  background: linear-gradient(135deg, rgba(17, 34, 38, 0.85) 0%, rgba(20, 30, 36, 0.78) 100%);
 }
 
