@@ -458,4 +458,3 @@ img {
  input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid #176B67; outline-offset: 3px; }
  th { @apply py-2 pr-3; }
 }
-}
