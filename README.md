@@ -1,136 +1,78 @@
-# TRPIN — Adaptive Travel Itinerary Planner
+﻿# TRIPIN — Guest adaptive travel planner
 
-> **Status: frontend prototype / simulated itinerary engine.** TRPIN currently demonstrates trip planning, curated Indonesian destinations, itinerary editing, budget visualization, and Google Maps handoff. It is **not yet** a production AI planner or a verified booking/navigation service.
+Guest-access MVP for Yogyakarta, 1–3 days, driving. No account, email, booking, paid AI,
+Google Places or Google Routes key is required. Estimates and unknown metadata are explicit.
 
-TRPIN helps travelers turn preferences into a structured travel itinerary, compare optimization priorities, discover Indonesian destinations and local businesses, and adjust plans when circumstances change. The product aims to make travel planning more practical **while increasing visibility of local UMKM** (relevant to SDG 8).
+## Run locally
 
-![TRPIN logo](frontend/public/logo-full.png)
+Two terminals from repository root:
 
-## What works today
-
-| Capability | Current implementation |
-| --- | --- |
-| Landing, dashboard, discovery, saved places, settings | React UI with demonstration/local data |
-| Trip creation | Guided fields and free-text input; generator uses curated/static data, **not a live LLM** |
-| Daily itinerary and budget | Generated activity schedules and cost estimates; values are illustrative |
-| Modes: budget / time / explore | Local ordering and scoring helpers; **not a proven global route optimum** |
-| Edit and reschedule | Move/add/remove/replace activities and scenario-based local adjustments |
-| Map | Leaflet + OpenStreetMap |
-| Google Maps handoff | Opens a Maps directions URL containing selected day's stops; waypoint behavior depends on client limits |
-| Discovery | Google Places Text Search when configured, Nominatim fallback and curated catalog |
-| Persistence | Browser `localStorage`; no account synchronization |
-
-**Important caveats:** some example ratings, opening hours, prices, labels and economic-impact values are placeholders or estimates. The application can fall back to unrelated curated destinations for unknown cities. **Do not treat the current itinerary as verified travel advice.**
-
-## Quick start
-
-Prerequisites: Node.js and npm (a current Node LTS release is recommended).
-
-```bash
-git clone https://github.com/muhfajri24/trpin.git
-cd trpin
-git switch dev
+```powershell
+# Frontend
 cd frontend
 npm ci
 npm start
 ```
 
-Open http://localhost:3000.
+```powershell
+# Backend (Python 3.11+)
+python -m venv backend/.venv
+backend/.venv/Scripts/python -m pip install -r backend/requirements-dev.txt
+cd backend
+.venv/Scripts/python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8011
+```
 
-Production build:
+Frontend: http://localhost:3000. API health: http://127.0.0.1:8011/api/v1/health.
+API docs: http://127.0.0.1:8011/docs. CRA development proxy forwards `/api/v1` to port 8011.
+If that port is occupied by an older backend, stop/restart your own backend or use another
+port and set `REACT_APP_API_URL` in `frontend/.env.local`, plus explicit backend CORS origins.
+Do not stop unrelated processes.
 
-```bash
+## Supported workflow
+
+Brief -> deterministic Indonesian parser -> editable review -> backend candidate repository
+-> bounded constraint-aware planning -> schedule/ledger/map -> edit or delay/closure replan
+-> local save/delete -> Google Maps sequential route segments.
+
+Navigation: Home, Plan a Trip, My Trips, Explore Yogyakarta. Legacy dashboard/settings/saved
+URLs redirect to guest pages. Prototype data files are retained for reference but are not
+imported by the active guest workflow. Existing fictional demo itineraries are not migrated.
+
+## Tests
+
+```powershell
 cd frontend
+npm test -- --runInBand
 npm run build
 ```
 
-There is currently no `npm test` script in `package.json`; automated testing and CI are pending.
-
-### Optional environment configuration
-
-Create `.env.local` **only if needed**:
-
-```dotenv
-REACT_APP_GOOGLE_PLACES_KEY=your_restricted_browser_key
+```powershell
+cd backend
+.venv/Scripts/python -m pytest -q
+.venv/Scripts/python -m scripts.export_schemas
 ```
 
-The current Places integration calls Google Places directly from the browser. A `REACT_APP_*` variable is embedded into the client bundle and **must not be treated as a secret**. Restrict a browser key by website referrer, API, and quota/budget alerts. Do **not** put an unrestricted key or an LLM secret in frontend variables. Future server integrations should use server-side secret storage.
+## Repository
 
-Without a Google Places key, search may use the public Nominatim endpoint or local example data. The public services are subject to usage policies and are unsuitable as an unrestricted production backend. OSRM public routing is also a best-effort demo dependency.
+- `frontend/`: existing React identity/layout/Leaflet, guest pages and local persistence.
+- `backend/`: FastAPI, canonical contracts, parser, repository, planner/replanner, tests.
+- `contracts/`: exported schemas, API envelopes, canonical valid/invalid fixtures.
+- `docs/`: product/audit history and current implementation notes.
 
-## App routes
+## Important limits
 
-| Route | Page |
-| --- | --- |
-| `/` | Landing |
-| `/dashboard` | Dashboard |
-| `/discovery` | Local discovery |
-| `/create` | Create itinerary |
-| `/my-itineraries` | Saved/generated itineraries |
-| `/itinerary/:id` | Itinerary result, map and budget tab |
-| `/itinerary/:id/edit` | Editor and scenario-based rescheduler |
-| `/saved` | Saved places |
-| `/settings` | Settings |
+Nine pilot candidates; not all are routable. One versioned local catalog is active.
+Unknown hours/prices are not free or always-open. Permit unverified data explicitly to
+receive a conditional plan; disable it to reject incomplete candidates. Route distance is
+straight-line Haversine with a documented duration heuristic, not actual road routing/traffic.
+Costs include selected food stops only, not every possible meal. User estimates are not quotes.
+No global optimum or proof of infeasibility is claimed when bounded search fails.
 
-Legacy URLs `/explore`, `/itinerary/:id/reschedule`, and `/itinerary/:id/budget` redirect to current pages.
-
-## Source layout
-
-```text
-public/                 Static assets and page shell
-src/
-  App.js                Client routes
-  assets/               Brand assets
-  components/           Reusable UI (map, timeline, budget, etc.)
-  data/mockData.js      Curated demo records, generator, persistence, calculations
-  layouts/AppLayout.js  Application shell
-  pages/                Landing, planner, results, editor, discovery, etc.
-  services/
-    placesService.js    Google Places / Nominatim / curated fallbacks
-    regionService.js    Indonesian regions and destination resolution
-    routingService.js   Public OSRM and approximate fallback
-  index.css             Global styles
-tailwind.config.js      Theme tokens
-```
-
-## Product and engineering documents
-
-- [Product scope, actors, scenarios and acceptance criteria](docs/PRODUCT.md)
-- [Engineering notes, data flow, limitations and safety](docs/ARCHITECTURE.md)
-- [Repository audit and prioritized backlog](docs/AUDIT.md)
-
-### MVP focus for a three-person / seven-day build
-
-1. **Reliable structured input:** parse user intent or provide a fallback form; preserve destination, activities, budget, dates, transportation and party size.
-2. **Grounded candidates:** retrieve and normalize places, show source/freshness, and never silently substitute another city.
-3. **Feasible itinerary:** enforce hard constraints (time windows, duration, budget and travel mode) before ranking alternatives.
-4. **Explainable adjustments:** make one-change rescheduling recalculate and explain affected stops.
-5. **Navigable output:** export a valid, bounded sequence of stops to Google Maps and provide a safe fallback if waypoints exceed limits.
+Supabase is owned by another teammate and remains pending finalized schema/approval.
+See [integration boundary](docs/SUPABASE_INTEGRATION.md), [backend](backend/README.md),
+[data provenance](backend/app/data/README.md), and [current MVP details](docs/MVP_IMPLEMENTATION.md).
 
 ## Collaboration
 
-The repository's default branch is `dev`. Make changes on short-lived feature/docs branches and open pull requests to `dev`. Document assumptions, avoid committing API keys and distinguish mock values from live information.
-
-**Naming note:** the GitHub repository is `trpin`; the current UI and package still use `TRIPIN` / `tripin`. A final brand spelling should be agreed before renaming public-facing assets or package identifiers.
-
-## License
-
-No license file has been added yet. Do not assume redistribution rights. The team should choose a license explicitly if it wants to open-source this work.
-
-## Current development structure
-
-- `frontend/`: React application; run npm commands here.
-- `backend/`: FastAPI foundation and canonical Pydantic models; see [backend setup](backend/README.md).
-- `contracts/`: exported JSON schemas and valid/invalid fixtures.
-
-The architecture/audit documents describe the original frontend snapshot at 138dffb.
-Backend foundation is now implemented, but parser, scheduling and frontend integration are still pending.
-
-## Branch workflow
-
-Only two branches are maintained:
-
-- `dev`: shared development, integration and testing for all contributors.
-- `main`: stable release; promote tested changes from `dev` after review.
-
-Push ongoing work to `dev`. Do not promote to `main` until verification is complete.
+Only `dev` and `main`: develop/integrate/test on `dev`; promote reviewed, verified changes
+to `main`. No force-push or automatic release merge. Database changes require teammate approval.

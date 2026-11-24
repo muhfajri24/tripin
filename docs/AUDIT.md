@@ -1,3 +1,5 @@
+> Historical prototype snapshot. Current implementation: [MVP_IMPLEMENTATION.md](MVP_IMPLEMENTATION.md).
+
 # TRPIN — Repository Audit and Prioritized Backlog
 
 **Source snapshot:** GitHub `muhfajri24/trpin`, default branch `dev`, commit `138dffbcbba5d9147eb12002b0ee52d78d276482` (checked 24 November 2026). This is a static code review, **not** a successful runtime/build test.

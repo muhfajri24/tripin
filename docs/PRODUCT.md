@@ -1,3 +1,5 @@
+> Historical prototype snapshot. Current implementation: [MVP_IMPLEMENTATION.md](MVP_IMPLEMENTATION.md).
+
 # TRPIN — Product Scope and Use Cases
 
 _Last reviewed against `dev` at commit `138dffb` (24 November 2026). This is a target specification, not a claim that each feature is implemented._

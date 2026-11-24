@@ -1,3 +1,5 @@
+> Historical prototype snapshot. Current implementation: [MVP_IMPLEMENTATION.md](MVP_IMPLEMENTATION.md).
+
 # TRPIN — Engineering and Data Flow
 
 _Observed in branch `dev` at `138dffb`. This document distinguishes existing implementation from proposed architecture._
