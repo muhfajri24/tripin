@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
+import { PageTransition } from '../motion';
 
 function AppLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -9,7 +11,7 @@ function AppLayout() {
   const location = useLocation();
   const mainRef = useRef(null);
 
-  // Close mobile sidebar on route change
+  // Close mobile sidebar and reset scroll on route change
   useEffect(() => {
     setMobileSidebarOpen(false);
     if (mainRef.current) mainRef.current.scrollTop = 0;
@@ -20,12 +22,12 @@ function AppLayout() {
       {/* Mobile overlay */}
       {mobileSidebarOpen && (
         <div
-          className="fixed inset-0 bg-charcoal/40 z-20 lg:hidden"
+          className="fixed inset-0 bg-charcoal/40 backdrop-blur-sm z-30 lg:hidden"
           onClick={() => setMobileSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Modern Animated Sidebar */}
       <Sidebar
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -33,7 +35,7 @@ function AppLayout() {
         onMobileClose={() => setMobileSidebarOpen(false)}
       />
 
-      {/* Main content */}
+      {/* Main content viewport */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <Navbar
           onMenuToggle={() => setMobileSidebarOpen(!mobileSidebarOpen)}
@@ -41,7 +43,11 @@ function AppLayout() {
         />
         <main ref={mainRef} className="flex-1 overflow-y-auto">
           <div className="p-4 md:p-6 max-w-7xl mx-auto">
-            <Outlet />
+            <AnimatePresence mode="wait">
+              <PageTransition key={location.pathname}>
+                <Outlet />
+              </PageTransition>
+            </AnimatePresence>
           </div>
         </main>
       </div>
@@ -50,4 +56,3 @@ function AppLayout() {
 }
 
 export default AppLayout;
-

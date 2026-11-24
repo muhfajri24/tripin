@@ -1650,15 +1650,16 @@ export const getStoredItineraries = () => {
       const saved = window.localStorage.getItem(STORAGE_ITINERARIES_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           return parsed;
         }
       }
+      return [];
     } catch (e) {
-      // Fallback to default
+      return [];
     }
   }
-  return initialMockItineraries;
+  return [];
 };
 
 export const saveItinerary = (itinerary) => {

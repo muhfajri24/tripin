@@ -30,6 +30,17 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['Syne', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+      },
+      transitionTimingFunction: {
+        'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'spring': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'smooth': 'cubic-bezier(0.22, 1, 0.36, 1)',
+      },
+      transitionDuration: {
+        'fast': '180ms',
+        'normal': '320ms',
+        'slow': '600ms',
       },
       borderRadius: {
         xl: '1rem',

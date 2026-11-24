@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Sparkles, Compass, BookOpen, Heart, Settings,
   ChevronLeft, ChevronRight, X
@@ -8,18 +9,20 @@ import clsx from 'clsx';
 import logoFull from '../assets/logo-full.png';
 import logoIcon from '../assets/logo-icon.png';
 import { getStoredItineraries, mockDestinations, mockLocalBusinesses } from '../data/mockData';
+import { AnimatedIcon, MagneticButton, useReducedMotion } from '../motion';
 
 const navItems = [
-  { label: 'Dashboard',       icon: LayoutDashboard, path: '/dashboard' },
-  { label: 'Local Discovery', icon: Compass,         path: '/discovery' },
-  { label: 'My Itineraries',  icon: BookOpen,        path: '/my-itineraries', dynamicBadge: 'trips' },
-  { label: 'Saved Places',    icon: Heart,           path: '/saved',          dynamicBadge: 'saved' },
-  { label: 'Settings',        icon: Settings,        path: '/settings' },
+  { label: 'Dashboard',       icon: LayoutDashboard, path: '/dashboard', anim: 'bounce' },
+  { label: 'Local Discovery', icon: Compass,         path: '/discovery', anim: 'rotate' },
+  { label: 'My Itineraries',  icon: BookOpen,        path: '/my-itineraries', dynamicBadge: 'trips', anim: 'scale' },
+  { label: 'Saved Places',    icon: Heart,           path: '/saved',          dynamicBadge: 'saved', anim: 'pulse' },
+  { label: 'Settings',        icon: Settings,        path: '/settings', anim: 'rotate' },
 ];
 
 function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const prefersReduced = useReducedMotion();
 
   const [tripCount, setTripCount] = useState(0);
   const [savedCount, setSavedCount] = useState(0);
@@ -28,8 +31,8 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
     try {
       const trips = getStoredItineraries();
       setTripCount(trips ? trips.length : 0);
-      const savedDests = mockDestinations.filter(d => d.saved).length;
-      const savedUMKM = mockLocalBusinesses.filter(b => b.saved).length;
+      const savedDests = mockDestinations.filter((d) => d.saved).length;
+      const savedUMKM = mockLocalBusinesses.filter((b) => b.saved).length;
       setSavedCount(savedDests + savedUMKM);
     } catch (e) {
       // fallback
@@ -38,10 +41,15 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
 
   return (
     <>
-      {/* Desktop Sidebar */}
-      <aside
+      {/* Desktop Animated Sidebar */}
+      <motion.aside
+        layout
+        transition={{
+          duration: prefersReduced ? 0 : 0.28,
+          ease: [0.22, 1, 0.36, 1],
+        }}
         className={clsx(
-          'hidden lg:flex flex-col text-white sidebar-transition relative z-20 flex-shrink-0 select-none border-r',
+          'hidden lg:flex flex-col text-white relative z-20 flex-shrink-0 select-none border-r',
           collapsed ? 'w-[72px]' : 'w-[240px]'
         )}
         style={{
@@ -55,27 +63,38 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
           navigate={navigate}
           tripCount={tripCount}
           savedCount={savedCount}
+          prefersReduced={prefersReduced}
         />
-      </aside>
+      </motion.aside>
 
-      {/* Mobile Drawer */}
-      <aside
-        className={clsx(
-          'flex lg:hidden flex-col text-white fixed left-0 top-0 h-full z-40 w-[260px] sidebar-transition select-none shadow-2xl',
-          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+      {/* Mobile Drawer with Backdrop Slide */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.aside
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{
+              type: 'spring',
+              damping: 25,
+              stiffness: 280,
+            }}
+            className="flex lg:hidden flex-col text-white fixed left-0 top-0 h-full z-40 w-[260px] select-none shadow-2xl"
+            style={{ background: '#0d2221' }}
+          >
+            <SidebarContent
+              collapsed={false}
+              onToggleCollapse={onMobileClose}
+              navigate={navigate}
+              isMobile
+              onClose={onMobileClose}
+              tripCount={tripCount}
+              savedCount={savedCount}
+              prefersReduced={prefersReduced}
+            />
+          </motion.aside>
         )}
-        style={{ background: '#0d2221' }}
-      >
-        <SidebarContent
-          collapsed={false}
-          onToggleCollapse={onMobileClose}
-          navigate={navigate}
-          isMobile
-          onClose={onMobileClose}
-          tripCount={tripCount}
-          savedCount={savedCount}
-        />
-      </aside>
+      </AnimatePresence>
     </>
   );
 }
@@ -88,7 +107,10 @@ function SidebarContent({
   onClose,
   tripCount,
   savedCount,
+  prefersReduced,
 }) {
+  const [hoveredItem, setHoveredItem] = useState(null);
+
   return (
     <div className="flex flex-col h-full py-4 px-3">
       {/* Brand Header */}
@@ -102,7 +124,8 @@ function SidebarContent({
         {!collapsed ? (
           <button
             onClick={() => navigate('/')}
-            className="flex items-center focus:outline-none"
+            className="flex items-center focus:outline-none transition-transform active:scale-95"
+            aria-label="Kembali ke Beranda"
           >
             <img
               src={logoFull}
@@ -113,8 +136,9 @@ function SidebarContent({
         ) : (
           <button
             onClick={() => navigate('/')}
-            className="flex items-center justify-center p-1 focus:outline-none"
+            className="flex items-center justify-center p-1 focus:outline-none transition-transform active:scale-95"
             title="TRIPIN"
+            aria-label="Kembali ke Beranda"
           >
             <img
               src={logoIcon}
@@ -127,101 +151,156 @@ function SidebarContent({
         {!isMobile ? (
           <button
             onClick={onToggleCollapse}
-            className="w-6 h-6 rounded-lg flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+            className="w-6 h-6 rounded-lg flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors focus:outline-none"
             title={collapsed ? 'Perluas Menu' : 'Ciutkan Menu'}
+            aria-label={collapsed ? 'Perluas Menu' : 'Ciutkan Menu'}
           >
             {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
           </button>
         ) : (
           <button
             onClick={onClose}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10"
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 focus:outline-none"
+            aria-label="Tutup Menu"
           >
             <X size={16} />
           </button>
         )}
       </div>
 
-      {/* Primary CTA: Buat Trip */}
+      {/* Primary CTA: AI Trip Planner with Magnetic feel */}
       <div className="mb-4">
         {!collapsed ? (
-          <button
+          <MagneticButton
             onClick={() => {
               navigate('/create');
               if (isMobile && onClose) onClose();
             }}
-            className="w-full flex items-center justify-center gap-2 text-white rounded-xl px-4 py-2.5 font-bold text-xs transition-all hover:opacity-95 active:scale-[0.98] shadow-sm"
+            className="w-full flex items-center justify-center gap-2 text-white rounded-xl px-4 py-2.5 font-bold text-xs shadow-md group relative overflow-hidden"
             style={{
-              background: '#FF6B5E',
+              background: 'linear-gradient(135deg, #FF6B5E 0%, #FF8A80 100%)',
             }}
+            aria-label="Buka AI Trip Planner"
           >
-            <Sparkles size={14} />
-            <span>AI Trip Planner</span>
-          </button>
+            <AnimatedIcon icon={Sparkles} size={15} animation="bounce" />
+            <span className="tracking-wide">AI Trip Planner</span>
+          </MagneticButton>
         ) : (
-          <button
-            onClick={() => navigate('/create')}
-            className="w-full flex items-center justify-center rounded-xl p-2.5 transition-all hover:opacity-95"
-            title="AI Trip Planner"
-            style={{ background: '#FF6B5E' }}
-          >
-            <Sparkles size={16} />
-          </button>
+          <div className="relative group flex justify-center">
+            <MagneticButton
+              onClick={() => navigate('/create')}
+              className="w-11 h-11 flex items-center justify-center rounded-xl transition-all shadow-md"
+              style={{ background: 'linear-gradient(135deg, #FF6B5E 0%, #FF8A80 100%)' }}
+              aria-label="Buka AI Trip Planner"
+            >
+              <Sparkles size={16} />
+            </MagneticButton>
+
+            {/* Collapsed Tooltip */}
+            <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 hidden group-hover:flex items-center px-2.5 py-1.5 rounded-lg bg-[#1a3836] border border-white/15 text-white text-xs font-semibold whitespace-nowrap shadow-xl z-50 pointer-events-none">
+              AI Trip Planner
+            </div>
+          </div>
         )}
       </div>
 
-      {/* Nav Items */}
-      <nav className="flex-1 space-y-1">
+      {/* Nav Items with Shared Layout Pill Transition */}
+      <nav className="flex-1 space-y-1 relative">
         {navItems.map((item) => {
           let countBadge = null;
           if (item.dynamicBadge === 'trips' && tripCount > 0) countBadge = tripCount;
           if (item.dynamicBadge === 'saved' && savedCount > 0) countBadge = savedCount;
 
           return (
-            <NavLink
+            <div
               key={item.path}
-              to={item.path}
-              title={collapsed ? item.label : ''}
-              onClick={() => {
-                if (isMobile && onClose) onClose();
-              }}
-              className={({ isActive }) => clsx(
-                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-semibold transition-colors group relative',
-                collapsed ? 'justify-center px-2' : '',
-                isActive
-                  ? 'bg-white/10 text-white font-bold'
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
-              )}
+              className="relative"
+              onMouseEnter={() => setHoveredItem(item.path)}
+              onMouseLeave={() => setHoveredItem(null)}
             >
-              {({ isActive }) => (
-                <>
-                  {isActive && (
-                    <span
-                      className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full"
-                      style={{ background: '#176B67' }}
-                    />
-                  )}
-
-                  <item.icon
-                    size={18}
-                    className={clsx(
-                      'flex-shrink-0 transition-colors',
-                      isActive ? 'text-teal-light' : 'text-white/50 group-hover:text-white'
+              <NavLink
+                to={item.path}
+                onClick={() => {
+                  if (isMobile && onClose) onClose();
+                }}
+                className={({ isActive }) =>
+                  clsx(
+                    'flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-semibold relative transition-colors group z-10',
+                    collapsed ? 'justify-center px-2' : '',
+                    isActive
+                      ? 'text-white font-bold'
+                      : 'text-white/60 hover:text-white'
+                  )
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {/* Active Sliding Pill (Shared Layout Animation) */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="sidebarActivePill"
+                        transition={
+                          prefersReduced
+                            ? { duration: 0 }
+                            : { type: 'spring', stiffness: 350, damping: 28 }
+                        }
+                        className="absolute inset-0 rounded-xl bg-white/10 border border-white/10 shadow-inner z-[-1]"
+                      >
+                        {/* Glowing left edge indicator */}
+                        <div
+                          className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full"
+                          style={{
+                            background: 'linear-gradient(to bottom, #2EC4B6, #176B67)',
+                            boxShadow: '0 0 8px rgba(46, 196, 182, 0.6)',
+                          }}
+                        />
+                      </motion.div>
                     )}
-                  />
 
-                  {!collapsed && (
-                    <span className="flex-1 text-left truncate">{item.label}</span>
-                  )}
+                    <AnimatedIcon
+                      icon={item.icon}
+                      size={18}
+                      animation={item.anim}
+                      active={isActive}
+                      className={clsx(
+                        'flex-shrink-0 transition-colors',
+                        isActive
+                          ? 'text-turquoise'
+                          : 'text-white/50 group-hover:text-white'
+                      )}
+                    />
 
-                  {!collapsed && countBadge !== null && (
-                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-white/10 text-white/70">
+                    {!collapsed && (
+                      <span className="flex-1 text-left truncate">{item.label}</span>
+                    )}
+
+                    {!collapsed && countBadge !== null && (
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-white/15 text-white/90">
+                        {countBadge}
+                      </span>
+                    )}
+                  </>
+                )}
+              </NavLink>
+
+              {/* Floating Tooltip in Collapsed Mode */}
+              {collapsed && hoveredItem === item.path && (
+                <motion.div
+                  initial={prefersReduced ? { opacity: 0 } : { opacity: 0, x: -6, scale: 0.95 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -6, scale: 0.95 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute left-full ml-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#143230] border border-white/15 text-white text-xs font-semibold whitespace-nowrap shadow-2xl z-50 pointer-events-none"
+                >
+                  <span>{item.label}</span>
+                  {countBadge !== null && (
+                    <span className="bg-white/20 text-[10px] px-1 rounded-full">
                       {countBadge}
                     </span>
                   )}
-                </>
+                </motion.div>
               )}
-            </NavLink>
+            </div>
           );
         })}
       </nav>
@@ -230,7 +309,10 @@ function SidebarContent({
       {!collapsed && (
         <div className="pt-3 border-t border-white/5 text-[11px] text-white/40 px-2 flex items-center justify-between">
           <span>TRIPIN v1.2</span>
-          <span>Open Web</span>
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-teal-light animate-pulse" />
+            Nusantara AI
+          </span>
         </div>
       )}
     </div>

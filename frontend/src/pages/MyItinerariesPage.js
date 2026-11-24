@@ -95,7 +95,7 @@ function MyItinerariesPage() {
       {/* List Cards */}
       {filtered.length === 0 ? (
         <EmptyState
-          title="Tidak Ada Itinerary Ditemukan"
+          title="Belum ada perjalanan"
           description="Mulai susun liburan impianmu dengan panduan kecerdasan buatan TRIPIN."
           action={{ label: 'Buat Itinerary Sekarang', onClick: () => navigate('/create') }}
         />

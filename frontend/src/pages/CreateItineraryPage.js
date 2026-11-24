@@ -40,9 +40,40 @@ function CreateItineraryPage() {
   const [transportMode, setTransportMode] = useState('mobil');
   const [selectedInterests, setSelectedInterests] = useState(['heritage', 'culinary', 'umkm']);
   const [customNote, setCustomNote] = useState('');
+  const [briefText, setBriefText] = useState('');
+  const [parseInfo, setParseInfo] = useState('');
+  const [isParsing, setIsParsing] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
+
+  const handleParseBrief = async () => {
+    if (!briefText.trim()) return;
+    setIsParsing(true);
+    setParseInfo('');
+    try {
+      const res = await fetch('/api/v1/requests/parse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: briefText }),
+      });
+      const result = await res.json();
+      if (result && result.draft) {
+        const d = result.draft;
+        if (d.days) setDurationDays(d.days);
+        if (d.adults) setTravelers(d.adults);
+        if (d.budgetAmountIdr) setBudgetPerPerson(String(d.budgetAmountIdr));
+        if (d.interests && d.interests.length > 0) setSelectedInterests(d.interests);
+        if (result.missingFields) {
+          setParseInfo(`Periksa/lengkapi: ${result.missingFields.join(', ')}`);
+        }
+      }
+    } catch (err) {
+      // fallback
+    } finally {
+      setIsParsing(false);
+    }
+  };
 
   const toggleInterest = (id) => {
     setSelectedInterests((prev) =>
@@ -92,6 +123,36 @@ function CreateItineraryPage() {
 
       {/* Unified Planner Form */}
       <form onSubmit={handleGenerate} className="bg-white rounded-3xl p-6 sm:p-8 shadow-soft border border-gray-100 space-y-6">
+
+        {/* AI Brief Box (Natural Language Parser) */}
+        <div className="p-4 rounded-2xl bg-sky/40 border border-teal-50 space-y-2.5">
+          <label className="text-xs font-bold text-teal block uppercase tracking-wider">
+            Ceritakan rencana Anda (AI Natural Language)
+          </label>
+          <textarea
+            rows={3}
+            value={briefText}
+            onChange={(e) => setBriefText(e.target.value)}
+            placeholder="Contoh: 2 hari di Yogyakarta, 2 orang, budget Rp500.000 per orang, kuliner dan budaya..."
+            className="w-full text-xs sm:text-sm p-3 rounded-xl border border-gray-200 focus:border-teal outline-none bg-white resize-none text-charcoal shadow-inner"
+          />
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <button
+              type="button"
+              onClick={handleParseBrief}
+              disabled={isParsing || !briefText.trim()}
+              className="px-3.5 py-1.5 rounded-xl bg-teal text-white text-xs font-bold hover:bg-teal-dark disabled:opacity-50 transition-all flex items-center gap-1.5 shadow-sm"
+            >
+              <Sparkles size={13} />
+              <span>{isParsing ? 'Membaca...' : 'Baca kebutuhan'}</span>
+            </button>
+            {parseInfo && (
+              <span className="text-[11px] font-semibold text-teal-dark bg-white/80 border border-teal/20 px-2.5 py-1 rounded-lg">
+                {parseInfo}
+              </span>
+            )}
+          </div>
+        </div>
 
         {/* 1. Destinasi */}
         <div className="space-y-2">
@@ -292,14 +353,23 @@ function CreateItineraryPage() {
           />
         </div>
 
+        {/* Total Estimated Budget */}
+        <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 text-xs border border-gray-100">
+          <span className="text-charcoal-lighter font-medium">Total Estimasi Budget ({travelers} orang):</span>
+          <span className="font-extrabold text-charcoal">
+            Rp {(travelers * Number(budgetPerPerson || 0)).toLocaleString('id-ID')}
+          </span>
+        </div>
+
         {/* Submit CTA */}
         <button
           type="submit"
-          className="w-full py-3.5 rounded-2xl text-white font-extrabold text-sm transition-all hover:opacity-95 shadow-md flex items-center justify-center gap-2"
+          disabled={Boolean(parseInfo && parseInfo.includes('Periksa/lengkapi'))}
+          className="w-full py-3.5 rounded-2xl text-white font-extrabold text-sm transition-all hover:opacity-95 shadow-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ background: '#FF6B5E' }}
         >
           <Sparkles size={16} />
-          <span>Susun Itinerary dengan AI</span>
+          <span>Susun itinerary dengan AI</span>
           <ArrowRight size={15} />
         </button>
 

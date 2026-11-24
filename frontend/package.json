@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.21.0",
-    "react-leaflet": "^4.2.1",
+    "@studio-freight/lenis": "^1.0.42",
+    "canvas-confetti": "^1.9.4",
+    "clsx": "^2.1.0",
+    "framer-motion": "^10.18.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.303.0",
-    "clsx": "^2.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^6.21.0",
     "react-scripts": "5.0.1"
   },
   "scripts": {

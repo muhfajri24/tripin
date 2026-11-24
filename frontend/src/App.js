@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
 import CreateItineraryPage from './pages/CreateItineraryPage';
@@ -10,18 +11,28 @@ import MyItinerariesPage from './pages/MyItinerariesPage';
 import SavedPlacesPage from './pages/SavedPlacesPage';
 import SettingsPage from './pages/SettingsPage';
 import AppLayout from './layouts/AppLayout';
+import { CustomCursor, ToastContainer, SmoothScroll, PageTransition } from './motion';
 
 function TripRedirect({ edit = false }) {
   const { id } = useParams();
   return <Navigate replace to={`/itinerary/${id}${edit ? '/edit' : ''}`} />;
 }
 
-export default function App() {
+function AnimatedRoutes() {
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
-      <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname.startsWith('/itinerary/') ? '/itinerary' : location.pathname}>
         {/* Landing page - public, full hero */}
-        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/"
+          element={
+            <PageTransition>
+              <LandingPage />
+            </PageTransition>
+          }
+        />
 
         {/* Authenticated app pages with sidebar navigation */}
         <Route element={<AppLayout />}>
@@ -42,6 +53,23 @@ export default function App() {
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+    </AnimatePresence>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <SmoothScroll>
+        {/* Awwwards Custom Dual-Layer Cursor */}
+        <CustomCursor />
+
+        {/* Animated Toast System */}
+        <ToastContainer />
+
+        {/* Motion Routed Views */}
+        <AnimatedRoutes />
+      </SmoothScroll>
     </BrowserRouter>
   );
 }
