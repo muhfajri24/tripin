@@ -16,21 +16,17 @@ class PlaceRepository(Protocol):
     def get_place_evidence(self, place_id: str) -> dict: ...
 
 
-class LocalPlaceRepository:
-    def __init__(self, path: Path | None = None):
-        path = (
-            path
-            or Path(__file__).resolve().parents[1] / "data" / "yogyakarta-v0.2.0.json"
-        )
-        self.dataset = PilotDataset.model_validate_json(
-            path.read_text(encoding="utf-8")
-        )
-        self.version = self.dataset.datasetVersion
+class PlaceCatalog:
+    """Validated request snapshot, independent of its local or remote source."""
+
+    def __init__(self, places: list[Place], version: str):
+        self._places = [p.model_copy(deep=True) for p in places]
+        self.version = version
 
     def list_places(self, destination_id, query="", kind=None):
         return [
             p.model_copy(deep=True)
-            for p in self.dataset.places
+            for p in self._places
             if p.destinationId == destination_id
             and (not kind or p.kind == kind)
             and query.casefold()
@@ -41,7 +37,7 @@ class LocalPlaceRepository:
 
     def get_place(self, place_id):
         return next(
-            (p.model_copy(deep=True) for p in self.dataset.places if p.id == place_id),
+            (p.model_copy(deep=True) for p in self._places if p.id == place_id),
             None,
         )
 
@@ -59,3 +55,15 @@ class LocalPlaceRepository:
                 if k.endswith("Evidence")
             }
         )
+
+
+class LocalPlaceRepository(PlaceCatalog):
+    def __init__(self, path: Path | None = None):
+        path = (
+            path
+            or Path(__file__).resolve().parents[1] / "data" / "yogyakarta-v0.3.0.json"
+        )
+        self.dataset = PilotDataset.model_validate_json(
+            path.read_text(encoding="utf-8")
+        )
+        super().__init__(self.dataset.places, self.dataset.datasetVersion)

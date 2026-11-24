@@ -95,7 +95,9 @@ def parse(body: ParseBody):
 
 @router.post("/itineraries/plan", response_model=PlanResponse)
 def plan(body: PlanBody, request: Request):
-    itinerary, errors = generate(body.request, request.app.state.places)
+    repo = request.app.state.places
+    repo = repo.snapshot() if hasattr(repo, "snapshot") else repo
+    itinerary, errors = generate(body.request, repo)
     return PlanResponse(
         itinerary=itinerary,
         conflicts=errors,
@@ -105,4 +107,6 @@ def plan(body: PlanBody, request: Request):
 
 @router.post("/itineraries/replan", response_model=ReplanResult)
 def repair(body: ReplanRequest, request: Request):
-    return replan(body, request.app.state.places)
+    repo = request.app.state.places
+    repo = repo.snapshot() if hasattr(repo, "snapshot") else repo
+    return replan(body, repo)

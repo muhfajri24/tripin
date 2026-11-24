@@ -10,6 +10,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--base", default="http://127.0.0.1:8011/api/v1")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--snapshots", type=Path)
     args = parser.parse_args()
 
     def call(path, payload=None):
@@ -75,6 +76,16 @@ def main():
     if args.output:
         args.output.write_text(
             json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        )
+    if args.snapshots:
+        args.snapshots.write_text(
+            json.dumps(
+                {"request": req, "original": original, "replanResult": result},
+                indent=2,
+                ensure_ascii=False,
+            )
+            + "\n",
+            encoding="utf8",
         )
     print(json.dumps(report, ensure_ascii=False))
 

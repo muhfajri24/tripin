@@ -299,6 +299,18 @@ def schedule(
     if len({s.placeId for s in all_stops}) != len(all_stops):
         raise Conflict("Kunjungan duplikat")
     ledger = ledger_for(req, all_stops, places, lodging)
+    # Preserve the planning allocation for elapsed/completed visits, not actual spending.
+    if previous:
+        frozen_ledger_ids = {
+            "visit-" + s.id for group in frozen.values() for s in group
+        }
+        prior_ledger = {x.id: x for x in previous.ledger}
+        ledger = [
+            prior_ledger[x.id].model_copy(deep=True)
+            if x.id in frozen_ledger_ids and x.id in prior_ledger
+            else x
+            for x in ledger
+        ]
     known = sum(x.totalIdr or 0 for x in ledger)
     unknown = sum(x.totalIdr is None for x in ledger)
     if known > req.budget.totalIdr - req.budget.reserveIdr:
@@ -351,8 +363,40 @@ def validate_schedule(itinerary, repo):
     req = itinerary.request
     for i, day in enumerate(itinerary.days):
         cursor = at(day.date, req.dayWindows[i].start)
+        pos = day.startAnchor
+        last = "start-" + str(i)
+        progress = next(
+            (p for p in itinerary.replanState.progress if p.date == day.date), None
+        )
+        progress_used = False
         for stop in day.stops:
             p = repo.get_place(stop.placeId)
+            if (
+                progress
+                and not progress_used
+                and stop.status != "completed"
+                and stop.arrivalAt >= progress.notBefore
+                and cursor <= progress.notBefore
+            ):
+                cursor = progress.notBefore
+                pos = progress.location
+                last = "current-location"
+                progress_used = True
+            if not p or not scope(p.coordinates):
+                errors.append("PLACE_UNAVAILABLE")
+                continue
+            expected_leg = travel(pos, p.coordinates, last, p.id)
+            if stop.incomingLeg != expected_leg:
+                errors.append("TRAVEL_LEG")
+            if stop.placeId in req.excludedPlaceIds:
+                errors.append("EXCLUDED_PLACE")
+            if any(e.date == day.date and e.closed for e in p.dateExceptions) or any(
+                c.placeId == p.id and c.date == day.date
+                for c in itinerary.replanState.closures
+            ):
+                errors.append("CLOSURE")
+            if stop.lock.type == "place_time" and stop.arrivalAt != stop.lock.arrivalAt:
+                errors.append("LOCK_TIME")
             if stop.placeId in seen:
                 errors.append("DUPLICATE")
             seen.add(stop.placeId)
@@ -372,7 +416,17 @@ def validate_schedule(itinerary, repo):
                 )
             ):
                 errors.append("OPENING_WINDOW")
+            if stop.visitDurationMin != p.visitDurationMin:
+                errors.append("VISIT_DURATION")
             cursor = stop.departureAt
+            pos = p.coordinates
+            last = p.id
+        if progress and not progress_used and cursor <= progress.notBefore:
+            cursor = progress.notBefore
+            pos = progress.location
+            last = "current-location"
+        if day.finalLeg != travel(pos, day.endAnchor, last, "end-" + str(i)):
+            errors.append("FINAL_LEG")
         end = (
             cursor
             + timedelta(
@@ -547,6 +601,12 @@ def replan(payload, repo):
         or s.placeId in req.mustVisitPlaceIds
     }
     reason = None
+    if original.datasetVersion != repo.version:
+        reason = (
+            "Versi katalog berubah; buat rencana baru agar sumber data tidak tercampur"
+        )
+    elif validate_schedule(original, repo):
+        reason = "Snapshot itinerary tidak lolos validasi constraint independen"
     if change.type in {"remove", "replace"}:
         target = next((s for s in old if s.id == change.stopId), None)
         if not target:

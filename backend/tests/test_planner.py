@@ -328,8 +328,8 @@ def test_revision_conflict_http():
     assert r.json()["error"]["code"] == "REVISION_CONFLICT"
 
 
-def test_supabase_is_explicitly_pending():
-    with pytest.raises(ValueError, match="pending"):
+def test_supabase_requires_explicit_configuration():
+    with pytest.raises(ValueError, match="Supabase URL"):
         create_app(Settings(place_source="supabase", _env_file=None))
 
 
