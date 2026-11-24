@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plane, ArrowRight, Sparkles, Map, Store, Wallet, Star, ChevronDown, Award } from 'lucide-react';
 import { mockRecommendations } from '../data/mockData';
@@ -57,7 +57,14 @@ function LandingPage() {
   const navigate = useNavigate();
   const [heroIdx, setHeroIdx] = useState(0);
   const [destination, setDestination] = useState('');
-  const current = heroDestinations[heroIdx];
+
+  // Background rotasi otomatis setiap 2 detik
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroIdx((prev) => (prev + 1) % heroDestinations.length);
+    }, 2000);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleStart = (dest) => {
     if (dest || destination) {
@@ -96,14 +103,20 @@ function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center overflow-hidden">
+        {/* Slideshow background dengan crossfade transisi mulus */}
         <div className="absolute inset-0">
-          <img
-            key={heroIdx}
-            src={current.image}
-            alt={current.name}
-            className="w-full h-full object-cover animate-fadeInUp"
-          />
-          <div className="hero-overlay absolute inset-0" />
+          {heroDestinations.map((dest, idx) => (
+            <img
+              key={dest.name}
+              src={dest.image}
+              alt={dest.name}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                idx === heroIdx ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'
+              }`}
+              style={{ transitionProperty: 'opacity, transform', transitionDuration: '1000ms' }}
+            />
+          ))}
+          <div className="hero-overlay absolute inset-0 z-[1]" />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-12 w-full">
@@ -153,24 +166,6 @@ function LandingPage() {
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Hero Selector Tabs */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-          {heroDestinations.map((d, i) => (
-            <button
-              key={i}
-              onClick={() => setHeroIdx(i)}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-                i === heroIdx
-                  ? 'bg-white text-charcoal'
-                  : 'bg-white/20 text-white hover:bg-white/30'
-              }`}
-            >
-              {i === heroIdx && <div className="w-1.5 h-1.5 rounded-full bg-coral" />}
-              {d.name}
-            </button>
-          ))}
         </div>
       </section>
 
