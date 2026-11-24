@@ -1,68 +1,79 @@
-# Backend foundation
+﻿# TRIPIN backend — guest MVP
 
-FastAPI app: `backend/app/main.py`; canonical Pydantic models: `backend/app/models/`.
-No parser, planner, rescheduler, database, or frontend integration is implemented.
+FastAPI/Pydantic modular backend. Python 3.11+, no database or paid service required.
 
-## Run locally (Python 3.11+; PowerShell, from repository root)
+## Startup and test (PowerShell)
+
+From repository root:
 
 ```powershell
 python -m venv backend/.venv
 backend/.venv/Scripts/python -m pip install -r backend/requirements-dev.txt
 cd backend
-Copy-Item .env.example .env  # optional; edit explicit CORS origins if needed
-.venv/Scripts/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+.venv/Scripts/python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8011
 ```
 
-GET http://127.0.0.1:8000/api/v1/health returns `status=ok`, `phase=foundation`.
-Interactive API docs: http://127.0.0.1:8000/docs . Health is a process liveness check,
-not a declaration that the future planner or dataset is planning-ready.
-On Linux/macOS use `backend/.venv/bin/python` (or `.venv/bin/python` inside backend).
-Production runtime dependencies: `requirements.txt`; test tools: `requirements-dev.txt`.
-`requirements.lock.txt` records the complete tested Python 3.11 environment.
-To reproduce that environment install `-r backend/requirements.lock.txt` in a fresh venv.
+Inside backend: `.venv/Scripts/python -m pytest -q` and
+`.venv/Scripts/python -m scripts.export_schemas`. Linux/macOS use `.venv/bin/python`.
+Dependencies did not change from foundation. Full tested dependency snapshot is in
+`requirements.lock.txt`; Starlette TestClient currently emits an httpx deprecation warning.
 
-## Test and export (inside backend)
+## API
 
-```powershell
-.venv/Scripts/python -m pytest -q
-.venv/Scripts/python -m scripts.export_schemas
-```
+- GET `/api/v1/health`: liveness, not verified data readiness.
+- GET `/api/v1/places?destinationId=yogyakarta&q=...&kind=food&routable=true`:
+  `{places,datasetVersion,warnings}`; query/kind/routable optional.
+- GET `/api/v1/places/{id}`: canonical Place or 404.
+- POST `/api/v1/requests/parse`: `{text,locale:"id-ID"}` -> draft/missingFields/ambiguities.
+- POST `/api/v1/itineraries/plan`: `{request:TravelRequest}` ->
+  `{itinerary:Itinerary|null,conflicts,searchOutcome}`.
+- POST `/api/v1/itineraries/replan`: ReplanRequest -> ReplanResult.
 
-Export is deterministic and writes `../contracts/schemas/*.json`. Tests detect schema drift.
-JSON Schema validates field structure; Pydantic also enforces cross-field invariants.
-Consumers must not treat plain JSON Schema validation as full business validation.
+See `/docs` for schemas and `contracts/schemas/` for reproducible exports. JSON Schema
+expresses structure; Pydantic and domain validators also enforce cross-field constraints.
+Errors: `{error:{code,message,fields,retryable},requestId}`; revision mismatch returns 409.
+Valid but unsuccessful heuristic search returns 200 + no_plan_found, not a mathematical proof.
 
-## Configuration and errors
+## Configuration
 
-`TRPIN_APP_NAME` and JSON-array `TRPIN_CORS_ORIGINS` are read from environment or
-`backend/.env` when started from backend. Default origins: localhost:3000 and 127.0.0.1:3000.
-No credentials, external API calls, or secrets are required. CORS credentials are disabled.
-Errors use `{error:{code,message,fields,retryable},requestId}`. Request IDs are generated
-server-side and exposed as `X-Request-ID`. Unexpected errors do not disclose exception text.
-Tests temporarily register validation/error routes; these are not production endpoints.
+`TRPIN_APP_NAME`, JSON-array `TRPIN_CORS_ORIGINS`, `TRPIN_PLACE_SOURCE=local`.
+Optional `.env` is read from the backend working directory. Default allowed origins are
+localhost:3000 and 127.0.0.1:3000. Explicitly add another frontend origin if using another port.
+No credentials are required. Supabase source fails explicitly until teammate schema approval.
 
-## Contract semantics
+## Domain rules
 
-- camelCase wire fields, extra fields forbidden; strict integer IDR, never bool/string/fraction.
-- `budget.totalIdr` is always the normalized GROUP total; `originalBasis` records original input.
-- Dates are real ISO calendar dates. Schedule timestamps require +07:00; timezone is Asia/Jakarta.
-- Day index is zero-based; weekday Monday=0. Split overnight opening windows explicitly.
-- 1–3 days, 1–6 adults, driving, Yogyakarta; 2–3 days require days-1 lodging nights.
-- Single-day lodging is null. Check-in timestamp, when supplied, is on the first trip date.
-- Unknown amounts/windows/classification remain null with unverified evidence. Empty windows
-  mean no regular opening windows, not unknown. Zero price is distinct from null.
-- Candidate coordinates may be null until sourced. These records are NOT routable yet.
-  Arrival/departure/current-location coordinates are mandatory and valid zero is accepted.
-- Added field-level identity/duration/local-business evidence prevents implied verification.
-- `place_day` preserves place/day; `place_time` additionally requires matching arrival timestamp.
-- Ledger item totals must equal quantity × unit amount; unknown unit implies unknown total.
-- Itinerary totals must match ledger/legs. Travel minutes exclude scheduling buffers.
-- Feasibility and searchOutcome are DECLARED domain results, not computed by this phase.
-  Conflicting requirements such as mandatory/excluded IDs are rejected structurally; declared
-  schedule conflicts are representable with violations. Full overlap/opening/budget/lock
-  preservation evaluation belongs to Phase 2. Do not trust a client-declared satisfied flag.
-- Snapshots with synthetic fixtures are not generated itineraries or demo evidence.
+- IDs stable; integer IDR, strict coordinates (zero allowed), extra fields forbidden.
+- Yogyakarta bounding rectangle: lat -8.3..-7.3, lng 110.0..110.9. Curated records define
+  the actual supported destinations; rectangle is only a safety bound, not coverage promise.
+- Dates consecutive, timezone Asia/Jakarta, 1–3 days, 1–6 adults, driving.
+- Group budget normalized in totalIdr; originalBasis records original user input.
+- 2–3 days require one chosen hotel with days-1 nights; no room availability/booking.
+- Arrival/departure anchors each day; intermediate days start/end at lodging.
+- First-day checkInAt is a user deadline to arrive at the hotel, not verified hotel policy.
+- Four activities/day by automatic insertion; manually edited plans support up to six/day.
+- Mandatory stops inserted first, optional candidates ranked/insertion-tested. Locks preserve
+  place/day or place/time. Local search is bounded; no global optimum is claimed.
+- Independent final validator checks overlap/travel/opening windows/day end/mandatory/budget.
+- Price ledger uses first applicable catalog tariff (adult domestic pilot), quantities,
+  room × nights once, and one all-in vehicle/day estimate. Food estimates apply to selected
+  food visits only; no duplicate meal allowance. Unknown is null, zero is a genuine amount.
+- User costAssumptions are estimates, not provider prices. Known total > available budget is
+  rejected. Unknown costs prevent claiming full budget compliance.
+- Haversine distance + 1.4 detour factor / 25 km/h + 5 minute buffer: explicitly heuristic.
+  All real-catalog plans therefore show undetermined/conditional feasibility, even when
+  all known constraints pass. They are not verified road-feasible itineraries.
 
-See [dataset provenance](app/data/README.md) and [fixtures](../contracts/README.md).
+## Replan
 
-If port 8000 is occupied, use `--port 8011`; do not stop unrelated processes.
+Delay/closure/remove/replace/edit use the same scheduler and final validator. Edit supplies
+selectedPlaceIds (ordered within original day; new places default to day one), optional
+updated request, and explicit locks. Date/duration changes require a new trip. Earlier and
+completed activities are preserved, as are their ledger costs. Model does not track deposits
+or cancellation fees; it never claims real refunds. Future mandatory/locked conflicts require
+a user decision. Repaired means known constraints repaired, not uncertainty eliminated.
+
+Client snapshots are structurally validated and canonical place data is loaded server-side.
+Revision matching is snapshot consistency only; no server-side concurrency/persistence exists.
+Guest itineraries are never stored server-side. Parser is free rule-based extraction and is
+limited to explicit Indonesian patterns; no LLM, network fetching or unbounded scraping.

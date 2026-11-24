@@ -6,7 +6,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="TRPIN_", env_file=".env", extra="ignore"
     )
-    app_name: str = "TRPIN Foundation"
+    app_name: str = "TRIPIN Guest Planner"
+    place_source: str = "local"
     cors_origins: list[str] = Field(
         default_factory=lambda: ["http://localhost:3000", "http://127.0.0.1:3000"]
     )

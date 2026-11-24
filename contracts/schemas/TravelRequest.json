@@ -54,6 +54,53 @@
       "title": "Coordinates",
       "type": "object"
     },
+    "CostAssumptions": {
+      "additionalProperties": false,
+      "description": "User-supplied estimates, never represented as provider facts.",
+      "properties": {
+        "foodPersonIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Foodpersonidr"
+        },
+        "lodgingRoomNightIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lodgingroomnightidr"
+        },
+        "vehicleDayIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vehicledayidr"
+        }
+      },
+      "title": "CostAssumptions",
+      "type": "object"
+    },
     "DayWindow": {
       "additionalProperties": false,
       "properties": {
@@ -214,6 +261,8 @@
       "items": {
         "$ref": "#/$defs/DayWindow"
       },
+      "maxItems": 3,
+      "minItems": 1,
       "title": "Daywindows",
       "type": "array"
     },
@@ -240,6 +289,7 @@
         "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
         "type": "string"
       },
+      "maxItems": 12,
       "title": "Interests",
       "type": "array"
     },
@@ -247,6 +297,7 @@
       "items": {
         "$ref": "#/$defs/PeriodPreference"
       },
+      "maxItems": 3,
       "title": "Periodpreferences",
       "type": "array"
     },
@@ -257,6 +308,7 @@
         "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
         "type": "string"
       },
+      "maxItems": 18,
       "title": "Mustvisitplaceids",
       "type": "array"
     },
@@ -267,6 +319,7 @@
         "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
         "type": "string"
       },
+      "maxItems": 35,
       "title": "Excludedplaceids",
       "type": "array"
     },
@@ -278,6 +331,9 @@
       ],
       "title": "Objective",
       "type": "string"
+    },
+    "costAssumptions": {
+      "$ref": "#/$defs/CostAssumptions"
     },
     "allowUnverifiedData": {
       "title": "Allowunverifieddata",

@@ -83,6 +83,53 @@
       "title": "Coordinates",
       "type": "object"
     },
+    "CostAssumptions": {
+      "additionalProperties": false,
+      "description": "User-supplied estimates, never represented as provider facts.",
+      "properties": {
+        "foodPersonIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Foodpersonidr"
+        },
+        "lodgingRoomNightIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lodgingroomnightidr"
+        },
+        "vehicleDayIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vehicledayidr"
+        }
+      },
+      "title": "CostAssumptions",
+      "type": "object"
+    },
     "DateException": {
       "additionalProperties": false,
       "properties": {
@@ -149,6 +196,57 @@
         "minutes"
       ],
       "title": "Delay",
+      "type": "object"
+    },
+    "Edit": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "edit",
+          "title": "Type",
+          "type": "string"
+        },
+        "selectedPlaceIds": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+            "type": "string"
+          },
+          "maxItems": 18,
+          "title": "Selectedplaceids",
+          "type": "array"
+        },
+        "request": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TravelRequest"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "locks": {
+          "patternProperties": {
+            "^[a-zA-Z0-9][a-zA-Z0-9_-]*$": {
+              "$ref": "#/$defs/StopLock"
+            }
+          },
+          "propertyNames": {
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "title": "Locks",
+          "type": "object"
+        }
+      },
+      "required": [
+        "type",
+        "selectedPlaceIds"
+      ],
+      "title": "Edit",
       "type": "object"
     },
     "Evidence": {
@@ -744,6 +842,60 @@
       "title": "Price",
       "type": "object"
     },
+    "Remove": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "remove",
+          "title": "Type",
+          "type": "string"
+        },
+        "stopId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Stopid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "stopId"
+      ],
+      "title": "Remove",
+      "type": "object"
+    },
+    "Replace": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "replace",
+          "title": "Type",
+          "type": "string"
+        },
+        "stopId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Stopid",
+          "type": "string"
+        },
+        "placeId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Placeid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "stopId",
+        "placeId"
+      ],
+      "title": "Replace",
+      "type": "object"
+    },
     "ScheduledStop": {
       "additionalProperties": false,
       "properties": {
@@ -993,6 +1145,8 @@
           "items": {
             "$ref": "#/$defs/DayWindow"
           },
+          "maxItems": 3,
+          "minItems": 1,
           "title": "Daywindows",
           "type": "array"
         },
@@ -1019,6 +1173,7 @@
             "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
             "type": "string"
           },
+          "maxItems": 12,
           "title": "Interests",
           "type": "array"
         },
@@ -1026,6 +1181,7 @@
           "items": {
             "$ref": "#/$defs/PeriodPreference"
           },
+          "maxItems": 3,
           "title": "Periodpreferences",
           "type": "array"
         },
@@ -1036,6 +1192,7 @@
             "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
             "type": "string"
           },
+          "maxItems": 18,
           "title": "Mustvisitplaceids",
           "type": "array"
         },
@@ -1046,6 +1203,7 @@
             "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
             "type": "string"
           },
+          "maxItems": 35,
           "title": "Excludedplaceids",
           "type": "array"
         },
@@ -1057,6 +1215,9 @@
           ],
           "title": "Objective",
           "type": "string"
+        },
+        "costAssumptions": {
+          "$ref": "#/$defs/CostAssumptions"
         },
         "allowUnverifiedData": {
           "title": "Allowunverifieddata",
@@ -1174,7 +1335,10 @@
       "discriminator": {
         "mapping": {
           "closure": "#/$defs/Closure",
-          "delay": "#/$defs/Delay"
+          "delay": "#/$defs/Delay",
+          "edit": "#/$defs/Edit",
+          "remove": "#/$defs/Remove",
+          "replace": "#/$defs/Replace"
         },
         "propertyName": "type"
       },
@@ -1184,6 +1348,15 @@
         },
         {
           "$ref": "#/$defs/Closure"
+        },
+        {
+          "$ref": "#/$defs/Remove"
+        },
+        {
+          "$ref": "#/$defs/Replace"
+        },
+        {
+          "$ref": "#/$defs/Edit"
         }
       ],
       "title": "Disruption"

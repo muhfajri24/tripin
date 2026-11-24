@@ -7,8 +7,8 @@ router = APIRouter()
 
 class HealthResponse(BaseModel):
     status: Literal["ok"] = "ok"
-    phase: Literal["foundation"] = "foundation"
-    version: str = "0.1.0"
+    phase: Literal["guest_mvp"] = "guest_mvp"
+    version: str = "0.2.0"
 
 
 @router.get("/health", response_model=HealthResponse)

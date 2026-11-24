@@ -33,6 +33,13 @@ def install_error_handlers(app):
 
     @app.exception_handler(RequestValidationError)
     async def validation(request, exc):
+        if any("expectedRevision differs" in e["msg"] for e in exc.errors()):
+            return error(
+                request,
+                409,
+                "REVISION_CONFLICT",
+                "Revisi request tidak sama dengan snapshot itinerary",
+            )
         return error(
             request,
             422,

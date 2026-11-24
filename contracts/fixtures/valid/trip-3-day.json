@@ -59,5 +59,10 @@
   "mustVisitPlaceIds": [],
   "excludedPlaceIds": [],
   "objective": "balanced",
-  "allowUnverifiedData": true
+  "allowUnverifiedData": true,
+  "costAssumptions": {
+    "foodPersonIdr": null,
+    "lodgingRoomNightIdr": null,
+    "vehicleDayIdr": null
+  }
 }

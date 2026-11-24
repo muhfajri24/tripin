@@ -187,6 +187,14 @@ class PeriodPreference(Contract):
     categories: list[Id]
 
 
+class CostAssumptions(Contract):
+    """User-supplied estimates, never represented as provider facts."""
+
+    foodPersonIdr: Money | None = None
+    lodgingRoomNightIdr: Money | None = None
+    vehicleDayIdr: Money | None = None
+
+
 class TravelRequest(Contract):
     schemaVersion: Literal[1]
     destinationId: Literal["yogyakarta"]
@@ -196,15 +204,16 @@ class TravelRequest(Contract):
     travelers: Travelers
     transportMode: Literal["driving"]
     budget: Budget
-    dayWindows: list[DayWindow]
+    dayWindows: list[DayWindow] = Field(min_length=1, max_length=3)
     arrivalAnchor: Coordinates
     departureAnchor: Coordinates
     lodging: Lodging | None
-    interests: list[Id]
-    periodPreferences: list[PeriodPreference]
-    mustVisitPlaceIds: list[Id]
-    excludedPlaceIds: list[Id]
+    interests: list[Id] = Field(max_length=12)
+    periodPreferences: list[PeriodPreference] = Field(max_length=3)
+    mustVisitPlaceIds: list[Id] = Field(max_length=18)
+    excludedPlaceIds: list[Id] = Field(max_length=35)
     objective: Literal["balanced", "budget", "travel_time"]
+    costAssumptions: CostAssumptions = Field(default_factory=CostAssumptions)
     allowUnverifiedData: StrictBool
     _date = field_validator("startDate")(local_date)
 
@@ -428,12 +437,32 @@ class Closure(Contract):
     _date = field_validator("date")(local_date)
 
 
+class Remove(Contract):
+    type: Literal["remove"]
+    stopId: Id
+
+
+class Replace(Contract):
+    type: Literal["replace"]
+    stopId: Id
+    placeId: Id
+
+
+class Edit(Contract):
+    type: Literal["edit"]
+    selectedPlaceIds: list[Id] = Field(max_length=18)
+    request: TravelRequest | None = None
+    locks: dict[Id, StopLock] = Field(default_factory=dict)
+
+
 class ReplanRequest(Contract):
     itinerary: Itinerary
     expectedRevision: Positive
     effectiveAt: Timestamp
     currentLocation: Coordinates
-    disruption: Annotated[Delay | Closure, Field(discriminator="type")]
+    disruption: Annotated[
+        Delay | Closure | Remove | Replace | Edit, Field(discriminator="type")
+    ]
     _timestamp = field_validator("effectiveAt")(jakarta)
 
     @model_validator(mode="after")
@@ -474,7 +503,7 @@ class ReplanResult(Contract):
     @model_validator(mode="after")
     def repaired(self):
         if self.status == "repaired" and (
-            self.revised is None or self.revised.feasibility != "satisfied"
+            self.revised is None or self.revised.feasibility == "violated"
         ):
             raise ValueError("repaired requires satisfied revised itinerary")
         return self

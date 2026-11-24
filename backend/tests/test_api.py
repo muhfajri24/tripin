@@ -25,7 +25,7 @@ def client():
 def test_health(client):
     r = client.get("/api/v1/health")
     assert r.status_code == 200
-    assert r.json() == {"status": "ok", "phase": "foundation", "version": "0.1.0"}
+    assert r.json() == {"status": "ok", "phase": "guest_mvp", "version": "0.2.0"}
     assert r.headers["x-request-id"]
 
 

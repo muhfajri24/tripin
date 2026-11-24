@@ -49,7 +49,12 @@
       "mustVisitPlaceIds": [],
       "excludedPlaceIds": [],
       "objective": "balanced",
-      "allowUnverifiedData": true
+      "allowUnverifiedData": true,
+      "costAssumptions": {
+        "foodPersonIdr": null,
+        "lodgingRoomNightIdr": null,
+        "vehicleDayIdr": null
+      }
     },
     "datasetVersion": "fixture-v1",
     "plannerVersion": "not-implemented",

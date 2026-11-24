@@ -3,6 +3,13 @@
 import json
 from pathlib import Path
 from app import models
+from app.api.planner import (
+    ParseBody,
+    ParseResponse,
+    PlanBody,
+    PlanResponse,
+    PlacesResponse,
+)
 
 NAMES = (
     "TravelRequest",
@@ -21,13 +28,19 @@ NAMES = (
 
 
 def schemas():
-    return {
+    exported = {
         name: {
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             **getattr(models, name).model_json_schema(),
         }
         for name in NAMES
     }
+    for model in [ParseBody, ParseResponse, PlanBody, PlanResponse, PlacesResponse]:
+        exported[model.__name__] = {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            **model.model_json_schema(),
+        }
+    return exported
 
 
 def main():
