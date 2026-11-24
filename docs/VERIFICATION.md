@@ -36,3 +36,5 @@ corruption, navigation segmentation/order and basic guest UI/review behavior.
 Remaining: manually inspect responsive layout in real browser; click Maps on target devices;
 complete missing source metadata and establish actual road estimates if required. No public
 deployment was created. Historical audits describe the pre-implementation snapshot only.
+
+Release validation berikutnya beserta browser nyata dan koreksi state replanning dicatat di [RELEASE_VALIDATION.md](RELEASE_VALIDATION.md); catatan verifikasi sebelumnya tetap merupakan riwayat checkpoint saat dibuat.

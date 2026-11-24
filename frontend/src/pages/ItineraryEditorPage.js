@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { api, listPlaces } from "../services/plannerApi";
-import { findTrip, saveTrip } from "../services/itineraryStorage";
+import { resolveTrip, saveTrip } from "../services/itineraryStorage";
 import { Notice, rupiah, time } from "../components/GuestUI";
 import PreferenceForm, {
   initialForm,
@@ -12,15 +12,11 @@ export default function ItineraryEditorPage() {
   const { id } = useParams();
   const location = useLocation();
   const [loaded] = useState(() => {
-    try {
-      return {
-        trip:
-          location.state?.trip?.id === id ? location.state.trip : findTrip(id),
-        error: "",
-      };
-    } catch (e) {
-      return { trip: null, error: e.message };
-    }
+    const resolved = resolveTrip(id, location.state?.trip);
+    return {
+      ...resolved,
+      error: resolved.error || location.state?.storageError || "",
+    };
   });
   const [trip, setTrip] = useState(loaded.trip);
   const [form, setForm] = useState(() =>
@@ -42,7 +38,10 @@ export default function ItineraryEditorPage() {
   );
   const [effective, setEffective] = useState(
     loaded.trip
-      ? `${loaded.trip.request.startDate}T${loaded.trip.request.dayWindows[0].start}`
+      ? loaded.trip.replanState?.progress
+          ?.find((p) => p.date === loaded.trip.request.startDate)
+          ?.notBefore.slice(0, 16) ||
+          `${loaded.trip.request.startDate}T${loaded.trip.request.dayWindows[0].start}`
       : "",
   );
   const [current, setCurrent] = useState("start");
@@ -91,6 +90,10 @@ export default function ItineraryEditorPage() {
         setSelected(
           response.revised.days.flatMap((d) => d.stops.map((s) => s.placeId)),
         );
+        const progress = response.revised.replanState?.progress?.find(
+          (p) => p.date === effective.slice(0, 10),
+        );
+        if (progress) setEffective(progress.notBefore.slice(0, 16));
         setLocks({});
       }
     } catch (e) {

@@ -347,6 +347,37 @@ class Totals(Contract):
     distanceMeters: Annotated[int, Field(strict=True, ge=0)]
 
 
+class ReportedClosure(Contract):
+    placeId: Id
+    date: LocalDate
+    _date = field_validator("date")(local_date)
+
+
+class DayProgress(Contract):
+    date: LocalDate
+    notBefore: Timestamp
+    location: Coordinates
+    _date = field_validator("date")(local_date)
+    _time = field_validator("notBefore")(jakarta)
+
+    @model_validator(mode="after")
+    def same_date(self):
+        if self.notBefore.date().isoformat() != self.date:
+            raise ValueError("progress time must be on the declared date")
+        return self
+
+
+class ReplanState(Contract):
+    closures: list[ReportedClosure] = Field(default_factory=list, max_length=35)
+    progress: list[DayProgress] = Field(default_factory=list, max_length=3)
+
+    @model_validator(mode="after")
+    def unique_progress(self):
+        if len({p.date for p in self.progress}) != len(self.progress):
+            raise ValueError("duplicate progress date")
+        return self
+
+
 class Itinerary(Contract):
     schemaVersion: Literal[1]
     id: Id
@@ -354,6 +385,7 @@ class Itinerary(Contract):
     request: TravelRequest
     datasetVersion: Id
     plannerVersion: Id
+    replanState: ReplanState = Field(default_factory=ReplanState)
     places: list[Place]
     days: list[ItineraryDay]
     ledger: list[LedgerItem]
@@ -367,6 +399,11 @@ class Itinerary(Contract):
     def consistency(self):
         if [d.date for d in self.days] != [w.date for w in self.request.dayWindows]:
             raise ValueError("itinerary dates must match request")
+        dates = {d.date for d in self.days}
+        if any(p.date not in dates for p in self.replanState.progress) or any(
+            c.date not in dates for c in self.replanState.closures
+        ):
+            raise ValueError("replan state must belong to trip dates")
         place_ids = [p.id for p in self.places]
         stops = [s for d in self.days for s in d.stops]
         for ids in [

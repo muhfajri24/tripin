@@ -53,3 +53,21 @@ export function deleteTrip(id) {
 export function findTrip(id) {
   return loadTrips().find((t) => t.id === id) || null;
 }
+
+// Navigation state may survive reload; never let it hide a newer saved revision.
+export function resolveTrip(id, incoming) {
+  const candidate =
+    isItinerary(incoming) && incoming.id === id ? incoming : null;
+  try {
+    const stored = findTrip(id);
+    return {
+      trip:
+        stored && (!candidate || stored.revision >= candidate.revision)
+          ? stored
+          : candidate,
+      error: "",
+    };
+  } catch (e) {
+    return { trip: candidate, error: e.message };
+  }
+}

@@ -37,3 +37,18 @@ fails startup until an approved adapter exists. Current active source: local v0.
 
 Private itineraries remain device-local, never in public Supabase tables. Never expose a
 service-role key in React. No Supabase credentials are needed to run this MVP.
+
+## Checklist kompatibilitas release validation (24 November 2026)
+
+- [x] Boundary repository lokal dan canonical Pydantic tersedia; local adapter tetap aktif.
+- [ ] Teammate menyetujui tabel/view, PK stabil dan mapping destination/kind/category.
+- [ ] Satu record canonical per Place.id; pagination/order deterministik, filter destination/query/kind, bounded limit, lookup ID dan lodging diuji.
+- [ ] Koordinat latitude/longitude tidak tertukar, null dipertahankan; angka 0 tidak dianggap missing.
+- [ ] Harga IDR mempunyai basis person/group/room-night, applicability, status unknown/estimated/verified dan evidence field-specific.
+- [ ] Jam buka weekday/timezone/date exceptions dipetakan; null tidak berubah menjadi 24 jam atau gratis.
+- [ ] Provenance identity/coordinates/hours/price/UMKM, timestamp dan revision dataset dapat ditelusuri.
+- [ ] Query read-only diuji dengan policy RLS milik teammate tanpa perubahan produksi; credential hanya backend, tanpa service-role pada React.
+- [ ] Empty result, duplicate ID, malformed row, timeout dan unavailable ditangani eksplisit; tidak silently mencampur katalog.
+- [ ] Contract parity local/live diuji pada fixture yang disetujui dan source switch dikonfigurasi eksplisit.
+
+Belum ada bukti skema atau akses read-only Supabase pada sprint ini. Seluruh item kosong adalah prasyarat integrasi, bukan klaim kegagalan database teammate.

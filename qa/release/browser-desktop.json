@@ -1,0 +1,72 @@
+{
+  "base": "http://localhost:3002",
+  "engine": "installed Google Chrome via Playwright, headless",
+  "steps": [
+    {
+      "name": "desktop landing navigation",
+      "status": "passed"
+    },
+    {
+      "name": "parse, review and lodging selection",
+      "status": "passed"
+    },
+    {
+      "name": "plan generation and canonical result",
+      "status": "passed"
+    },
+    {
+      "name": "budget and map markers",
+      "status": "passed"
+    },
+    {
+      "name": "save and reload result",
+      "status": "passed"
+    },
+    {
+      "name": "My Trips genuine saved trip",
+      "status": "passed"
+    },
+    {
+      "name": "fixed lock refuses two-hour delay",
+      "status": "passed"
+    },
+    {
+      "name": "unlock and successful delay with before-after",
+      "status": "passed"
+    },
+    {
+      "name": "remove optional stop after delay and save revision",
+      "status": "passed"
+    },
+    {
+      "name": "saved editor revision survives reload",
+      "status": "passed"
+    },
+    {
+      "name": "closure repairs known conflict",
+      "status": "passed"
+    },
+    {
+      "name": "Google Maps handoff opens actual URL",
+      "status": "passed"
+    }
+  ],
+  "consoleErrors": [],
+  "httpErrors": [],
+  "map": {
+    "markerCount": 3,
+    "tiles": 1
+  },
+  "delay": {
+    "costDeltaIdr": null,
+    "travelDeltaMin": 0,
+    "removedOptionalStops": 0
+  },
+  "googleMaps": {
+    "requestedUrl": "https://www.google.com/maps/dir/?api=1&origin=-7.7956%2C110.3695&destination=-7.793635%2C110.3614&travelmode=driving&waypoints=-7.805456%2C110.362751%7C-7.80275%2C110.36380555555554",
+    "actualUrl": "",
+    "title": "Google Maps",
+    "loaded": true
+  },
+  "note": "Navigation-aborted requests are excluded from defects. Google Maps URL/popup tested; full external map rendering is separately unverified."
+}

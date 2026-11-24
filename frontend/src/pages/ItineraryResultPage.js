@@ -1,24 +1,17 @@
 import React, { useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { findTrip, saveTrip } from "../services/itineraryStorage";
+import { resolveTrip, saveTrip } from "../services/itineraryStorage";
 import TripView from "../components/TripView";
 import { Notice } from "../components/GuestUI";
 export default function ItineraryResultPage() {
   const { id } = useParams();
   const location = useLocation();
   const [loaded] = useState(() => {
-    try {
-      return {
-        trip:
-          location.state?.trip?.id === id ? location.state.trip : findTrip(id),
-        error: location.state?.storageError || "",
-      };
-    } catch (e) {
-      return {
-        trip: location.state?.trip?.id === id ? location.state.trip : null,
-        error: e.message,
-      };
-    }
+    const resolved = resolveTrip(id, location.state?.trip);
+    return {
+      ...resolved,
+      error: resolved.error || location.state?.storageError || "",
+    };
   });
   const [error, setError] = useState(loaded.error);
   const [saved, setSaved] = useState("");

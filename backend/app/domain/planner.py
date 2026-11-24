@@ -14,6 +14,9 @@ from app.models.contracts import (
     ReplanResult,
     StopChange,
     BeforeAfter,
+    ReplanState,
+    DayProgress,
+    ReportedClosure,
 )
 
 TZ = timezone(timedelta(hours=7))
@@ -140,6 +143,32 @@ def schedule(
 ):
     frozen = frozen or {}
     locks = locks or {}
+    state = previous.replanState.model_copy(deep=True) if previous else ReplanState()
+    if disruption:
+        key = disruption.effectiveAt.date().isoformat()
+        prior_progress = next((p for p in state.progress if p.date == key), None)
+        if prior_progress and disruption.effectiveAt < prior_progress.notBefore:
+            raise Conflict(
+                "Waktu efektif lebih awal dari progress/delay yang sudah diterapkan"
+            )
+        earliest = disruption.effectiveAt
+        if disruption.disruption.type == "delay":
+            earliest += timedelta(minutes=disruption.disruption.minutes)
+        if earliest.date().isoformat() != key:
+            raise Conflict(
+                "Delay melewati tanggal efektif; ubah rencana hari berikutnya secara eksplisit"
+            )
+        state.progress = [p for p in state.progress if p.date != key] + [
+            DayProgress(
+                date=key, notBefore=earliest, location=disruption.currentLocation
+            )
+        ]
+        if disruption.disruption.type == "closure":
+            closure = ReportedClosure(
+                placeId=disruption.disruption.placeId, date=disruption.disruption.date
+            )
+            if closure not in state.closures:
+                state.closures.append(closure)
     places = {p.id: p for p in repo.list_places("yogyakarta")}
     lodging = places.get(req.lodging.placeId) if req.lodging else None
     if req.lodging and (
@@ -168,11 +197,10 @@ def schedule(
             now = stops[-1].departureAt
             pos = places[stops[-1].placeId].coordinates
             last = stops[-1].placeId
-        if disruption and disruption.effectiveAt.date().isoformat() == w.date:
-            now = max(now, disruption.effectiveAt)
-            if disruption.disruption.type == "delay":
-                now += timedelta(minutes=disruption.disruption.minutes)
-            pos = disruption.currentLocation
+        progress = next((p for p in state.progress if p.date == w.date), None)
+        if progress and progress.notBefore >= now:
+            now = progress.notBefore
+            pos = progress.location
             last = "current-location"
         if len(orders[i]) + len(stops) > 6:
             raise Conflict("Maksimal enam aktivitas per hari")
@@ -182,12 +210,7 @@ def schedule(
                 raise Conflict("Kandidat tidak dapat dijadwalkan: " + pid)
             if any(e.date == w.date and e.closed for e in p.dateExceptions):
                 raise Conflict("Tempat tutup pada tanggal ini: " + p.name)
-            if (
-                disruption
-                and disruption.disruption.type == "closure"
-                and disruption.disruption.placeId == pid
-                and disruption.disruption.date == w.date
-            ):
+            if any(c.placeId == pid and c.date == w.date for c in state.closures):
                 raise Conflict("Penutupan dilaporkan: " + p.name)
             leg = travel(pos, p.coordinates, last, p.id)
             arrival = now + timedelta(
@@ -304,6 +327,7 @@ def schedule(
         request=req,
         datasetVersion=repo.version,
         plannerVersion="insertion-v1",
+        replanState=state,
         places=[places[x] for x in sorted(used)],
         days=days,
         ledger=ledger,

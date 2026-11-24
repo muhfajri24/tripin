@@ -118,5 +118,17 @@
     "model": "ReplanResult",
     "valid": true,
     "note": ""
+  },
+  {
+    "path": "valid/itinerary-replan-state.json",
+    "model": "Itinerary",
+    "valid": true,
+    "note": "Persisted progress metadata is backward-compatible and timezone-aware"
+  },
+  {
+    "path": "invalid/progress-outside-trip.json",
+    "model": "Itinerary",
+    "valid": false,
+    "note": "Progress cannot refer to a date outside the trip"
   }
 ]

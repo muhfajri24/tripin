@@ -153,6 +153,31 @@
       "title": "DateException",
       "type": "object"
     },
+    "DayProgress": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Date",
+          "type": "string"
+        },
+        "notBefore": {
+          "format": "date-time",
+          "title": "Notbefore",
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/Coordinates"
+        }
+      },
+      "required": [
+        "date",
+        "notBefore",
+        "location"
+      ],
+      "title": "DayProgress",
+      "type": "object"
+    },
     "DayWindow": {
       "additionalProperties": false,
       "properties": {
@@ -272,6 +297,9 @@
           "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
           "title": "Plannerversion",
           "type": "string"
+        },
+        "replanState": {
+          "$ref": "#/$defs/ReplanState"
         },
         "places": {
           "items": {
@@ -771,6 +799,52 @@
         "evidence"
       ],
       "title": "Price",
+      "type": "object"
+    },
+    "ReplanState": {
+      "additionalProperties": false,
+      "properties": {
+        "closures": {
+          "items": {
+            "$ref": "#/$defs/ReportedClosure"
+          },
+          "maxItems": 35,
+          "title": "Closures",
+          "type": "array"
+        },
+        "progress": {
+          "items": {
+            "$ref": "#/$defs/DayProgress"
+          },
+          "maxItems": 3,
+          "title": "Progress",
+          "type": "array"
+        }
+      },
+      "title": "ReplanState",
+      "type": "object"
+    },
+    "ReportedClosure": {
+      "additionalProperties": false,
+      "properties": {
+        "placeId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Placeid",
+          "type": "string"
+        },
+        "date": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "placeId",
+        "date"
+      ],
+      "title": "ReportedClosure",
       "type": "object"
     },
     "ScheduledStop": {

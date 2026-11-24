@@ -1,0 +1,136 @@
+{
+  "title": "TRIPIN ? Rencana Perjalanan Yogyakarta",
+  "url": "http://localhost:3002/create",
+  "errors": [],
+  "fields": [
+    {
+      "type": "text",
+      "value": ""
+    },
+    {
+      "type": "date",
+      "value": "2026-11-24",
+      "text": "Tanggal mulai"
+    },
+    {
+      "type": "select-one",
+      "value": "2",
+      "text": "Durasi1 hari2 hari3 hari"
+    },
+    {
+      "type": "number",
+      "value": "2",
+      "text": "Wisatawan dewasa domestik"
+    },
+    {
+      "type": "number",
+      "value": "500000",
+      "text": "Budget IDR sesuai basis"
+    },
+    {
+      "type": "select-one",
+      "value": "person",
+      "text": "Basis budgetPer orangTotal grup"
+    },
+    {
+      "type": "number",
+      "value": "0",
+      "text": "Cadangan grup IDR"
+    },
+    {
+      "type": "time",
+      "value": "08:00",
+      "text": "Mulai aktivitas"
+    },
+    {
+      "type": "time",
+      "value": "20:00",
+      "text": "Batas akhir hari"
+    },
+    {
+      "type": "select-multiple",
+      "value": "culture",
+      "text": "MinatBudayaKulinerAlamKerajinan"
+    },
+    {
+      "type": "select-one",
+      "value": "food",
+      "text": "PagiFleksibelKulinerBudayaAlam/santai"
+    },
+    {
+      "type": "select-one",
+      "value": "culture",
+      "text": "SiangFleksibelKulinerBudayaAlam/santai"
+    },
+    {
+      "type": "select-one",
+      "value": "",
+      "text": "SoreFleksibelKulinerBudayaAlam/santai"
+    },
+    {
+      "type": "select-one",
+      "value": "",
+      "text": "Lodging anchorPilih penginapanThe Phoenix Hotel Yogyakartaibis Styles Yogyakarta"
+    },
+    {
+      "type": "number",
+      "value": "1",
+      "text": "Jumlah kamar"
+    },
+    {
+      "type": "time",
+      "value": "17:00",
+      "text": "Batas tiba hotel hari pertama"
+    },
+    {
+      "type": "number",
+      "value": "",
+      "text": "Makanan per orang per food stop"
+    },
+    {
+      "type": "number",
+      "value": "",
+      "text": "Kamar per malam IDR"
+    },
+    {
+      "type": "number",
+      "value": "",
+      "text": "Kendaraan per hari IDR (all-in)"
+    },
+    {
+      "type": "number",
+      "value": "-7.7956",
+      "text": "Latitude tiba"
+    },
+    {
+      "type": "number",
+      "value": "110.3695",
+      "text": "Longitude tiba"
+    },
+    {
+      "type": "number",
+      "value": "-7.7956",
+      "text": "Latitude pulang"
+    },
+    {
+      "type": "number",
+      "value": "110.3695",
+      "text": "Longitude pulang"
+    },
+    {
+      "type": "select-multiple",
+      "value": "",
+      "text": "Tempat wajib (pilihan jamak)Museum Kereta Kraton Ngayogyakarta HadiningratMuseum"
+    },
+    {
+      "type": "checkbox",
+      "value": "on",
+      "text": "Izinkan data belum terverifikasi dan tampilkan hasil bersyarat. Harga/jam unknow"
+    },
+    {
+      "type": "checkbox",
+      "value": "on",
+      "text": "Saya sudah memeriksa tujuan, tanggal, budget, anchor, dan asumsi di atas."
+    }
+  ]
+}

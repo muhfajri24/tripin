@@ -1,4 +1,10 @@
-import { loadTrips, saveTrip, findTrip, deleteTrip } from "./itineraryStorage";
+import {
+  loadTrips,
+  saveTrip,
+  findTrip,
+  deleteTrip,
+  resolveTrip,
+} from "./itineraryStorage";
 import { navigationLinks } from "./googleMapsService";
 import { api } from "./plannerApi";
 import { initialForm, toRequest } from "../components/PreferenceForm";
@@ -116,15 +122,21 @@ test("canonical fixture round-trips through review with group total intact", () 
   expect(normalized.dayWindows).toEqual(r.dayWindows);
 });
 test("API surfaces backend field errors and never substitutes mock", async () => {
-  global.fetch = jest
-    .fn()
-    .mockResolvedValue({
-      ok: false,
-      json: async () => ({
-        error: { message: "Invalid", fields: { budget: "must be positive" } },
-      }),
-    });
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: false,
+    json: async () => ({
+      error: { message: "Invalid", fields: { budget: "must be positive" } },
+    }),
+  });
   await expect(api("/itineraries/plan", {})).rejects.toThrow(
     "must be positive",
   );
+});
+
+test("saved revision wins over stale navigation state on reload", () => {
+  const old = fixture();
+  const latest = { ...fixture(), revision: 5 };
+  saveTrip(latest);
+  expect(resolveTrip(old.id, old).trip.revision).toBe(5);
+  expect(resolveTrip(old.id, { ...latest, revision: 6 }).trip.revision).toBe(6);
 });
