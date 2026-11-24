@@ -21,8 +21,10 @@ export function RevealOnScroll({
   ...props
 }) {
   const prefersReduced = useReducedMotion();
+  const hasIntersectionObserver =
+    typeof window !== 'undefined' && typeof window.IntersectionObserver !== 'undefined';
 
-  if (prefersReduced) {
+  if (prefersReduced || !hasIntersectionObserver) {
     return <div className={className} {...props}>{children}</div>;
   }
 
@@ -87,8 +89,10 @@ export function StaggerContainer({
   ...props
 }) {
   const prefersReduced = useReducedMotion();
+  const hasIntersectionObserver =
+    typeof window !== 'undefined' && typeof window.IntersectionObserver !== 'undefined';
 
-  if (prefersReduced) {
+  if (prefersReduced || !hasIntersectionObserver) {
     return <div className={className} {...props}>{children}</div>;
   }
 
