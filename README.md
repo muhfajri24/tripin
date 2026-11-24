@@ -61,14 +61,14 @@ cd backend
 
 ## Important limits
 
-Nine pilot candidates; not all are routable. One versioned local catalog is active.
+Nine pilot candidates; not all are routable. One versioned local catalog (v0.3.0) is active.
 Unknown hours/prices are not free or always-open. Permit unverified data explicitly to
 receive a conditional plan; disable it to reject incomplete candidates. Route distance is
 straight-line Haversine with a documented duration heuristic, not actual road routing/traffic.
 Costs include selected food stops only, not every possible meal. User estimates are not quotes.
 No global optimum or proof of infeasibility is claimed when bounded search fails.
 
-Supabase is owned by another teammate and remains pending finalized schema/approval.
+A read-only Supabase adapter is implemented and mock-tested. Live integration remains blocked on the approved schema/mapping and access configuration for public.saved_places. Local remains explicitly selected.
 See [integration boundary](docs/SUPABASE_INTEGRATION.md), [backend](backend/README.md),
 [data provenance](backend/app/data/README.md), and [current MVP details](docs/MVP_IMPLEMENTATION.md).
 
@@ -76,3 +76,9 @@ See [integration boundary](docs/SUPABASE_INTEGRATION.md), [backend](backend/READ
 
 Only `dev` and `main`: develop/integrate/test on `dev`; promote reviewed, verified changes
 to `main`. No force-push or automatic release merge. Database changes require teammate approval.
+
+## Latest completion and one-origin demo
+
+See [master completion report](docs/MASTER_COMPLETION.md) for current QA, task ownership, source readiness and blockers. Historical architecture/audit documents describe earlier checkpoints.
+
+For a build-based demo without CRA proxy, run `npm run build` in frontend, then from backend set `$env:TRPIN_SERVE_FRONTEND='true'` and run `.venv/Scripts/python -m uvicorn app.main:app --host 127.0.0.1 --port 8015 --no-proxy-headers`. Open http://127.0.0.1:8015. This is local HTTP, not a claim of deployed HTTPS hosting. See backend README for limits and source preflight.

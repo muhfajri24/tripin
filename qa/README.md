@@ -1,4 +1,4 @@
-﻿# Browser QA lokal
+# Browser QA lokal
 
 Laporan: [Release validation](../docs/RELEASE_VALIDATION.md). Browser dijalankan atas izin eksplisit pengguna, memakai profil/context terisolasi; tidak menggunakan data browser pribadi.
 
@@ -16,3 +16,6 @@ node qa/release-maps.cjs
 Periksa URL/path di awal script sebelum memakai port atau OS berbeda. `TRIPIN_QA_CHROME_PATH` tersedia pada script yang mendukungnya. Maps harness juga memakai backend lokal untuk setup trip. Screenshot dan JSON ada di `release/`; file terbaru ditimpa saat rerun. JSON merupakan hasil run yang direkam, bukan otomatis jaminan kondisi saat ini. `baseline.cjs` adalah probe awal. `failure-*` menyimpan diagnosis harness, termasuk assertion yang terlalu dini; gunakan daftar screenshot terkurasi dalam laporan untuk evidence produk.
 
 Chrome mobile adalah emulasi, bukan perangkat fisik. Pop-up Maps/URL diverifikasi; konten layanan eksternal belum terjamin selesai render. Screenshot peta OSM yang sudah termuat tersedia terpisah. Tidak ada scraping Google Maps.
+
+
+Latest source/data inventory: `backend/.venv/Scripts/python qa/audit_sources.py` from root. Current build demo origin can be selected with `TRIPIN_QA_BASE_URL=http://127.0.0.1:8015` for all three release scripts. Default 3002 remains a historical dev-server choice. Same-origin demo startup is in backend README. The latest master report supersedes old checkpoint counts in the release report.

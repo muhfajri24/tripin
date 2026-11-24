@@ -140,3 +140,13 @@ test("saved revision wins over stale navigation state on reload", () => {
   expect(resolveTrip(old.id, old).trip.revision).toBe(5);
   expect(resolveTrip(old.id, { ...latest, revision: 6 }).trip.revision).toBe(6);
 });
+
+test("structurally corrupt JSON cannot render or overwrite saved trips", () => {
+  const trip = fixture();
+  trip.days = [];
+  const raw = JSON.stringify({version: 1, trips: [trip]});
+  localStorage.setItem("tripin_guest_itineraries_v1", raw);
+  expect(() => loadTrips()).toThrow("tidak dapat dibaca");
+  expect(() => saveTrip(fixture())).toThrow("tidak dapat dibaca");
+  expect(localStorage.getItem("tripin_guest_itineraries_v1")).toBe(raw);
+});

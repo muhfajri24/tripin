@@ -1,5 +1,5 @@
 {
-  "base": "http://localhost:3002",
+  "base": "http://127.0.0.1:8015",
   "engine": "installed Google Chrome via Playwright, headless",
   "steps": [
     {
@@ -65,7 +65,7 @@
   "googleMaps": {
     "requestedUrl": "https://www.google.com/maps/dir/?api=1&origin=-7.7956%2C110.3695&destination=-7.793635%2C110.3614&travelmode=driving&waypoints=-7.805456%2C110.362751%7C-7.80275%2C110.36380555555554",
     "actualUrl": "",
-    "title": "Google Maps",
+    "title": "",
     "loaded": true
   },
   "note": "Navigation-aborted requests are excluded from defects. Google Maps URL/popup tested; full external map rendering is separately unverified."

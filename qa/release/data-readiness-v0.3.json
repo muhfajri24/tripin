@@ -1,0 +1,420 @@
+{
+  "datasetVersion": "yogyakarta-v0_3_0",
+  "rows": 9,
+  "duplicateIds": 0,
+  "completeness": {
+    "identity": 9,
+    "address": 5,
+    "coordinates": 7,
+    "categories": 9,
+    "openingHours": 3,
+    "price": 1
+  },
+  "records": [
+    {
+      "id": "yog-museum-kereta",
+      "kind": "attraction",
+      "identity": true,
+      "address": true,
+      "coordinates": true,
+      "categories": true,
+      "durationStatus": "estimated",
+      "openingHours": true,
+      "price": false,
+      "localBusinessStatus": null,
+      "lodgingRatesAndAvailabilityVerified": null,
+      "evidence": {
+        "durationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "Editorial planning assumption; not provider visit duration",
+          "checkedAt": null,
+          "status": "estimated"
+        },
+        "openingEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://tourism.kratonjogja.id/id-ID/destination/4-kagungan-dalem-wahanarata/",
+          "checkedAt": "2026-11-24T13:57:09+07:00",
+          "status": "checked"
+        },
+        "locationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/1322/museum-kereta-kraton-yogyakarta",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "identityEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/1322/museum-kereta-kraton-yogyakarta",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "localBusinessEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "yog-gudeg-yu-djum-pusat",
+      "kind": "food",
+      "identity": true,
+      "address": true,
+      "coordinates": false,
+      "categories": true,
+      "durationStatus": "estimated",
+      "openingHours": false,
+      "price": false,
+      "localBusinessStatus": null,
+      "lodgingRatesAndAvailabilityVerified": null,
+      "evidence": {
+        "durationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "Editorial planning assumption; not provider visit duration",
+          "checkedAt": null,
+          "status": "estimated"
+        },
+        "openingEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        },
+        "locationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        },
+        "identityEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://gudegyudjumpusat.com/",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "localBusinessEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "yog-kedhaton",
+      "kind": "attraction",
+      "identity": true,
+      "address": true,
+      "coordinates": false,
+      "categories": true,
+      "durationStatus": "estimated",
+      "openingHours": true,
+      "price": false,
+      "localBusinessStatus": null,
+      "lodgingRatesAndAvailabilityVerified": null,
+      "evidence": {
+        "durationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "Editorial planning assumption; not provider visit duration",
+          "checkedAt": null,
+          "status": "estimated"
+        },
+        "openingEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://tourism.kratonjogja.id/id-ID/destination/3-kagungan-dalem-kedhaton/",
+          "checkedAt": "2026-11-24T13:57:09+07:00",
+          "status": "checked"
+        },
+        "locationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        },
+        "identityEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://tourism.kratonjogja.id/id-ID/destination/3-kagungan-dalem-kedhaton/",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "localBusinessEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "yog-phoenix",
+      "kind": "lodging",
+      "identity": true,
+      "address": true,
+      "coordinates": true,
+      "categories": true,
+      "durationStatus": "estimated",
+      "openingHours": false,
+      "price": false,
+      "localBusinessStatus": null,
+      "lodgingRatesAndAvailabilityVerified": false,
+      "evidence": {
+        "durationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "Editorial planning assumption; not provider visit duration",
+          "checkedAt": null,
+          "status": "estimated"
+        },
+        "openingEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        },
+        "locationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://all.accor.com/hotel/5451/index.en.shtml",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "identityEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://all.accor.com/hotel/5451/index.en.shtml",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "localBusinessEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "yog-vredeburg",
+      "kind": "attraction",
+      "identity": true,
+      "address": false,
+      "coordinates": true,
+      "categories": true,
+      "durationStatus": "estimated",
+      "openingHours": false,
+      "price": false,
+      "localBusinessStatus": null,
+      "lodgingRatesAndAvailabilityVerified": null,
+      "evidence": {
+        "durationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "Editorial planning assumption; not provider visit duration",
+          "checkedAt": null,
+          "status": "estimated"
+        },
+        "openingEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        },
+        "locationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/4327/benteng-vredeburg",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "identityEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/4327/benteng-vredeburg",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "localBusinessEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "yog-ibis-styles",
+      "kind": "lodging",
+      "identity": true,
+      "address": false,
+      "coordinates": true,
+      "categories": true,
+      "durationStatus": "estimated",
+      "openingHours": false,
+      "price": false,
+      "localBusinessStatus": null,
+      "lodgingRatesAndAvailabilityVerified": false,
+      "evidence": {
+        "durationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "Editorial planning assumption; not provider visit duration",
+          "checkedAt": null,
+          "status": "estimated"
+        },
+        "openingEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        },
+        "locationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://all.accor.com/hotel/7460/index.en.shtml",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "identityEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://all.accor.com/hotel/7460/index.en.shtml",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "localBusinessEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "yog-sonobudoyo",
+      "kind": "attraction",
+      "identity": true,
+      "address": true,
+      "coordinates": true,
+      "categories": true,
+      "durationStatus": "estimated",
+      "openingHours": true,
+      "price": true,
+      "localBusinessStatus": null,
+      "lodgingRatesAndAvailabilityVerified": null,
+      "evidence": {
+        "durationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "Editorial planning assumption; not provider visit duration",
+          "checkedAt": null,
+          "status": "estimated"
+        },
+        "openingEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://sonobudoyo.jogjaprov.go.id/id/hubungi",
+          "checkedAt": "2026-11-24T13:57:09+07:00",
+          "status": "checked"
+        },
+        "locationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://repositori.kemendikdasmen.go.id/26873/1/Katalog%20museum%20NAsional%20Jilid%202.pdf",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "identityEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://repositori.kemendikdasmen.go.id/26873/1/Katalog%20museum%20NAsional%20Jilid%202.pdf",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "localBusinessEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "yog-bebek-cak-koting",
+      "kind": "food",
+      "identity": true,
+      "address": false,
+      "coordinates": true,
+      "categories": true,
+      "durationStatus": "estimated",
+      "openingHours": false,
+      "price": false,
+      "localBusinessStatus": null,
+      "lodgingRatesAndAvailabilityVerified": null,
+      "evidence": {
+        "durationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "Editorial planning assumption; not provider visit duration",
+          "checkedAt": null,
+          "status": "estimated"
+        },
+        "openingEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        },
+        "locationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://repo.unwim.ac.id/1096/1/715-Article%20Text-3276-1-10-20240527.pdf",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "identityEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://repo.unwim.ac.id/1096/1/715-Article%20Text-3276-1-10-20240527.pdf",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "localBusinessEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "yog-malioboro",
+      "kind": "attraction",
+      "identity": true,
+      "address": false,
+      "coordinates": true,
+      "categories": true,
+      "durationStatus": "estimated",
+      "openingHours": false,
+      "price": false,
+      "localBusinessStatus": null,
+      "lodgingRatesAndAvailabilityVerified": null,
+      "evidence": {
+        "durationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "Editorial planning assumption; not provider visit duration",
+          "checkedAt": null,
+          "status": "estimated"
+        },
+        "openingEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        },
+        "locationEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://repo.unwim.ac.id/1096/1/715-Article%20Text-3276-1-10-20240527.pdf",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "identityEvidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://repo.unwim.ac.id/1096/1/715-Article%20Text-3276-1-10-20240527.pdf",
+          "checkedAt": "2026-11-24T12:00:00+07:00",
+          "status": "checked"
+        },
+        "localBusinessEvidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        }
+      }
+    }
+  ]
+}

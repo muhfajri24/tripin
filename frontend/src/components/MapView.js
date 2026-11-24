@@ -51,13 +51,13 @@ function RecenterMap({ positions, defaultCenter }) {
   useEffect(() => {
     if (positions && positions.length > 0) {
       if (positions.length === 1) {
-        map.setView(positions[0], 13);
+        map.setView(positions[0], 13, { animate: false });
       } else {
         const bounds = L.latLngBounds(positions);
-        map.fitBounds(bounds, { padding: [35, 35], maxZoom: 14 });
+        map.fitBounds(bounds, { padding: [35, 35], maxZoom: 14, animate: false });
       }
     } else if (defaultCenter) {
-      map.setView(defaultCenter, 12);
+      map.setView(defaultCenter, 12, { animate: false });
     }
   }, [positions, defaultCenter, map]);
   return null;
@@ -95,6 +95,9 @@ function MapView({ activities = [], center, zoom = 12, height = "400px" }) {
         zoom={zoom}
         style={{ height: "100%", width: "100%" }}
         scrollWheelZoom={false}
+        zoomAnimation={false}
+        fadeAnimation={false}
+        markerZoomAnimation={false}
       >
         <RecenterMap positions={positions} defaultCenter={defaultCenter} />
 

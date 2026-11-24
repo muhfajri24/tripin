@@ -47,3 +47,11 @@ Haversine travel requires no external routing requests. Leaflet uses standard Op
 tiles with attribution: https://www.openstreetmap.org/copyright . Respect tile usage policy;
 no prefetch/offline bulk downloads. Static curated data is a small sourced factual compilation;
 source content and photos are not redistributed. Runtime does not scrape these sites.
+
+## Katalog v0.3.0 (24 November 2026)
+
+Sumber aktif kini `yogyakarta-v0.3.0.json`; v0.2.0 tetap arsip immutable. Jumlah tetap 9; fokus enrichment, bukan menambah metadata rekaan. Jam terpublikasi ditambahkan untuk Kedhaton (Selasa–Minggu 08.30–14.30) dan Museum Kereta/Wahanarata (09.00–15.00), berdasarkan halaman operator Keraton yang dirujuk pada openingEvidence. Identitas Museum Kereta dipetakan secara editorial ke Wahanarata berdasarkan koleksi kereta kerajaan, pengelola Keraton dan lokasi Rotowijayan; ID/nama historis dipertahankan. Sumber berbeda mencantumkan nomor alamat berbeda: jangan menganggap pintu masuk sudah diverifikasi lapangan.
+
+Sonobudoyo kini memakai jam pameran tetap operator provinsi (08.00–21.00, Selasa–Minggu), bukan jam kantor. Alamat ditambahkan dari halaman operator yang sama. Tiket terakhir 20.00; dengan durasi editorial 60 menit, batas keluar 21.00 membatasi kedatangan maksimal 20.00. Tidak dimodelkan sebagai berlaku untuk semua program pertunjukan. Harga domestik dewasa sebelumnya tetap; tidak ada tarif baru yang ditebak.
+
+Kelengkapan: identity/category 9/9, alamat 5/9, koordinat 7/9, jam 3/9, harga 1/9, klasifikasi local business 0/9. Duration semuanya estimated. Tidak ada availability/kapsitas kamar terverifikasi. Holiday closure, tarif aktual dan metadata food tetap perlu konfirmasi. Lihat `qa/release/data-readiness-v0.3.json` untuk matrix per record dan evidence/checked date.

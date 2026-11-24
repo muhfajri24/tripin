@@ -22,7 +22,7 @@ export default function TripView({ trip }) {
       <Notice>
         Validasi:{" "}
         {trip.feasibility === "undetermined"
-          ? "bersyarat ? ada estimasi atau data belum lengkap"
+          ? "bersyarat · ada estimasi atau data belum lengkap"
           : trip.feasibility}
         . Tidak ada jaminan lalu lintas atau ketersediaan aktual.
       </Notice>
@@ -57,7 +57,7 @@ export default function TripView({ trip }) {
             className={i === selected ? "btn-primary" : "btn-secondary"}
             onClick={() => setSelected(i)}
           >
-            Hari {i + 1} ? {d.date}
+            Hari {i + 1} · {d.date}
           </button>
         ))}
       </div>
@@ -73,26 +73,26 @@ export default function TripView({ trip }) {
               className="border-l-4 border-teal pl-4 space-y-1"
             >
               <p className="text-teal font-bold">
-                {time(s.arrivalAt)}?{time(s.departureAt)}
+                {time(s.arrivalAt)}–{time(s.departureAt)}
               </p>
               <h3 className="font-bold">
                 {byId[s.placeId]?.name || s.placeId}
               </h3>
               <p>
-                {s.visitDurationMin} menit kunjungan ?{" "}
+                {s.visitDurationMin} menit kunjungan ·{" "}
                 {s.incomingLeg.estimatedDurationMin} menit perjalanan +{" "}
                 {s.incomingLeg.schedulingBufferMin} menit buffer
               </p>
               <p className="text-sm">
                 {(s.incomingLeg.distanceMeters / 1000).toFixed(1)} km garis
-                lurus ?{" "}
+                lurus ·{" "}
                 {s.lock.type === "none"
                   ? "Fleksibel"
                   : `Terkunci: ${s.lock.type}`}{" "}
-                ? {s.status}
+                · {s.status}
               </p>
               <p className="text-xs">
-                Jam {byId[s.placeId]?.openingEvidence.status} ? Biaya{" "}
+                Jam {byId[s.placeId]?.openingEvidence.status} · Biaya{" "}
                 {byId[s.placeId]?.prices[0]?.evidence.status}
               </p>
             </article>
@@ -115,7 +115,7 @@ export default function TripView({ trip }) {
             center={[day.startAnchor.lat, day.startAnchor.lng]}
           />
           <p className="text-sm">
-            Garis penghubung menunjukkan urutan, bukan rute jalan. ?
+            Garis penghubung menunjukkan urutan, bukan rute jalan. ·
             OpenStreetMap contributors.
           </p>
           <Notice error>{mapError}</Notice>
@@ -128,7 +128,7 @@ export default function TripView({ trip }) {
                 target="_blank"
                 rel="noreferrer"
               >
-                Google Maps ? segmen {i + 1}
+                Google Maps · segmen {i + 1}
               </a>
             ))}
           </div>
@@ -140,7 +140,7 @@ export default function TripView({ trip }) {
       </div>
       <section className="card overflow-x-auto">
         <h2 className="text-xl font-bold mb-3">
-          Rincian budget ? {trip.request.travelers.adults} orang
+          Rincian budget · {trip.request.travelers.adults} orang
         </h2>
         <table className="w-full text-sm text-left">
           <thead>
@@ -156,7 +156,7 @@ export default function TripView({ trip }) {
             {trip.ledger.map((x) => (
               <tr className="border-t" key={x.id}>
                 <td className="py-3 pr-3">
-                  {x.category} ? {byId[x.placeId]?.name || "Kendaraan per hari"}
+                  {x.category} · {byId[x.placeId]?.name || "Kendaraan per hari"}
                 </td>
                 <td>{x.quantity}</td>
                 <td>{rupiah(x.unitAmountIdr)}</td>
@@ -171,7 +171,7 @@ export default function TripView({ trip }) {
         <p className="mt-3 text-sm">
           Transport memakai satu estimasi kendaraan/hari. Makanan dihitung pada
           food stops terpilih; konsumsi lain belum termasuk. Hotel dihitung per
-          kamar ? malam. Unknown tidak dianggap gratis.
+          kamar · malam. Unknown tidak dianggap gratis.
         </p>
       </section>
       <section className="card space-y-3">
@@ -199,9 +199,9 @@ export default function TripView({ trip }) {
                       Sumber
                     </a>
                   ) : (
-                    e?.sourceRef || "?"
+                    e?.sourceRef || "Belum tersedia"
                   )}{" "}
-                  {e?.checkedAt && `? diperiksa ${e.checkedAt.slice(0, 10)}`}
+                  {e?.checkedAt && `· diperiksa ${e.checkedAt.slice(0, 10)}`}
                 </li>
               ))}
             </ul>
@@ -219,7 +219,7 @@ export default function TripView({ trip }) {
           ))}
         </ul>
         <p className="mt-3 text-xs">
-          Dataset {trip.datasetVersion} ? Engine {trip.plannerVersion}
+          Dataset {trip.datasetVersion} · Engine {trip.plannerVersion}
         </p>
         <p className="mt-2">
           {eligible.length} bisnis lokal teridentifikasi. Estimasi alokasi

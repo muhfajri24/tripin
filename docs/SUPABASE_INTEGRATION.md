@@ -1,4 +1,4 @@
-﻿# Supabase integration boundary — PENDING
+# Supabase integration boundary — PENDING
 
 Database ownership remains with the teammate. No production tables, policies, migrations,
 credentials, RLS or service-role configuration are created or modified by this implementation.
@@ -32,8 +32,7 @@ and credentials delivery method. Queries must be bounded and validated with Pyda
 Run the repository contract tests against the new adapter with fixture data, test read-only
 failure/timeout behavior, and compare canonical outputs to the local adapter. Do not run
 integration tests against production writes. Switch sources explicitly with configuration;
-never silently merge local and live catalogs. `TRPIN_PLACE_SOURCE=supabase` deliberately
-fails startup until an approved adapter exists. Current active source: local v0.2.0 only.
+never silently merge local and live catalogs. `TRPIN_PLACE_SOURCE=supabase` now selects the reviewed read-only adapter; incomplete configuration fails startup and source failures return 503. The canonical mapping remains unapproved/unverified. Current active source: local v0.2.0 only.
 
 Private itineraries remain device-local, never in public Supabase tables. Never expose a
 service-role key in React. No Supabase credentials are needed to run this MVP.
@@ -52,3 +51,11 @@ service-role key in React. No Supabase credentials are needed to run this MVP.
 - [ ] Contract parity local/live diuji pada fixture yang disetujui dan source switch dikonfigurasi eksplisit.
 
 Belum ada bukti skema atau akses read-only Supabase pada sprint ini. Seluruh item kosong adalah prasyarat integrasi, bukan klaim kegagalan database teammate.
+
+
+## Pembaruan master completion
+
+Pengguna menunjuk `public.saved_places`. Belum tersedia columns/types, key location atau bukti kolom JSON `place`, sehingga belum dianggap schema canonical yang disetujui. Adapter mock-tested sudah diintegrasikan dari draft PR #3 tanpa merge PR; live BLOCKED. Local aktif v0.3.0. Gunakan [master report](MASTER_COMPLETION.md) dan [connection](SUPABASE_CONNECTION.md), bukan pernyataan historical v0.2 di atas, untuk status runtime terbaru.
+
+
+Setelah pengguna mengizinkan penyiapan database, migration/seed untuk katalog baru `tripin_place_catalog` / view `tripin_places_api` tersedia dan diuji pada PostgreSQL 16 lokal. [Panduan](../supabase/README.md). `saved_places` tetap tidak disentuh. Database task kini schema lokal DONE, live apply/access BLOCKED; bukti PostgreSQL lokal tidak menggantikan Supabase HTTP smoke.

@@ -1,4 +1,6 @@
-﻿# Release validation — 24 November 2026
+> Checkpoint sebelumnya; status master sprint terbaru: [MASTER_COMPLETION.md](MASTER_COMPLETION.md). Artefak browser/HTTP di qa/release diperbarui pada run master sprint.
+
+# Release validation — 24 November 2026
 
 Baseline: `dev` pada `4e29f78`; pengujian berikut mencakup perbaikan lokal sprint ini. Tidak ada perubahan dataset aktif, skema Supabase, atau deployment produksi. Hasil lokal tidak membuktikan seluruh data operasional benar.
 
