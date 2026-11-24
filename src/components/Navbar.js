@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Bell, Search, Menu, ChevronRight, X } from 'lucide-react';
+import { Bell, Search, Menu, ChevronRight, X, Settings } from 'lucide-react';
 import logoIcon from '../assets/logo-icon.png';
 import { mockNotifications } from '../data/mockData';
 
@@ -140,16 +140,13 @@ function Navbar({ onMenuToggle }) {
         )}
       </div>
 
-      {/* Avatar */}
+      {/* Settings Shortcut */}
       <button
         onClick={() => navigate('/settings')}
-        className="flex-shrink-0"
+        className="w-9 h-9 rounded-xl flex items-center justify-center text-charcoal-lighter hover:text-charcoal hover:bg-gray-100 transition-colors flex-shrink-0"
+        title="Pengaturan"
       >
-        <img
-          src="https://i.pravatar.cc/150?img=12"
-          alt="Profile"
-          className="w-9 h-9 rounded-full object-cover ring-2 ring-coral/40 hover:ring-coral transition-all"
-        />
+        <Settings size={18} />
       </button>
     </header>
   );

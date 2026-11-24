@@ -5,7 +5,7 @@ import {
   ArrowRight, Store, Award, Leaf
 } from 'lucide-react';
 import {
-  mockUser, mockItineraries, mockRecommendations, formatCurrency,
+  mockItineraries, mockRecommendations, formatCurrency,
   getOverallImpactStats, getTripImpactStats, getStoredItineraries
 } from '../data/mockData';
 import RecommendationCard from '../components/RecommendationCard';
@@ -22,19 +22,19 @@ function DashboardPage() {
 
   return (
     <div className="space-y-6 animate-fadeInUp pb-12">
-      {/* Greeting + Quick Action */}
+      {/* Platform Title + Quick Action */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-charcoal">
-              Halo, {mockUser.name.split(' ')[0]}! 👋
+              Jelajahi Nusantara 👋
             </h1>
             <span className="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
-              <Leaf size={11} /> Eco Traveler
+              <Leaf size={11} /> Open Travel Platform
             </span>
           </div>
           <p className="text-charcoal-lighter text-xs sm:text-sm mt-1">
-            Siap merencanakan perjalanan berkelanjutan sambil mendukung UMKM lokal hari ini?
+            Rencanakan perjalanan cerdas & dukung pelaku UMKM lokal di seluruh Indonesia.
           </p>
         </div>
 

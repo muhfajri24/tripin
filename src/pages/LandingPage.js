@@ -101,7 +101,7 @@ function LandingPage() {
             onClick={() => navigate('/dashboard')}
             className="hidden sm:block text-white/90 hover:text-white font-medium text-sm transition-colors"
           >
-            Masuk Dashboard
+            Dashboard
           </button>
           <button
             onClick={() => navigate('/create')}

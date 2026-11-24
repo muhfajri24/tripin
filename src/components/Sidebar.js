@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Sparkles, Compass, BookOpen, Heart, Settings,
-  User, ChevronLeft, ChevronRight, Plane, X, Plus, Leaf
+  ChevronLeft, ChevronRight, Plane, X, Plus, Leaf
 } from 'lucide-react';
 import clsx from 'clsx';
 import logoFull from '../assets/logo-full.png';
@@ -142,34 +142,6 @@ function SidebarContent({ collapsed, onToggleCollapse, navigate, isMobile, onClo
           </NavLink>
         ))}
       </nav>
-
-      {/* Profile at bottom */}
-      <div className={clsx(
-        'border-t border-white/10 p-3',
-        collapsed ? 'flex justify-center' : ''
-      )}>
-        <button
-          onClick={() => navigate('/settings')}
-          className={clsx(
-            'flex items-center gap-3 rounded-xl p-2 hover:bg-white/10 transition-colors w-full',
-            collapsed ? 'justify-center' : ''
-          )}
-          title={collapsed ? 'Profile' : ''}
-        >
-          <img
-            src="https://i.pravatar.cc/150?img=12"
-            alt="Profile"
-            className="w-8 h-8 rounded-full object-cover ring-2 ring-coral/50"
-          />
-          {!collapsed && (
-            <div className="text-left min-w-0">
-              <p className="text-sm font-semibold text-white truncate">Ari Santoso</p>
-              <p className="text-xs text-white/50 truncate">SDG 8 Contributor</p>
-            </div>
-          )}
-          {!collapsed && <User size={14} className="text-white/40 ml-auto flex-shrink-0" />}
-        </button>
-      </div>
     </div>
   );
 }
