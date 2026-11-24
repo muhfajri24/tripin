@@ -20,7 +20,7 @@ export default function LandingPage() {
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div>
               <p className="text-yellow-trip font-bold uppercase tracking-widest text-sm">
-                Yogyakarta ? 1?3 hari ? tanpa akun
+                Yogyakarta · 1–3 hari · tanpa akun
               </p>
               <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mt-5">
                 Rencana perjalanan
@@ -95,7 +95,7 @@ export default function LandingPage() {
         </section>
       </main>
       <footer className="px-6 py-8 text-center text-sm text-charcoal-lighter">
-        TRIPIN ? Rencana tersimpan lokal di browser. Tidak ada booking atau
+        TRIPIN · Rencana tersimpan lokal di browser. Tidak ada booking atau
         klaim transaksi UMKM.
       </footer>
     </div>

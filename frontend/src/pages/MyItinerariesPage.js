@@ -48,13 +48,13 @@ export default function MyItinerariesPage() {
         {state.trips.map((t) => (
           <article className="card space-y-3" key={t.id}>
             <p className="eyebrow">
-              {t.request.startDate} ? {t.request.days} hari
+              {t.request.startDate} · {t.request.days} hari
             </p>
             <h2 className="text-xl font-bold">
-              Yogyakarta ? {t.request.travelers.adults} orang
+              Yogyakarta · {t.request.travelers.adults} orang
             </h2>
             <p>
-              {rupiah(t.totals.knownCostIdr)} diketahui/estimasi ?{" "}
+              {rupiah(t.totals.knownCostIdr)} diketahui/estimasi ·{" "}
               {t.totals.unknownCostItems} unknown
             </p>
             <div className="flex gap-3">
@@ -70,7 +70,7 @@ export default function MyItinerariesPage() {
             </div>
             {pending === t.id && (
               <div role="alert" className="space-x-3">
-                <span>Hapus trip dari browser ini?</span>
+                <span>Hapus trip dari browser ini·</span>
                 <button
                   className="underline text-red-700"
                   onClick={() => remove(t.id)}

@@ -30,7 +30,7 @@ export function PlaceDetails({ place }) {
     <div className="text-sm space-y-1 text-charcoal-lighter">
       <p>{place.address || "Alamat rinci belum tersedia"}</p>
       <p>
-        Harga: {rupiah(place.prices[0]?.amountIdr)} ? Jam:{" "}
+        Harga: {rupiah(place.prices[0]?.amountIdr)} · Jam:{" "}
         {place.openingWindows === null
           ? "Belum diverifikasi"
           : place.openingWindows.length
@@ -39,7 +39,7 @@ export function PlaceDetails({ place }) {
       </p>
       <p>
         Durasi: {place.visitDurationMin} menit ({place.durationEvidence.status})
-        ? Koordinat: {place.coordinates ? "bersumber" : "belum tersedia"}
+        · Koordinat: {place.coordinates ? "bersumber" : "belum tersedia"}
       </p>
       {place.identityEvidence.sourceRef?.startsWith("https://") && (
         <a

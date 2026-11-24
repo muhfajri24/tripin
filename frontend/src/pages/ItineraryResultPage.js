@@ -34,7 +34,7 @@ export default function ItineraryResultPage() {
     <div className="space-y-5">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="eyebrow">Trip tamu ? revisi {trip.revision}</p>
+          <p className="eyebrow">Trip tamu · revisi {trip.revision}</p>
           <h1 className="page-title">Yogyakarta, {trip.request.days} hari</h1>
         </div>
         <Link

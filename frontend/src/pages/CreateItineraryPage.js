@@ -66,7 +66,7 @@ export default function CreateItineraryPage() {
       });
       if (!result.itinerary) {
         setError(
-          result.conflicts.join(" ? ") +
+          result.conflicts.join(" · ") +
             " Heuristic belum menemukan jadwal; coba kurangi constraint.",
         );
         return;
@@ -89,7 +89,7 @@ export default function CreateItineraryPage() {
   return (
     <div className="space-y-6">
       <header>
-        <p className="eyebrow">Yogyakarta ? 1?3 hari ? tanpa akun</p>
+        <p className="eyebrow">Yogyakarta · 1?3 hari · tanpa akun</p>
         <h1 className="page-title">Rencanakan perjalanan Anda</h1>
         <p>
           Ubah brief menjadi kebutuhan yang dapat diperiksa, lalu susun jadwal

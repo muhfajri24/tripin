@@ -49,7 +49,7 @@ export default function Sidebar({
       </nav>
       {(!collapsed || mobile) && (
         <p className="p-5 text-xs text-white/60">
-          Guest mode ? tanpa akun
+          Guest mode · tanpa akun
           <br />
           Trip tersimpan di browser Anda.
         </p>

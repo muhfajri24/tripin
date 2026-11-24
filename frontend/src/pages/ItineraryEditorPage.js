@@ -122,7 +122,7 @@ export default function ItineraryEditorPage() {
     <div className="space-y-5">
       <header className="flex flex-wrap justify-between gap-3">
         <div>
-          <p className="eyebrow">Revisi {trip.revision} ? validasi backend</p>
+          <p className="eyebrow">Revisi {trip.revision} · validasi backend</p>
           <h1 className="page-title">Edit & reschedule</h1>
         </div>
         <Link
@@ -245,7 +245,7 @@ export default function ItineraryEditorPage() {
                 </strong>
                 {stop && (
                   <span>
-                    Hari {stop.dayIndex + 1} ? {time(stop.arrivalAt)}
+                    Hari {stop.dayIndex + 1} · {time(stop.arrivalAt)}
                   </span>
                 )}
                 <button
@@ -254,7 +254,7 @@ export default function ItineraryEditorPage() {
                   onClick={() => move(i, -1)}
                   disabled={i === 0}
                 >
-                  ?
+                  Naik
                 </button>
                 <button
                   type="button"
@@ -262,7 +262,7 @@ export default function ItineraryEditorPage() {
                   onClick={() => move(i, 1)}
                   disabled={i === selected.length - 1}
                 >
-                  ?
+                  Turun
                 </button>
                 <button
                   type="button"
@@ -371,7 +371,7 @@ export default function ItineraryEditorPage() {
           </div>
         </details>
         <button className="btn-primary" disabled={busy}>
-          {busy ? "Menghitung ulang?" : "Validasi & terapkan draft"}
+          {busy ? "Menghitung ulang…" : "Validasi & terapkan draft"}
         </button>
       </form>
       {result && (
@@ -384,10 +384,10 @@ export default function ItineraryEditorPage() {
           </Notice>
           <div className="grid sm:grid-cols-2 gap-3">
             <div>
-              <h3 className="font-bold">Sebelum ? revisi {before.revision}</h3>
+              <h3 className="font-bold">Sebelum · revisi {before.revision}</h3>
               <p>
-                {before.totals.travelMin} menit ?{" "}
-                {rupiah(before.totals.knownCostIdr)} diketahui ?{" "}
+                {before.totals.travelMin} menit ·{" "}
+                {rupiah(before.totals.knownCostIdr)} diketahui ·{" "}
                 {before.totals.unknownCostItems} unknown
               </p>
             </div>
@@ -395,8 +395,8 @@ export default function ItineraryEditorPage() {
               <h3 className="font-bold">Sesudah</h3>
               {result.revised ? (
                 <p>
-                  {result.revised.totals.travelMin} menit ?{" "}
-                  {rupiah(result.revised.totals.knownCostIdr)} diketahui ?{" "}
+                  {result.revised.totals.travelMin} menit ·{" "}
+                  {rupiah(result.revised.totals.knownCostIdr)} diketahui ·{" "}
                   {result.revised.totals.unknownCostItems} unknown
                 </p>
               ) : (
@@ -420,10 +420,15 @@ export default function ItineraryEditorPage() {
                   stops.find((s) => s.id === c.stopId)?.placeId ||
                     c.stopId.replace("stop-", ""),
                 )}
-                : {c.action} ? {c.explanation}
+                : {c.action} · {c.explanation}
               </li>
             ))}
           </ul>
+          <p className="text-sm">
+            {['retained', 'moved', 'removed', 'replaced'].map((action) =>
+              `${action}: ${result.changes.filter((change) => change.action === action).length}`
+            ).join('; ')}. Angka dihitung dari perubahan backend, bukan penghematan terukur.
+          </p>
           <details>
             <summary>Jadwal awal sebelum perubahan</summary>
             <div className="mt-4">

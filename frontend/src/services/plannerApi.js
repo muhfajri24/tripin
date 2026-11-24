@@ -20,7 +20,7 @@ export async function api(path, body, signal) {
         [
           data.error?.message || "Permintaan gagal",
           ...Object.values(data.error?.fields || {}),
-        ].join(" ? "),
+        ].join("; "),
       );
     return data;
   } catch (e) {

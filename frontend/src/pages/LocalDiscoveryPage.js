@@ -73,7 +73,7 @@ export default function LocalDiscoveryPage() {
       {busy ? (
         <Notice>Memuat katalog backend?</Notice>
       ) : (
-        <p>{filtered.length} kandidat ? tidak semua metadata terverifikasi.</p>
+        <p>{filtered.length} kandidat · tidak semua metadata terverifikasi.</p>
       )}
       <div className="grid md:grid-cols-2 gap-4">
         {filtered.map((p) => (
