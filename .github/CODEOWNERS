@@ -1,0 +1,17 @@
+# Review routing only. This does not restrict direct pushes on shared dev.
+* @muhfajri24
+
+# Shakira owns frontend implementation; Fajri provides integration/QA support.
+/frontend/ @shakiraBilqis @muhfajri24
+
+# Tianisa owns catalog data and Supabase SQL; Fajri supports backend integration.
+/backend/app/data/ @tianisasianipar @muhfajri24
+/supabase/ @tianisasianipar @muhfajri24
+/backend/scripts/export_catalog_seed.py @tianisasianipar @muhfajri24
+/backend/tests/test_catalog_seed.py @tianisasianipar @muhfajri24
+/qa/audit_sources.py @tianisasianipar @muhfajri24
+
+# Shared API contracts, application runtime, CI and release evidence: Fajri.
+/contracts/ @muhfajri24
+/.github/ @muhfajri24
+/docs/MASTER_COMPLETION.md @muhfajri24
