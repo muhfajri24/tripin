@@ -1,0 +1,20 @@
+[
+  {
+    "port": 8011,
+    "origin": "http://localhost:3000",
+    "status": 200,
+    "allowOrigin": "http://localhost:3000"
+  },
+  {
+    "port": 8014,
+    "origin": "http://localhost:3003",
+    "status": 200,
+    "allowOrigin": "http://localhost:3003"
+  },
+  {
+    "port": 8014,
+    "origin": "https://untrusted.invalid",
+    "status": 400,
+    "allowOrigin": null
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "text": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Text",
+      "type": "string"
+    },
+    "locale": {
+      "const": "id-ID",
+      "default": "id-ID",
+      "title": "Locale",
+      "type": "string"
+    }
+  },
+  "required": [
+    "text"
+  ],
+  "title": "ParseBody",
+  "type": "object"
+}

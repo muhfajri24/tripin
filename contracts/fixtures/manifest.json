@@ -1,0 +1,134 @@
+[
+  {
+    "path": "valid/trip-1-day.json",
+    "model": "TravelRequest",
+    "valid": true,
+    "note": ""
+  },
+  {
+    "path": "valid/trip-2-day.json",
+    "model": "TravelRequest",
+    "valid": true,
+    "note": ""
+  },
+  {
+    "path": "valid/trip-3-day.json",
+    "model": "TravelRequest",
+    "valid": true,
+    "note": ""
+  },
+  {
+    "path": "valid/trip-per-person.json",
+    "model": "TravelRequest",
+    "valid": true,
+    "note": "totalIdr already normalized to group total; originalBasis records input basis only"
+  },
+  {
+    "path": "valid/unknown-place.json",
+    "model": "Place",
+    "valid": true,
+    "note": ""
+  },
+  {
+    "path": "invalid/negative-money.json",
+    "model": "TravelRequest",
+    "valid": false,
+    "note": ""
+  },
+  {
+    "path": "invalid/fraction-money.json",
+    "model": "TravelRequest",
+    "valid": false,
+    "note": ""
+  },
+  {
+    "path": "invalid/invalid-coordinates.json",
+    "model": "TravelRequest",
+    "valid": false,
+    "note": ""
+  },
+  {
+    "path": "invalid/invalid-duration.json",
+    "model": "TravelRequest",
+    "valid": false,
+    "note": ""
+  },
+  {
+    "path": "invalid/invalid-time.json",
+    "model": "TravelRequest",
+    "valid": false,
+    "note": ""
+  },
+  {
+    "path": "invalid/invalid-date.json",
+    "model": "TravelRequest",
+    "valid": false,
+    "note": ""
+  },
+  {
+    "path": "invalid/invalid-timezone.json",
+    "model": "TravelRequest",
+    "valid": false,
+    "note": ""
+  },
+  {
+    "path": "invalid/missing-lodging.json",
+    "model": "TravelRequest",
+    "valid": false,
+    "note": ""
+  },
+  {
+    "path": "invalid/conflicting-places.json",
+    "model": "TravelRequest",
+    "valid": false,
+    "note": ""
+  },
+  {
+    "path": "valid/scheduled-stop.json",
+    "model": "ScheduledStop",
+    "valid": true,
+    "note": ""
+  },
+  {
+    "path": "invalid/reversed-stop.json",
+    "model": "ScheduledStop",
+    "valid": false,
+    "note": ""
+  },
+  {
+    "path": "valid/itinerary-snapshot.json",
+    "model": "Itinerary",
+    "valid": true,
+    "note": ""
+  },
+  {
+    "path": "valid/declared-schedule-conflict.json",
+    "model": "Itinerary",
+    "valid": true,
+    "note": "Domain conflict is representable; Phase 1 does not evaluate schedules"
+  },
+  {
+    "path": "valid/replan-request.json",
+    "model": "ReplanRequest",
+    "valid": true,
+    "note": ""
+  },
+  {
+    "path": "valid/replan-needs-decision.json",
+    "model": "ReplanResult",
+    "valid": true,
+    "note": ""
+  },
+  {
+    "path": "valid/itinerary-replan-state.json",
+    "model": "Itinerary",
+    "valid": true,
+    "note": "Persisted progress metadata is backward-compatible and timezone-aware"
+  },
+  {
+    "path": "invalid/progress-outside-trip.json",
+    "model": "Itinerary",
+    "valid": false,
+    "note": "Progress cannot refer to a date outside the trip"
+  }
+]

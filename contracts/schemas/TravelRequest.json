@@ -1,0 +1,365 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Budget": {
+      "additionalProperties": false,
+      "properties": {
+        "totalIdr": {
+          "exclusiveMinimum": 0,
+          "title": "Totalidr",
+          "type": "integer"
+        },
+        "originalBasis": {
+          "enum": [
+            "person",
+            "group"
+          ],
+          "title": "Originalbasis",
+          "type": "string"
+        },
+        "reserveIdr": {
+          "minimum": 0,
+          "title": "Reserveidr",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "totalIdr",
+        "originalBasis",
+        "reserveIdr"
+      ],
+      "title": "Budget",
+      "type": "object"
+    },
+    "Coordinates": {
+      "additionalProperties": false,
+      "properties": {
+        "lat": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Lat",
+          "type": "number"
+        },
+        "lng": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Lng",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lat",
+        "lng"
+      ],
+      "title": "Coordinates",
+      "type": "object"
+    },
+    "CostAssumptions": {
+      "additionalProperties": false,
+      "description": "User-supplied estimates, never represented as provider facts.",
+      "properties": {
+        "foodPersonIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Foodpersonidr"
+        },
+        "lodgingRoomNightIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lodgingroomnightidr"
+        },
+        "vehicleDayIdr": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vehicledayidr"
+        }
+      },
+      "title": "CostAssumptions",
+      "type": "object"
+    },
+    "DayWindow": {
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Date",
+          "type": "string"
+        },
+        "start": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "Start",
+          "type": "string"
+        },
+        "end": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "End",
+          "type": "string"
+        }
+      },
+      "required": [
+        "date",
+        "start",
+        "end"
+      ],
+      "title": "DayWindow",
+      "type": "object"
+    },
+    "Lodging": {
+      "additionalProperties": false,
+      "properties": {
+        "placeId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Placeid",
+          "type": "string"
+        },
+        "rooms": {
+          "exclusiveMinimum": 0,
+          "title": "Rooms",
+          "type": "integer"
+        },
+        "nights": {
+          "maximum": 2,
+          "minimum": 1,
+          "title": "Nights",
+          "type": "integer"
+        },
+        "checkInAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Checkinat"
+        }
+      },
+      "required": [
+        "placeId",
+        "rooms",
+        "nights",
+        "checkInAt"
+      ],
+      "title": "Lodging",
+      "type": "object"
+    },
+    "PeriodPreference": {
+      "additionalProperties": false,
+      "properties": {
+        "period": {
+          "enum": [
+            "morning",
+            "afternoon",
+            "evening"
+          ],
+          "title": "Period",
+          "type": "string"
+        },
+        "categories": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Categories",
+          "type": "array"
+        }
+      },
+      "required": [
+        "period",
+        "categories"
+      ],
+      "title": "PeriodPreference",
+      "type": "object"
+    },
+    "Travelers": {
+      "additionalProperties": false,
+      "properties": {
+        "adults": {
+          "maximum": 6,
+          "minimum": 1,
+          "title": "Adults",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "adults"
+      ],
+      "title": "Travelers",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1,
+      "title": "Schemaversion",
+      "type": "integer"
+    },
+    "destinationId": {
+      "const": "yogyakarta",
+      "title": "Destinationid",
+      "type": "string"
+    },
+    "startDate": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "title": "Startdate",
+      "type": "string"
+    },
+    "days": {
+      "maximum": 3,
+      "minimum": 1,
+      "title": "Days",
+      "type": "integer"
+    },
+    "timezone": {
+      "const": "Asia/Jakarta",
+      "title": "Timezone",
+      "type": "string"
+    },
+    "travelers": {
+      "$ref": "#/$defs/Travelers"
+    },
+    "transportMode": {
+      "const": "driving",
+      "title": "Transportmode",
+      "type": "string"
+    },
+    "budget": {
+      "$ref": "#/$defs/Budget"
+    },
+    "dayWindows": {
+      "items": {
+        "$ref": "#/$defs/DayWindow"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Daywindows",
+      "type": "array"
+    },
+    "arrivalAnchor": {
+      "$ref": "#/$defs/Coordinates"
+    },
+    "departureAnchor": {
+      "$ref": "#/$defs/Coordinates"
+    },
+    "lodging": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Lodging"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "interests": {
+      "items": {
+        "maxLength": 100,
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+        "type": "string"
+      },
+      "maxItems": 12,
+      "title": "Interests",
+      "type": "array"
+    },
+    "periodPreferences": {
+      "items": {
+        "$ref": "#/$defs/PeriodPreference"
+      },
+      "maxItems": 3,
+      "title": "Periodpreferences",
+      "type": "array"
+    },
+    "mustVisitPlaceIds": {
+      "items": {
+        "maxLength": 100,
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+        "type": "string"
+      },
+      "maxItems": 18,
+      "title": "Mustvisitplaceids",
+      "type": "array"
+    },
+    "excludedPlaceIds": {
+      "items": {
+        "maxLength": 100,
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+        "type": "string"
+      },
+      "maxItems": 35,
+      "title": "Excludedplaceids",
+      "type": "array"
+    },
+    "objective": {
+      "enum": [
+        "balanced",
+        "budget",
+        "travel_time"
+      ],
+      "title": "Objective",
+      "type": "string"
+    },
+    "costAssumptions": {
+      "$ref": "#/$defs/CostAssumptions"
+    },
+    "allowUnverifiedData": {
+      "title": "Allowunverifieddata",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "destinationId",
+    "startDate",
+    "days",
+    "timezone",
+    "travelers",
+    "transportMode",
+    "budget",
+    "dayWindows",
+    "arrivalAnchor",
+    "departureAnchor",
+    "lodging",
+    "interests",
+    "periodPreferences",
+    "mustVisitPlaceIds",
+    "excludedPlaceIds",
+    "objective",
+    "allowUnverifiedData"
+  ],
+  "title": "TravelRequest",
+  "type": "object"
+}

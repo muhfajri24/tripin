@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "sourceType": {
+          "enum": [
+            "curated",
+            "provider",
+            "user"
+          ],
+          "title": "Sourcetype",
+          "type": "string"
+        },
+        "sourceRef": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sourceref"
+        },
+        "checkedAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Checkedat"
+        },
+        "status": {
+          "enum": [
+            "checked",
+            "estimated",
+            "unverified"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sourceType",
+        "sourceRef",
+        "checkedAt",
+        "status"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "StopLock": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "none",
+            "place_day",
+            "place_time"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "arrivalAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Arrivalat"
+        }
+      },
+      "required": [
+        "type",
+        "arrivalAt"
+      ],
+      "title": "StopLock",
+      "type": "object"
+    },
+    "TravelLeg": {
+      "additionalProperties": false,
+      "properties": {
+        "fromId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Fromid",
+          "type": "string"
+        },
+        "toId": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+          "title": "Toid",
+          "type": "string"
+        },
+        "mode": {
+          "const": "driving",
+          "title": "Mode",
+          "type": "string"
+        },
+        "distanceMeters": {
+          "minimum": 0,
+          "title": "Distancemeters",
+          "type": "integer"
+        },
+        "estimatedDurationMin": {
+          "minimum": 0,
+          "title": "Estimateddurationmin",
+          "type": "integer"
+        },
+        "schedulingBufferMin": {
+          "minimum": 0,
+          "title": "Schedulingbuffermin",
+          "type": "integer"
+        },
+        "source": {
+          "enum": [
+            "curated_road_matrix",
+            "provider",
+            "haversine"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence"
+        }
+      },
+      "required": [
+        "fromId",
+        "toId",
+        "mode",
+        "distanceMeters",
+        "estimatedDurationMin",
+        "schedulingBufferMin",
+        "source",
+        "evidence"
+      ],
+      "title": "TravelLeg",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "maxLength": 100,
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+      "title": "Id",
+      "type": "string"
+    },
+    "placeId": {
+      "maxLength": 100,
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+      "title": "Placeid",
+      "type": "string"
+    },
+    "dayIndex": {
+      "maximum": 2,
+      "minimum": 0,
+      "title": "Dayindex",
+      "type": "integer"
+    },
+    "arrivalAt": {
+      "format": "date-time",
+      "title": "Arrivalat",
+      "type": "string"
+    },
+    "departureAt": {
+      "format": "date-time",
+      "title": "Departureat",
+      "type": "string"
+    },
+    "visitDurationMin": {
+      "exclusiveMinimum": 0,
+      "title": "Visitdurationmin",
+      "type": "integer"
+    },
+    "incomingLeg": {
+      "$ref": "#/$defs/TravelLeg"
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "completed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "lock": {
+      "$ref": "#/$defs/StopLock"
+    },
+    "selectionReasons": {
+      "items": {
+        "maxLength": 1000,
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Selectionreasons",
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "placeId",
+    "dayIndex",
+    "arrivalAt",
+    "departureAt",
+    "visitDurationMin",
+    "incomingLeg",
+    "status",
+    "lock",
+    "selectionReasons"
+  ],
+  "title": "ScheduledStop",
+  "type": "object"
+}

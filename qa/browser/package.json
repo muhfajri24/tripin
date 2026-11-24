@@ -1,0 +1,8 @@
+{
+  "name": "tripin-browser-qa",
+  "private": true,
+  "description": "Optional isolated QA dependency; not required by FE/BE runtime",
+  "devDependencies": {
+    "playwright-core": "1.58.2"
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "datasetVersion": "yogyakarta-v0_2_0",
+  "grain": "one canonical place per stable id",
+  "rows": 9,
+  "duplicateIds": 0,
+  "duplicateNames": 0,
+  "completeness": {
+    "coordinatesKnown": {
+      "count": 7,
+      "denominator": 9,
+      "percent": 77.8
+    },
+    "priceKnown": {
+      "count": 1,
+      "denominator": 9,
+      "percent": 11.1
+    },
+    "hoursKnown": {
+      "count": 1,
+      "denominator": 9,
+      "percent": 11.1
+    },
+    "addressKnown": {
+      "count": 4,
+      "denominator": 9,
+      "percent": 44.4
+    },
+    "localBusinessClassified": {
+      "count": 0,
+      "denominator": 9,
+      "percent": 0.0
+    }
+  },
+  "records": [
+    {
+      "id": "yog-museum-kereta",
+      "name": "Museum Kereta Kraton Ngayogyakarta Hadiningrat",
+      "kind": "attraction",
+      "coordinatesKnown": true,
+      "coordinatesInPilotBounds": true,
+      "priceKnown": false,
+      "hoursKnown": false,
+      "addressKnown": true,
+      "durationStatus": "estimated",
+      "localBusinessClassified": false,
+      "source": "https://jogjacagar.jogjaprov.go.id/detail/1322/museum-kereta-kraton-yogyakarta",
+      "sourceHost": "jogjacagar.jogjaprov.go.id"
+    },
+    {
+      "id": "yog-gudeg-yu-djum-pusat",
+      "name": "Gudeg Yu Djum Pusat",
+      "kind": "food",
+      "coordinatesKnown": false,
+      "coordinatesInPilotBounds": null,
+      "priceKnown": false,
+      "hoursKnown": false,
+      "addressKnown": true,
+      "durationStatus": "estimated",
+      "localBusinessClassified": false,
+      "source": "https://gudegyudjumpusat.com/",
+      "sourceHost": "gudegyudjumpusat.com"
+    },
+    {
+      "id": "yog-kedhaton",
+      "name": "Kagungan Dalem Kedhaton",
+      "kind": "attraction",
+      "coordinatesKnown": false,
+      "coordinatesInPilotBounds": null,
+      "priceKnown": false,
+      "hoursKnown": false,
+      "addressKnown": true,
+      "durationStatus": "estimated",
+      "localBusinessClassified": false,
+      "source": "https://tourism.kratonjogja.id/id-ID/destination/3-kagungan-dalem-kedhaton/",
+      "sourceHost": "tourism.kratonjogja.id"
+    },
+    {
+      "id": "yog-phoenix",
+      "name": "The Phoenix Hotel Yogyakarta",
+      "kind": "lodging",
+      "coordinatesKnown": true,
+      "coordinatesInPilotBounds": true,
+      "priceKnown": false,
+      "hoursKnown": false,
+      "addressKnown": true,
+      "durationStatus": "estimated",
+      "localBusinessClassified": false,
+      "source": "https://all.accor.com/hotel/5451/index.en.shtml",
+      "sourceHost": "all.accor.com"
+    },
+    {
+      "id": "yog-vredeburg",
+      "name": "Museum Benteng Vredeburg",
+      "kind": "attraction",
+      "coordinatesKnown": true,
+      "coordinatesInPilotBounds": true,
+      "priceKnown": false,
+      "hoursKnown": false,
+      "addressKnown": false,
+      "durationStatus": "estimated",
+      "localBusinessClassified": false,
+      "source": "https://jogjacagar.jogjaprov.go.id/detail/4327/benteng-vredeburg",
+      "sourceHost": "jogjacagar.jogjaprov.go.id"
+    },
+    {
+      "id": "yog-ibis-styles",
+      "name": "ibis Styles Yogyakarta",
+      "kind": "lodging",
+      "coordinatesKnown": true,
+      "coordinatesInPilotBounds": true,
+      "priceKnown": false,
+      "hoursKnown": false,
+      "addressKnown": false,
+      "durationStatus": "estimated",
+      "localBusinessClassified": false,
+      "source": "https://all.accor.com/hotel/7460/index.en.shtml",
+      "sourceHost": "all.accor.com"
+    },
+    {
+      "id": "yog-sonobudoyo",
+      "name": "Museum Sonobudoyo Unit I",
+      "kind": "attraction",
+      "coordinatesKnown": true,
+      "coordinatesInPilotBounds": true,
+      "priceKnown": true,
+      "hoursKnown": true,
+      "addressKnown": false,
+      "durationStatus": "estimated",
+      "localBusinessClassified": false,
+      "source": "https://repositori.kemendikdasmen.go.id/26873/1/Katalog%20museum%20NAsional%20Jilid%202.pdf",
+      "sourceHost": "repositori.kemendikdasmen.go.id"
+    },
+    {
+      "id": "yog-bebek-cak-koting",
+      "name": "Bebek Cak Koting",
+      "kind": "food",
+      "coordinatesKnown": true,
+      "coordinatesInPilotBounds": true,
+      "priceKnown": false,
+      "hoursKnown": false,
+      "addressKnown": false,
+      "durationStatus": "estimated",
+      "localBusinessClassified": false,
+      "source": "https://repo.unwim.ac.id/1096/1/715-Article%20Text-3276-1-10-20240527.pdf",
+      "sourceHost": "repo.unwim.ac.id"
+    },
+    {
+      "id": "yog-malioboro",
+      "name": "Kawasan Malioboro",
+      "kind": "attraction",
+      "coordinatesKnown": true,
+      "coordinatesInPilotBounds": true,
+      "priceKnown": false,
+      "hoursKnown": false,
+      "addressKnown": false,
+      "durationStatus": "estimated",
+      "localBusinessClassified": false,
+      "source": "https://repo.unwim.ac.id/1096/1/715-Article%20Text-3276-1-10-20240527.pdf",
+      "sourceHost": "repo.unwim.ac.id"
+    }
+  ],
+  "interpretation": "Schema-valid does not mean field-verified. No evidence of live lodging availability or a complete two-day price budget."
+}

@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "ParseDraft": {
+      "additionalProperties": false,
+      "properties": {
+        "destinationId": {
+          "anyOf": [
+            {
+              "const": "yogyakarta",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Destinationid"
+        },
+        "unsupportedDestination": {
+          "default": false,
+          "title": "Unsupporteddestination",
+          "type": "boolean"
+        },
+        "days": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Days"
+        },
+        "adults": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Adults"
+        },
+        "budgetBasis": {
+          "anyOf": [
+            {
+              "enum": [
+                "person",
+                "group"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Budgetbasis"
+        },
+        "budgetAmountIdr": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Budgetamountidr"
+        },
+        "transportMode": {
+          "anyOf": [
+            {
+              "const": "driving",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transportmode"
+        },
+        "startDate": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Startdate"
+        },
+        "interests": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Interests",
+          "type": "array"
+        },
+        "periodPreferences": {
+          "items": {
+            "$ref": "#/$defs/PeriodPreference"
+          },
+          "title": "Periodpreferences",
+          "type": "array"
+        }
+      },
+      "required": [
+        "interests",
+        "periodPreferences"
+      ],
+      "title": "ParseDraft",
+      "type": "object"
+    },
+    "PeriodPreference": {
+      "additionalProperties": false,
+      "properties": {
+        "period": {
+          "enum": [
+            "morning",
+            "afternoon",
+            "evening"
+          ],
+          "title": "Period",
+          "type": "string"
+        },
+        "categories": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Categories",
+          "type": "array"
+        }
+      },
+      "required": [
+        "period",
+        "categories"
+      ],
+      "title": "PeriodPreference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "draft": {
+      "$ref": "#/$defs/ParseDraft"
+    },
+    "missingFields": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missingfields",
+      "type": "array"
+    },
+    "ambiguities": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Ambiguities",
+      "type": "array"
+    },
+    "parserSource": {
+      "const": "deterministic-id-v1",
+      "title": "Parsersource",
+      "type": "string"
+    }
+  },
+  "required": [
+    "draft",
+    "missingFields",
+    "ambiguities",
+    "parserSource"
+  ],
+  "title": "ParseResponse",
+  "type": "object"
+}

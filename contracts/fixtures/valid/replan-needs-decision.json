@@ -1,0 +1,20 @@
+{
+  "status": "needs_user_decision",
+  "revised": null,
+  "disruptedOriginalViolations": [
+    {
+      "code": "FIXED_TIME_CONFLICT",
+      "dayIndex": 0,
+      "stopIds": [
+        "stop-1"
+      ],
+      "message": "Disruption would reach locked stop after its fixed time; declared test conflict, not computed"
+    }
+  ],
+  "changes": [],
+  "beforeAfter": {
+    "costDeltaIdr": null,
+    "travelDeltaMin": 0,
+    "removedOptionalStops": 0
+  }
+}

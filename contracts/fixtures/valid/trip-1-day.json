@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "destinationId": "yogyakarta",
+  "startDate": "2026-12-01",
+  "days": 1,
+  "timezone": "Asia/Jakarta",
+  "travelers": {
+    "adults": 2
+  },
+  "transportMode": "driving",
+  "budget": {
+    "totalIdr": 2000000,
+    "originalBasis": "group",
+    "reserveIdr": 100000
+  },
+  "dayWindows": [
+    {
+      "date": "2026-12-01",
+      "start": "08:00",
+      "end": "20:00"
+    }
+  ],
+  "arrivalAnchor": {
+    "lat": -7.8,
+    "lng": 110.36
+  },
+  "departureAnchor": {
+    "lat": -7.8,
+    "lng": 110.36
+  },
+  "lodging": null,
+  "interests": [
+    "culture",
+    "food"
+  ],
+  "periodPreferences": [
+    {
+      "period": "morning",
+      "categories": [
+        "food"
+      ]
+    }
+  ],
+  "mustVisitPlaceIds": [],
+  "excludedPlaceIds": [],
+  "objective": "balanced",
+  "allowUnverifiedData": true,
+  "costAssumptions": {
+    "foodPersonIdr": null,
+    "lodgingRoomNightIdr": null,
+    "vehicleDayIdr": null
+  }
+}

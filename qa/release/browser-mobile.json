@@ -1,0 +1,106 @@
+{
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "steps": [
+    {
+      "name": "mobile landing and empty My Trips",
+      "status": "passed"
+    },
+    {
+      "name": "mobile navigation drawer",
+      "status": "passed"
+    },
+    {
+      "name": "unsupported destination is explicit",
+      "status": "passed"
+    },
+    {
+      "name": "mobile one-day form and plan",
+      "status": "passed"
+    },
+    {
+      "name": "mobile budget horizontal table contained",
+      "status": "passed"
+    },
+    {
+      "name": "mobile save reload and delete own test trip",
+      "status": "passed"
+    },
+    {
+      "name": "invalid trip ID",
+      "status": "passed"
+    },
+    {
+      "name": "Explore filters use backend",
+      "status": "passed"
+    },
+    {
+      "name": "backend unavailable error (deliberately aborted request)",
+      "status": "passed"
+    },
+    {
+      "name": "infeasible budget visible, no invented result",
+      "status": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "overflow": [
+    {
+      "name": "10-mobile-landing",
+      "viewport": 390,
+      "document": 390,
+      "main": 390
+    },
+    {
+      "name": "11-mobile-empty-trips",
+      "viewport": 390,
+      "document": 390,
+      "main": 390
+    },
+    {
+      "name": "12-mobile-unsupported",
+      "viewport": 390,
+      "document": 390,
+      "main": 390
+    },
+    {
+      "name": "13-mobile-result",
+      "viewport": 390,
+      "document": 390,
+      "main": 390
+    },
+    {
+      "name": "14-mobile-budget",
+      "viewport": 390,
+      "document": 390,
+      "main": 390
+    },
+    {
+      "name": "15-mobile-invalid-id",
+      "viewport": 390,
+      "document": 390,
+      "main": 390
+    },
+    {
+      "name": "16-mobile-explore",
+      "viewport": 390,
+      "document": 390,
+      "main": 390
+    },
+    {
+      "name": "17-mobile-network-error",
+      "viewport": 390,
+      "document": 390,
+      "main": 390
+    },
+    {
+      "name": "18-mobile-budget-conflict",
+      "viewport": 390,
+      "document": 390,
+      "main": 390
+    }
+  ],
+  "tripId": "3d14af67-583a-4e54-8d1d-c3cf716838ed"
+}

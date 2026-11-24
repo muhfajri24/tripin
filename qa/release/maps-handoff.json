@@ -1,0 +1,10 @@
+{
+  "requestedUrl": "https://www.google.com/maps/dir/?api=1&origin=-7.8%2C110.36&destination=-7.805456%2C110.362751&travelmode=driving&waypoints=-7.7926%2C110.3658%7C-7.792%2C110.3777%7C-7.80275%2C110.36380555555554",
+  "actualUrl": "https://www.google.com/maps/dir/?api=1&origin=-7.8%2C110.36&destination=-7.805456%2C110.362751&travelmode=driving&waypoints=-7.7926%2C110.3658%7C-7.792%2C110.3777%7C-7.80275%2C110.36380555555554",
+  "title": "Google Maps",
+  "navigationError": null,
+  "driving": true,
+  "anchor": "-7.8,110.36",
+  "popupOpened": true,
+  "rendered": false
+}

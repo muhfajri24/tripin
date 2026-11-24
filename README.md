@@ -1,100 +1,78 @@
-# TRIPIN — AI-Powered Travel Itinerary Planner
+﻿# TRIPIN — Guest adaptive travel planner
 
-A modern, premium frontend for an AI travel itinerary planner built with React.js and Tailwind CSS.
+Guest-access MVP for Yogyakarta, 1–3 days, driving. No account, email, booking, paid AI,
+Google Places or Google Routes key is required. Estimates and unknown metadata are explicit.
 
-## 🚀 Quick Start
+## Run locally
 
-```bash
-# 1. Install dependencies
-npm install
+Two terminals from repository root:
 
-# 2. Start development server
+```powershell
+# Frontend
+cd frontend
+npm ci
 npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## 📁 Project Structure
-
-```
-src/
-├── components/          # Reusable UI components
-│   ├── Sidebar.js       # Fixed/collapsible navigation sidebar
-│   ├── Navbar.js        # Top navigation bar
-│   ├── DestinationCard.js
-│   ├── ItineraryTimeline.js
-│   ├── MapView.js       # Leaflet + OpenStreetMap
-│   ├── BudgetCard.js
-│   ├── RecommendationCard.js
-│   ├── OptimizationSelector.js
-│   ├── RescheduleModal.js
-│   ├── SearchInput.js
-│   ├── EmptyState.js
-│   └── LoadingSkeleton.js
-│
-├── layouts/
-│   └── AppLayout.js     # Main layout with sidebar + navbar
-│
-├── pages/               # Route pages
-│   ├── LandingPage.js
-│   ├── DashboardPage.js
-│   ├── CreateItineraryPage.js
-│   ├── ItineraryResultPage.js
-│   ├── ItineraryEditorPage.js
-│   ├── SmartReschedulerPage.js
-│   ├── BudgetOverviewPage.js
-│   ├── ExplorePage.js
-│   ├── MyItinerariesPage.js
-│   ├── SavedPlacesPage.js
-│   └── SettingsPage.js
-│
-├── data/
-│   └── mockData.js      # All mock data (replace with API calls)
-│
-├── App.js               # Router + routes
-└── index.css            # Global styles + Tailwind directives
+```powershell
+# Backend (Python 3.11+)
+python -m venv backend/.venv
+backend/.venv/Scripts/python -m pip install -r backend/requirements-dev.txt
+cd backend
+.venv/Scripts/python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8011
 ```
 
-## 🎨 Design System
+Frontend: http://localhost:3000. API health: http://127.0.0.1:8011/api/v1/health.
+API docs: http://127.0.0.1:8011/docs. CRA development proxy forwards `/api/v1` to port 8011.
+If that port is occupied by an older backend, stop/restart your own backend or use another
+port and set `REACT_APP_API_URL` in `frontend/.env.local`, plus explicit backend CORS origins.
+Do not stop unrelated processes.
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Warm Coral | `#FF6B5E` | Primary accent, CTAs |
-| Sunshine Yellow | `#FFC857` | Highlights, badges |
-| Deep Teal | `#176B67` | Navigation, secondary buttons |
-| Sky Blue | `#EAF4F4` | Backgrounds, tags |
-| Warm Cream | `#FFF9F0` | Main background |
-| Charcoal | `#253238` | Main text |
+## Supported workflow
 
-## 🗺️ Pages & Navigation
+Brief -> deterministic Indonesian parser -> editable review -> backend candidate repository
+-> bounded constraint-aware planning -> schedule/ledger/map -> edit or delay/closure replan
+-> local save/delete -> Google Maps sequential route segments.
 
-| Route | Page |
-|-------|------|
-| `/` | Landing Page |
-| `/dashboard` | Dashboard |
-| `/explore` | Explore Destinations |
-| `/my-itineraries` | My Itineraries |
-| `/create` | Create Itinerary |
-| `/itinerary/:id` | Itinerary Results |
-| `/itinerary/:id/edit` | Itinerary Editor |
-| `/itinerary/:id/reschedule` | Smart Rescheduler |
-| `/itinerary/:id/budget` | Budget Overview |
-| `/saved` | Saved Places |
-| `/settings` | Settings |
+Navigation: Home, Plan a Trip, My Trips, Explore Yogyakarta. Legacy dashboard/settings/saved
+URLs redirect to guest pages. Prototype data files are retained for reference but are not
+imported by the active guest workflow. Existing fictional demo itineraries are not migrated.
 
-## 🔌 Connecting to a Real Backend
+## Tests
 
-All mock data is in `src/data/mockData.js`. To connect to a real API:
+```powershell
+cd frontend
+npm test -- --runInBand
+npm run build
+```
 
-1. Replace the mock data exports with API calls
-2. Each function returns the same shape as the mock data
-3. Add a `.env` file: `REACT_APP_API_URL=https://your-api.com`
+```powershell
+cd backend
+.venv/Scripts/python -m pytest -q
+.venv/Scripts/python -m scripts.export_schemas
+```
 
-## 📦 Dependencies
+## Repository
 
-- `react-router-dom` — Client-side routing
-- `react-leaflet` + `leaflet` — Interactive maps (OpenStreetMap)
-- `lucide-react` — Icons
-- `clsx` — Conditional class names
-- `tailwindcss` — Utility-first CSS
+- `frontend/`: existing React identity/layout/Leaflet, guest pages and local persistence.
+- `backend/`: FastAPI, canonical contracts, parser, repository, planner/replanner, tests.
+- `contracts/`: exported schemas, API envelopes, canonical valid/invalid fixtures.
+- `docs/`: product/audit history and current implementation notes.
 
+## Important limits
+
+Nine pilot candidates; not all are routable. One versioned local catalog is active.
+Unknown hours/prices are not free or always-open. Permit unverified data explicitly to
+receive a conditional plan; disable it to reject incomplete candidates. Route distance is
+straight-line Haversine with a documented duration heuristic, not actual road routing/traffic.
+Costs include selected food stops only, not every possible meal. User estimates are not quotes.
+No global optimum or proof of infeasibility is claimed when bounded search fails.
+
+Supabase is owned by another teammate and remains pending finalized schema/approval.
+See [integration boundary](docs/SUPABASE_INTEGRATION.md), [backend](backend/README.md),
+[data provenance](backend/app/data/README.md), and [current MVP details](docs/MVP_IMPLEMENTATION.md).
+
+## Collaboration
+
+Only `dev` and `main`: develop/integrate/test on `dev`; promote reviewed, verified changes
+to `main`. No force-push or automatic release merge. Database changes require teammate approval.

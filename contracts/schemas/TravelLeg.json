@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "sourceType": {
+          "enum": [
+            "curated",
+            "provider",
+            "user"
+          ],
+          "title": "Sourcetype",
+          "type": "string"
+        },
+        "sourceRef": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sourceref"
+        },
+        "checkedAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Checkedat"
+        },
+        "status": {
+          "enum": [
+            "checked",
+            "estimated",
+            "unverified"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sourceType",
+        "sourceRef",
+        "checkedAt",
+        "status"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "fromId": {
+      "maxLength": 100,
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+      "title": "Fromid",
+      "type": "string"
+    },
+    "toId": {
+      "maxLength": 100,
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
+      "title": "Toid",
+      "type": "string"
+    },
+    "mode": {
+      "const": "driving",
+      "title": "Mode",
+      "type": "string"
+    },
+    "distanceMeters": {
+      "minimum": 0,
+      "title": "Distancemeters",
+      "type": "integer"
+    },
+    "estimatedDurationMin": {
+      "minimum": 0,
+      "title": "Estimateddurationmin",
+      "type": "integer"
+    },
+    "schedulingBufferMin": {
+      "minimum": 0,
+      "title": "Schedulingbuffermin",
+      "type": "integer"
+    },
+    "source": {
+      "enum": [
+        "curated_road_matrix",
+        "provider",
+        "haversine"
+      ],
+      "title": "Source",
+      "type": "string"
+    },
+    "evidence": {
+      "$ref": "#/$defs/Evidence"
+    }
+  },
+  "required": [
+    "fromId",
+    "toId",
+    "mode",
+    "distanceMeters",
+    "estimatedDurationMin",
+    "schedulingBufferMin",
+    "source",
+    "evidence"
+  ],
+  "title": "TravelLeg",
+  "type": "object"
+}
