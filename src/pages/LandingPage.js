@@ -5,24 +5,34 @@ import { mockRecommendations } from '../data/mockData';
 
 const heroDestinations = [
   {
-    name: 'Labuan Bajo',
-    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200&q=85',
-    tagline: 'Gerbang Komodo & Kopi Flores Bajawa',
+    name: 'Banda Neira',
+    image: '/images/hero/hero-bandaneira.jpg',
+    tagline: 'Benteng Belgica & Kemegahan Banda Neira',
   },
   {
-    name: 'Danau Toba',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=85',
-    tagline: 'Kaldera Geopark & Tenun Ulos Samosir',
+    name: 'Yogyakarta',
+    image: '/images/hero/hero-malioboro.jpg',
+    tagline: 'Suasana Syahdu Malioboro & Budaya Keraton',
+  },
+  {
+    name: 'Gunung Bromo',
+    image: '/images/hero/hero-bromo.jpg',
+    tagline: 'Lautan Pasir & Keindahan Mentari Bromo',
+  },
+  {
+    name: 'Bali',
+    image: '/images/hero/hero-bali.jpg',
+    tagline: 'Pesona Tebing & Birunya Pantai Dewata',
   },
   {
     name: 'Raja Ampat',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=85',
-    tagline: 'Surga Bahari & Noken Mama Papua',
+    image: '/images/hero/hero-rajaampat.jpg',
+    tagline: 'Surga Karang Dunia & Gugusan Pulau Karst',
   },
   {
-    name: 'Bandung',
-    image: 'https://images.unsplash.com/photo-1570197571499-166b36435e9f?w=1200&q=85',
-    tagline: 'Seni Angklung Udjo & Kawah Putih',
+    name: 'Palembang',
+    image: '/images/hero/hero-ampera.jpg',
+    tagline: 'Ikon Megah Jembatan Ampera & Sungai Musi',
   },
 ];
 
@@ -58,11 +68,11 @@ function LandingPage() {
   const [heroIdx, setHeroIdx] = useState(0);
   const [destination, setDestination] = useState('');
 
-  // Background rotasi otomatis setiap 2 detik
+  // Background rotasi otomatis setiap 5 detik
   useEffect(() => {
     const timer = setInterval(() => {
       setHeroIdx((prev) => (prev + 1) % heroDestinations.length);
-    }, 2000);
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
