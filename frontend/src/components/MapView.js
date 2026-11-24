@@ -1,19 +1,29 @@
-import React, { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
-import L from 'leaflet';
-import { ExternalLink } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+  useMap,
+} from "react-leaflet";
+import L from "leaflet";
+import { ExternalLink } from "lucide-react";
 
 // Fix default marker icons for Leaflet with CRA
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
 });
 
-const createNumberedIcon = (number, color = '#FF6B5E') =>
+const createNumberedIcon = (number, color = "#FF6B5E") =>
   L.divIcon({
-    className: '',
+    className: "",
     html: `<div style="
       background: ${color};
       color: white;
@@ -53,27 +63,43 @@ function RecenterMap({ positions, defaultCenter }) {
   return null;
 }
 
-function MapView({ activities = [], center, zoom = 12, height = '400px' }) {
-  const validActivities = activities.filter((a) => a.lat && a.lng);
+function MapView({ activities = [], center, zoom = 12, height = "400px" }) {
+  const [tileFailed, setTileFailed] = useState(false);
+  const validActivities = activities.filter(
+    (a) => Number.isFinite(a.lat) && Number.isFinite(a.lng),
+  );
 
-  const defaultCenter = center ||
+  const defaultCenter =
+    center ||
     (validActivities.length > 0
       ? [validActivities[0].lat, validActivities[0].lng]
-      : [-8.4095, 115.1889]);
+      : [-7.7956, 110.3695]);
 
   const positions = validActivities.map((a) => [a.lat, a.lng]);
 
   return (
-    <div className="rounded-2xl overflow-hidden shadow-soft border border-gray-100" style={{ height }}>
+    <div
+      className="relative rounded-2xl overflow-hidden shadow-soft border border-gray-100"
+      style={{ height }}
+    >
+      {tileFailed && (
+        <p
+          role="status"
+          className="absolute top-2 left-2 right-2 z-[1000] bg-white p-2 text-xs rounded shadow"
+        >
+          Peta dasar belum dapat dimuat. Jadwal dan koordinat tetap tersedia.
+        </p>
+      )}
       <MapContainer
         center={defaultCenter}
         zoom={zoom}
-        style={{ height: '100%', width: '100%' }}
+        style={{ height: "100%", width: "100%" }}
         scrollWheelZoom={false}
       >
         <RecenterMap positions={positions} defaultCenter={defaultCenter} />
 
         <TileLayer
+          eventHandlers={{ tileerror: () => setTileFailed(true) }}
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
@@ -94,7 +120,10 @@ function MapView({ activities = [], center, zoom = 12, height = '400px' }) {
           <Marker
             key={activity.id || idx}
             position={[activity.lat, activity.lng]}
-            icon={createNumberedIcon(idx + 1, idx === 0 ? '#FF6B5E' : '#176B67')}
+            icon={createNumberedIcon(
+              idx + 1,
+              idx === 0 ? "#FF6B5E" : "#176B67",
+            )}
           >
             <Popup>
               <div className="p-1 min-w-[170px] max-w-[220px]">
@@ -102,17 +131,21 @@ function MapView({ activities = [], center, zoom = 12, height = '400px' }) {
                   <span className="w-5 h-5 rounded-full bg-teal text-white text-[10px] font-bold flex items-center justify-center">
                     {idx + 1}
                   </span>
-                  <p className="font-bold text-charcoal text-xs leading-snug">{activity.name}</p>
+                  <p className="font-bold text-charcoal text-xs leading-snug">
+                    {activity.name}
+                  </p>
                 </div>
                 {activity.city && (
-                  <p className="text-[10px] text-charcoal-lighter line-clamp-2">{activity.city}</p>
+                  <p className="text-[10px] text-charcoal-lighter line-clamp-2">
+                    {activity.city}
+                  </p>
                 )}
                 <p className="text-[10px] text-teal font-semibold mt-1">
                   {activity.time} · {activity.duration}
                 </p>
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                    `${activity.name}, ${activity.city || ''}`
+                    `${activity.name}, ${activity.city || ""}`,
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"

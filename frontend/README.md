@@ -1,28 +1,26 @@
-# TRPIN frontend
+﻿# Frontend guest MVP
 
-React frontend yang sudah ada, dipisahkan dari backend tanpa perubahan source aplikasi.
-
-## Run (dari root repository)
+React/CRA, existing TRIPIN palette/layout/Leaflet. Run commands from this directory:
 
 ```powershell
-cd frontend
 npm ci
 npm start
+npm test -- --runInBand
+npm run build
 ```
 
-Buka http://localhost:3000. Production build: `npm run build` dari folder ini.
+Default development URL: http://localhost:3000. `/api/v1` proxies to the FastAPI backend at
+http://127.0.0.1:8011. Start backend separately. Optional REACT_APP_API_URL overrides the full
+API base; see .env.example. Restart dev server after changing configuration.
 
-## Struktur
+Active pages: Landing, Create (parse/review/plan), Result, Editor, My Trips, Explore. Legacy
+account/settings/saved routes redirect. Guest state is local, no fictional demo migration.
+API data and calculations come from backend; mockData.js remains archival prototype code.
 
-- `src/pages/`: halaman berdasarkan route.
-- `src/components/`: komponen UI bersama.
-- `src/layouts/`: shell aplikasi.
-- `src/services/`: adapter tempat, wilayah, dan routing.
-- `src/data/`: mock data dan logic prototype lama.
-- `src/assets/`: aset import aplikasi.
-- `public/`: HTML shell dan aset publik.
-- `tailwind.config.js`: konfigurasi tema dan source scanning.
+Storage failure/corruption is visible; a failed write is not displayed as success. Navigation
+state keeps the current unsaved response available while the SPA remains open. Reload loses
+unsaved state. Do not enter sensitive personal information into the brief.
 
-Semua relative imports dan public asset URLs tetap sama. Data UI masih berasal dari
-prototype lama; pemindahan folder ini tidak menghubungkan frontend ke FastAPI.
-File environment frontend, bila diperlukan, ditempatkan di `frontend/.env.local`.
+Map is straight-line sequence with OSM attribution, not actual routing. Google Maps links
+are split by day/segments. Supabase is never called from React. No paid AI/maps service.
+Production hosting needs SPA fallback and HTTPS API/proxy plus matching CORS origin.
