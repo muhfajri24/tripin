@@ -5,6 +5,8 @@ import {
   User, ChevronLeft, ChevronRight, Plane, X, Plus, Leaf
 } from 'lucide-react';
 import clsx from 'clsx';
+import logoFull from '../assets/logo-full.png';
+import logoIcon from '../assets/logo-icon.png';
 
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
@@ -63,7 +65,7 @@ function SidebarContent({ collapsed, onToggleCollapse, navigate, isMobile, onClo
         {!collapsed && (
           <button onClick={() => navigate('/')} className="flex items-center gap-2 group text-left">
             <img
-              src="/logo-full.png"
+              src={logoFull}
               alt="TRIPIN"
               className="h-10 w-auto max-w-[165px] object-contain drop-shadow"
             />
@@ -72,7 +74,7 @@ function SidebarContent({ collapsed, onToggleCollapse, navigate, isMobile, onClo
         {collapsed && (
           <button onClick={() => navigate('/')} className="flex items-center justify-center p-1" title="TRIPIN">
             <img
-              src="/logo-icon.png"
+              src={logoIcon}
               alt="TRIPIN"
               className="w-9 h-9 object-contain drop-shadow"
             />

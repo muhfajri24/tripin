@@ -3,6 +3,7 @@ import {
   User, Bell, Shield, Globe, Moon, ChevronRight, Camera, Save, Check
 } from 'lucide-react';
 import { mockUser } from '../data/mockData';
+import logoFull from '../assets/logo-full.png';
 
 const settingSections = [
   {
@@ -144,7 +145,7 @@ function SettingsPage() {
       <div className="bg-white rounded-2xl shadow-soft p-5 border border-gray-100 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
         <div className="bg-charcoal px-3.5 py-2 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
           <img
-            src="/logo-full.png"
+            src={logoFull}
             alt="TRIPIN"
             className="h-8 w-auto object-contain"
           />

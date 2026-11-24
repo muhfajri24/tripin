@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plane, ArrowRight, Sparkles, Map, Store, Wallet, Star, ChevronDown, Award } from 'lucide-react';
+import logoFull from '../assets/logo-full.png';
 import { mockRecommendations } from '../data/mockData';
 
 const heroDestinations = [
@@ -90,7 +91,7 @@ function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-4 bg-transparent">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
           <img
-            src="/logo-full.png"
+            src={logoFull}
             alt="TRIPIN"
             className="h-10 w-auto object-contain drop-shadow-md"
           />
@@ -227,7 +228,7 @@ function LandingPage() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center md:items-start gap-2">
             <img
-              src="/logo-full.png"
+              src={logoFull}
               alt="TRIPIN"
               className="h-10 w-auto object-contain drop-shadow"
             />

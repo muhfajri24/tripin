@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Bell, Search, Menu, ChevronRight, X } from 'lucide-react';
+import logoIcon from '../assets/logo-icon.png';
 import { mockNotifications } from '../data/mockData';
 
 const breadcrumbMap = {
@@ -44,7 +45,7 @@ function Navbar({ onMenuToggle }) {
       {/* Mobile brand icon */}
       <div className="lg:hidden flex items-center gap-1.5 cursor-pointer" onClick={() => navigate('/dashboard')}>
         <img
-          src="/logo-icon.png"
+          src={logoIcon}
           alt="TRIPIN"
           className="w-7 h-7 object-contain drop-shadow-sm"
         />

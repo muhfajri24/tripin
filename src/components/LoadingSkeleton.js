@@ -1,4 +1,5 @@
 import React from 'react';
+import logoIcon from '../assets/logo-icon.png';
 
 export function CardSkeleton({ className = '' }) {
   return (
@@ -48,7 +49,7 @@ export function PageLoader({ message = 'Creating your perfect itinerary...' }) {
       <div className="relative mb-8">
         <div className="w-24 h-24 bg-white/95 rounded-3xl flex items-center justify-center shadow-soft border border-teal/20 animate-float p-3">
           <img
-            src="/logo-icon.png"
+            src={logoIcon}
             alt="TRIPIN Emblem"
             className="w-full h-full object-contain"
           />
