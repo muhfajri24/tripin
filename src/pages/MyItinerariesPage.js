@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Plus, Calendar, MapPin, Clock, Edit3, Trash2, ChevronRight, Search,
-  Store, Award, Sparkles
+  Plus, Calendar, MapPin, Clock, Edit3, Search, Store, Sparkles, ArrowRight, ChevronRight
 } from 'lucide-react';
 import {
   mockItineraries, formatCurrency, getTripImpactStats, getStoredItineraries
 } from '../data/mockData';
 import EmptyState from '../components/EmptyState';
 
-const statusLabels = {
-  upcoming: { label: 'Terjadwal', class: 'bg-teal/10 text-teal' },
-  ongoing: { label: 'Sedang Berjalan', class: 'bg-coral/10 text-coral' },
-  completed: { label: 'Selesai', class: 'bg-gray-100 text-charcoal-lighter' },
+const statusConfig = {
+  upcoming:  { label: 'Terjadwal',       dot: '#176B67', bg: 'rgba(23,107,103,0.08)',  text: '#176B67' },
+  ongoing:   { label: 'Sedang Berjalan', dot: '#FF6B5E', bg: 'rgba(255,107,94,0.08)', text: '#FF6B5E' },
+  completed: { label: 'Selesai',         dot: '#94a3b8', bg: 'rgba(148,163,184,0.1)',  text: '#6B7E85' },
 };
 
 function MyItinerariesPage() {
@@ -31,54 +30,61 @@ function MyItinerariesPage() {
   });
 
   return (
-    <div className="space-y-6 animate-fadeInUp pb-12">
+    <div className="space-y-6 animate-fadeInUp pb-16">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
-        <div>
-          <h1 className="text-2xl font-extrabold text-charcoal">My Itineraries</h1>
-          <p className="text-charcoal-lighter text-xs sm:text-sm mt-1">
-            {mockItineraries.length} rencana perjalanan tersimpan
-          </p>
+      <div
+        className="rounded-3xl p-6 md:p-8 relative overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, #253238 0%, #3D4F57 100%)', boxShadow: '0 12px 40px rgba(37,50,56,0.2)' }}
+      >
+        <div className="absolute top-0 right-0 w-64 h-64 opacity-10 rounded-full" style={{ background: 'radial-gradient(circle, #FFC857, transparent)', transform: 'translate(30%, -30%)' }} />
+        <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-white mb-2 tracking-tight">My Itineraries</h1>
+            <p className="text-white/55 text-sm">
+              {allItineraries.length} rencana perjalanan tersimpan — dukung UMKM lokal di setiap trip
+            </p>
+          </div>
+          <button
+            onClick={() => navigate('/create')}
+            className="flex items-center gap-2 font-extrabold text-sm px-5 py-2.5 rounded-2xl transition-all hover:scale-[1.03] btn-press flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg, #FF6B5E 0%, #E55A4E 100%)', color: 'white', boxShadow: '0 6px 20px rgba(255,107,94,0.4)' }}
+          >
+            <Plus size={16} /> Buat Trip Baru
+          </button>
         </div>
-        <button
-          onClick={() => navigate('/create')}
-          className="flex items-center gap-2 bg-gradient-to-r from-coral to-coral-dark text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl hover:shadow-coral transition-all self-start sm:self-auto shadow-sm"
-        >
-          <Plus size={16} />
-          Buat Trip Baru
-        </button>
       </div>
 
-      {/* Search & Filter */}
+      {/* Search + Filter */}
       <div className="flex flex-col sm:flex-row gap-3">
-        <div className="relative flex-1">
-          <Search
-            size={16}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-charcoal-lighter"
-          />
+        <div
+          className="flex-1 flex items-center gap-3 px-4 py-3 rounded-2xl"
+          style={{ background: 'white', border: '1.5px solid rgba(37,50,56,0.1)', boxShadow: '0 2px 10px rgba(37,50,56,0.05)' }}
+        >
+          <Search size={16} className="text-charcoal-lighter flex-shrink-0" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Cari rencana perjalanan berdasarkan judul atau kota..."
-            className="w-full border-2 border-gray-100 focus:border-teal rounded-2xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-charcoal outline-none transition-colors"
+            placeholder="Cari berdasarkan judul atau kota..."
+            className="w-full text-sm text-charcoal placeholder:text-gray-400 outline-none bg-transparent"
           />
         </div>
 
-        <div className="flex gap-1.5 overflow-x-auto pb-1">
+        <div className="flex gap-1.5">
           {[
-            { id: 'all', label: 'Semua Trip' },
-            { id: 'upcoming', label: 'Terjadwal' },
+            { id: 'all',       label: 'Semua' },
+            { id: 'upcoming',  label: 'Terjadwal' },
             { id: 'completed', label: 'Selesai' },
           ].map((f) => (
             <button
               key={f.id}
               onClick={() => setFilter(f.id)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+              className="px-4 py-2.5 rounded-2xl text-xs font-bold transition-all btn-press"
+              style={
                 filter === f.id
-                  ? 'bg-teal text-white shadow-teal/30 shadow'
-                  : 'bg-white border border-gray-200 text-charcoal-lighter hover:border-teal'
-              }`}
+                  ? { background: '#176B67', color: 'white', boxShadow: '0 6px 20px rgba(23,107,103,0.3)' }
+                  : { background: 'white', color: '#6B7E85', border: '1.5px solid rgba(37,50,56,0.1)' }
+              }
             >
               {f.label}
             </button>
@@ -91,116 +97,108 @@ function MyItinerariesPage() {
         <EmptyState
           title="Tidak Ada Itinerary Ditemukan"
           description="Mulai rencanakan liburan impian Anda dengan dukungan UMKM lokal."
-          action={{
-            label: 'Buat Itinerary Sekarang',
-            onClick: () => navigate('/create'),
-          }}
+          action={{ label: 'Buat Itinerary Sekarang', onClick: () => navigate('/create') }}
         />
       ) : (
         <div className="space-y-4">
           {filtered.map((it) => {
             const tripImpact = getTripImpactStats(it);
-            const statusInfo = statusLabels[it.status] || statusLabels.upcoming;
+            const statusInfo = statusConfig[it.status] || statusConfig.upcoming;
 
             return (
               <div
                 key={it.id}
-                className="bg-white rounded-3xl shadow-soft hover:shadow-card transition-all overflow-hidden group cursor-pointer border border-gray-100"
+                className="rounded-3xl overflow-hidden group cursor-pointer transition-all duration-300 hover:-translate-y-1"
+                style={{
+                  background: 'white',
+                  boxShadow: '0 4px 20px rgba(37,50,56,0.08)',
+                  border: '1px solid rgba(37,50,56,0.07)',
+                }}
                 onClick={() => navigate(`/itinerary/${it.id}`)}
               >
                 <div className="flex flex-col sm:flex-row">
-                  {/* Cover */}
-                  <div className="sm:w-56 h-40 sm:h-auto relative overflow-hidden flex-shrink-0">
+                  {/* Cover image */}
+                  <div className="sm:w-52 h-40 sm:h-auto relative overflow-hidden flex-shrink-0">
                     <img
                       src={it.coverImage}
                       alt={it.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent sm:bg-gradient-to-r sm:from-transparent sm:to-black/20" />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, transparent 60%, rgba(37,50,56,0.1))' }} />
+                    {/* Status overlay */}
+                    <div className="absolute top-3 left-3">
+                      <span
+                        className="text-[11px] font-extrabold px-2.5 py-1 rounded-full"
+                        style={{ background: statusInfo.bg, color: statusInfo.text }}
+                      >
+                        {statusInfo.label}
+                      </span>
+                    </div>
                   </div>
 
-                  {/* Body Content */}
-                  <div className="flex-1 p-5 sm:p-6 flex flex-col justify-between">
+                  {/* Body */}
+                  <div className="flex-1 p-5 flex flex-col justify-between">
                     <div>
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                            <span
-                              className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold ${statusInfo.class}`}
-                            >
-                              {statusInfo.label}
-                            </span>
                             {tripImpact.umkmCount > 0 && (
-                              <span className="text-[11px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                                <Store size={10} />
-                                {tripImpact.umkmCount} UMKM Mitra
+                              <span className="text-[10px] bg-emerald-100 text-emerald-800 font-extrabold px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <Store size={9} /> {tripImpact.umkmCount} UMKM Mitra
                               </span>
                             )}
                           </div>
-
-                          <h3 className="font-extrabold text-charcoal text-base sm:text-lg group-hover:text-teal transition-colors">
+                          <h3 className="font-extrabold text-charcoal text-base md:text-lg leading-tight group-hover:text-teal transition-colors tracking-tight">
                             {it.title}
                           </h3>
-
                           <div className="flex flex-wrap items-center gap-3 mt-1.5 text-xs text-charcoal-lighter">
                             <span className="flex items-center gap-1">
-                              <MapPin size={12} className="text-teal" /> {it.destination}
+                              <MapPin size={11} className="text-teal" /> {it.destination}
                             </span>
                             <span className="flex items-center gap-1">
-                              <Calendar size={12} className="text-coral" />
-                              {new Date(it.dates.start).toLocaleDateString('id-ID', {
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric',
-                              })}
+                              <Calendar size={11} className="text-coral" />
+                              {new Date(it.dates?.start).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
                             </span>
                             <span className="flex items-center gap-1">
-                              <Clock size={12} /> {it.duration}
+                              <Clock size={11} /> {it.duration}
                             </span>
                           </div>
                         </div>
 
-                        {/* Action Buttons */}
-                        <div className="flex gap-1">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigate(`/itinerary/${it.id}/edit`);
-                            }}
-                            className="w-8 h-8 rounded-xl bg-sky flex items-center justify-center hover:bg-teal/20 text-teal transition-colors"
-                            title="Kelola & Reschedule"
-                          >
-                            <Edit3 size={14} />
-                          </button>
-                        </div>
+                        {/* Edit button */}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); navigate(`/itinerary/${it.id}/edit`); }}
+                          className="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:scale-110 flex-shrink-0"
+                          style={{ background: 'rgba(23,107,103,0.08)', color: '#176B67' }}
+                          title="Kelola & Reschedule"
+                        >
+                          <Edit3 size={14} />
+                        </button>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100 text-xs">
-                      <div className="flex items-center gap-4">
+                    {/* Footer */}
+                    <div
+                      className="flex items-center justify-between mt-4 pt-3"
+                      style={{ borderTop: '1px solid rgba(37,50,56,0.06)' }}
+                    >
+                      <div className="flex items-center gap-4 text-xs">
                         <div>
-                          <span className="text-charcoal-lighter text-[11px] block">
-                            Total Anggaran:
-                          </span>
-                          <span className="font-extrabold text-charcoal text-sm">
-                            {formatCurrency(it.totalBudget)}
-                          </span>
+                          <span className="text-charcoal-lighter text-[10px] block">Total Anggaran</span>
+                          <span className="font-extrabold text-charcoal">{formatCurrency(it.totalBudget)}</span>
                         </div>
                         {tripImpact.estimatedLocalSpending > 0 && (
                           <div>
-                            <span className="text-charcoal-lighter text-[11px] block">
-                              Belanja ke UMKM:
-                            </span>
-                            <span className="font-extrabold text-emerald-700 text-sm">
-                              {formatCurrency(tripImpact.estimatedLocalSpending)}
-                            </span>
+                            <span className="text-charcoal-lighter text-[10px] block">Belanja ke UMKM</span>
+                            <span className="font-extrabold text-emerald-700">{formatCurrency(tripImpact.estimatedLocalSpending)}</span>
                           </div>
                         )}
                       </div>
-
-                      <div className="flex items-center gap-1 text-teal font-bold group-hover:translate-x-1 transition-transform">
-                        <span>Lihat Rincian</span>
-                        <ChevronRight size={14} />
+                      <div
+                        className="flex items-center gap-1 text-xs font-bold transition-all group-hover:gap-2"
+                        style={{ color: '#176B67' }}
+                      >
+                        Lihat Rincian <ChevronRight size={13} />
                       </div>
                     </div>
                   </div>
