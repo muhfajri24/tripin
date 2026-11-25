@@ -24,25 +24,32 @@
         "checkedAt": null,
         "status": "estimated"
       },
-      "openingWindows": null,
+      "openingWindows": [
+        { "weekday": 1, "opens": "09:00", "closes": "15:00" },
+        { "weekday": 2, "opens": "09:00", "closes": "15:00" },
+        { "weekday": 3, "opens": "09:00", "closes": "15:00" },
+        { "weekday": 4, "opens": "09:00", "closes": "15:00" },
+        { "weekday": 5, "opens": "09:00", "closes": "15:00" },
+        { "weekday": 6, "opens": "09:00", "closes": "15:00" }
+      ],
       "dateExceptions": [],
       "prices": [
         {
-          "amountIdr": null,
+          "amountIdr": 19000,
           "basis": "person",
           "evidence": {
             "sourceType": "curated",
-            "sourceRef": null,
-            "checkedAt": null,
-            "status": "unverified"
+            "sourceRef": "https://kratonjogja.id/kagungan-dalem/museum-kereta/",
+            "checkedAt": "2026-11-25T09:08:00+07:00",
+            "status": "checked"
           }
         }
       ],
       "openingEvidence": {
         "sourceType": "curated",
-        "sourceRef": null,
-        "checkedAt": null,
-        "status": "unverified"
+        "sourceRef": "https://kratonjogja.id/kagungan-dalem/museum-kereta/",
+        "checkedAt": "2026-11-25T09:08:00+07:00",
+        "status": "checked"
       },
       "locationEvidence": {
         "sourceType": "curated",
@@ -264,25 +271,32 @@
         "checkedAt": null,
         "status": "estimated"
       },
-      "openingWindows": null,
+      "openingWindows": [
+        { "weekday": 1, "opens": "08:00", "closes": "16:00" },
+        { "weekday": 2, "opens": "08:00", "closes": "16:00" },
+        { "weekday": 3, "opens": "08:00", "closes": "16:00" },
+        { "weekday": 4, "opens": "08:00", "closes": "16:00" },
+        { "weekday": 5, "opens": "08:00", "closes": "16:00" },
+        { "weekday": 6, "opens": "08:00", "closes": "16:00" }
+      ],
       "dateExceptions": [],
       "prices": [
         {
-          "amountIdr": null,
+          "amountIdr": 28000,
           "basis": "person",
           "evidence": {
             "sourceType": "curated",
-            "sourceRef": null,
-            "checkedAt": null,
-            "status": "unverified"
+            "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/4327/benteng-vredeburg",
+            "checkedAt": "2026-11-25T09:08:00+07:00",
+            "status": "checked"
           }
         }
       ],
       "openingEvidence": {
         "sourceType": "curated",
-        "sourceRef": null,
-        "checkedAt": null,
-        "status": "unverified"
+        "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/4327/benteng-vredeburg",
+        "checkedAt": "2026-11-25T09:08:00+07:00",
+        "status": "checked"
       },
       "locationEvidence": {
         "sourceType": "curated",
