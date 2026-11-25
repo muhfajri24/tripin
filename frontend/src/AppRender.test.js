@@ -32,7 +32,9 @@ test('App mounts and renders without blank crash', async () => {
     if (container.innerHTML.length < 200) {
       console.log('App root content:', container.innerHTML);
     }
-    expect(container.innerHTML.length).toBeGreaterThan(50);
+    expect(container.innerHTML.length).toBeGreaterThan(2000);
+    expect(container.textContent).not.toContain('Terjadi kendala');
+    expect(container.textContent).toContain('Rencanakan perjalanan.');
   } finally {
     act(() => root.unmount());
     container.remove();
