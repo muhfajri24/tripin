@@ -671,6 +671,11 @@ def replan(payload, repo):
         reason = (
             "Versi katalog berubah; buat rencana baru agar sumber data tidak tercampur"
         )
+    elif any(repo.get_place(place.id) != place for place in original.places):
+        reason = (
+            "Isi katalog berubah sejak itinerary disimpan meskipun label versinya sama; "
+            "buat rencana baru dan periksa kembali harga, jam, dan sumber data"
+        )
     elif validate_schedule(original, repo):
         reason = "Snapshot itinerary tidak lolos validasi constraint independen"
     if change.type in {"remove", "replace"}:

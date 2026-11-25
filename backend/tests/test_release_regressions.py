@@ -4,6 +4,30 @@ from app.domain.planner import generate, replan
 from app.models import Itinerary
 
 
+@pytest.mark.parametrize("field", ["price", "hours", "evidence", "missing"])
+def test_same_version_catalog_change_requires_new_plan(field):
+    repo = Repo()
+    generated, _ = generate(request(), repo)
+    original = Itinerary.model_validate_json(generated.model_dump_json())
+    saved = original.model_dump_json()
+    target = next(p for p in repo.items if p.id == original.days[0].stops[0].placeId)
+    if field == "price":
+        target.prices[0].amountIdr += 1000
+    elif field == "hours":
+        target.openingWindows[0].closes = "15:00"
+    elif field == "evidence":
+        target.openingEvidence.sourceRef = "https://example.com/revised-source"
+    else:
+        repo.items = [p for p in repo.items if p.id != target.id]
+    result = replan(payload(original, {"type": "delay", "minutes": 30}), repo)
+    assert result.status == "needs_user_decision"
+    assert result.revised is None
+    assert any(
+        "Isi katalog berubah" in v.message for v in result.disruptedOriginalViolations
+    )
+    assert original.model_dump_json() == saved
+
+
 def test_acknowledged_delay_survives_next_edit():
     repo = Repo()
     original, _ = generate(request(), repo)
