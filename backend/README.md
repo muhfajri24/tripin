@@ -34,6 +34,13 @@ expresses structure; Pydantic and domain validators also enforce cross-field con
 Errors: `{error:{code,message,fields,retryable},requestId}`; revision mismatch returns 409.
 Valid but unsuccessful heuristic search returns 200 + no_plan_found, not a mathematical proof.
 
+The parse draft feeds the frontend review form directly: unsupported day/adult counts,
+zero budget and invalid calendar dates remain absent and appear in `missingFields`
+with an explanation in `ambiguities`. Valid draft values are not silently clamped.
+Editor selections must contain unique place IDs and locks must refer to selected
+places (422 on invalid payloads). Removing every activity returns a replan conflict
+without replacing the saved itinerary.
+
 ## Configuration
 
 `TRPIN_APP_NAME`, JSON-array `TRPIN_CORS_ORIGINS`, `TRPIN_PLACE_SOURCE=local`.

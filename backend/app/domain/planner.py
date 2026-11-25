@@ -525,6 +525,8 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
     except Conflict as exc:
         return None, [str(exc)]
     if disruption and disruption.disruption.type == "edit":
+        if not selection:
+            return None, ["Pilih setidaknya satu aktivitas untuk itinerary."]
         mapping = {s.placeId: s.dayIndex for s in old}
         for pid in selection or []:
             if pid not in frozen_ids:
