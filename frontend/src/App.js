@@ -6,6 +6,7 @@ import ItineraryResultPage from './pages/ItineraryResultPage';
 import ItineraryEditorPage from './pages/ItineraryEditorPage';
 import LocalDiscoveryPage from './pages/LocalDiscoveryPage';
 import MyItinerariesPage from './pages/MyItinerariesPage';
+import DashboardPage from './pages/DashboardPage';
 import AppLayout from './layouts/AppLayout';
 import { CustomCursor, ToastContainer, SmoothScroll, PageTransition } from './motion';
 
@@ -85,7 +86,7 @@ export default function App() {
 
             {/* Guest pages with sidebar navigation */}
             <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<Navigate to="/my-itineraries" replace />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/discovery" element={<LocalDiscoveryPage />} />
               <Route path="/create" element={<CreateItineraryPage />} />
               <Route path="/my-itineraries" element={<MyItinerariesPage />} />
