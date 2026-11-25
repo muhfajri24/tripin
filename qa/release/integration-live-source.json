@@ -1,0 +1,5 @@
+{
+  "source": "supabase",
+  "status": "BLOCKED",
+  "reason": "Configured source and local canonical catalog differ in version or content"
+}

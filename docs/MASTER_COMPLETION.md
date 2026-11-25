@@ -2,6 +2,8 @@
 
 Sumber backlog aktif: **[GitHub Project](https://github.com/users/muhfajri24/projects/1)** dan [Issues](https://github.com/muhfajri24/tripin/issues). Detail implementasi/acceptance/tes ada di issue, tidak diduplikasi ke banyak MD. Sprint **usulan 24–30 November 2026**; target dapat diubah PM setelah baseline dan kapasitas disepakati.
 
+Update 25 November: [integration recheck](INTEGRATION_RECHECK.md) mencatat pemulihan canonical guest flow, browser desktop/mobile/recovery local dan live yang lulus, serta blocker baru parity katalog live/local di bawah versi v0.3 yang sama. Temuan FE-00 di bawah adalah baseline historis; acceptance/release tidak otomatis Done. Final SHA dan CI dicatat pada issue.
+
 ## Tim dan akses
 
 | Orang | Akun | Tanggung jawab / akses |

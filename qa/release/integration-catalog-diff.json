@@ -1,0 +1,127 @@
+[
+  {
+    "id": "yog-museum-kereta",
+    "field": "openingEvidence",
+    "local": {
+      "sourceType": "curated",
+      "sourceRef": "https://tourism.kratonjogja.id/id-ID/destination/4-kagungan-dalem-wahanarata/",
+      "checkedAt": "2026-11-24T13:57:09+07:00",
+      "status": "checked"
+    },
+    "live": {
+      "sourceType": "curated",
+      "sourceRef": "https://kratonjogja.id/kagungan-dalem/museum-kereta/",
+      "checkedAt": "2026-11-25T09:08:00+07:00",
+      "status": "checked"
+    }
+  },
+  {
+    "id": "yog-museum-kereta",
+    "field": "prices",
+    "local": [
+      {
+        "amountIdr": null,
+        "basis": "person",
+        "evidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        }
+      }
+    ],
+    "live": [
+      {
+        "amountIdr": 19000,
+        "basis": "person",
+        "evidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://kratonjogja.id/kagungan-dalem/museum-kereta/",
+          "checkedAt": "2026-11-25T09:08:00+07:00",
+          "status": "checked"
+        }
+      }
+    ]
+  },
+  {
+    "id": "yog-vredeburg",
+    "field": "openingEvidence",
+    "local": {
+      "sourceType": "curated",
+      "sourceRef": null,
+      "checkedAt": null,
+      "status": "unverified"
+    },
+    "live": {
+      "sourceType": "curated",
+      "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/4327/benteng-vredeburg",
+      "checkedAt": "2026-11-25T09:08:00+07:00",
+      "status": "checked"
+    }
+  },
+  {
+    "id": "yog-vredeburg",
+    "field": "openingWindows",
+    "local": null,
+    "live": [
+      {
+        "weekday": 1,
+        "opens": "08:00",
+        "closes": "16:00"
+      },
+      {
+        "weekday": 2,
+        "opens": "08:00",
+        "closes": "16:00"
+      },
+      {
+        "weekday": 3,
+        "opens": "08:00",
+        "closes": "16:00"
+      },
+      {
+        "weekday": 4,
+        "opens": "08:00",
+        "closes": "16:00"
+      },
+      {
+        "weekday": 5,
+        "opens": "08:00",
+        "closes": "16:00"
+      },
+      {
+        "weekday": 6,
+        "opens": "08:00",
+        "closes": "16:00"
+      }
+    ]
+  },
+  {
+    "id": "yog-vredeburg",
+    "field": "prices",
+    "local": [
+      {
+        "amountIdr": null,
+        "basis": "person",
+        "evidence": {
+          "sourceType": "curated",
+          "sourceRef": null,
+          "checkedAt": null,
+          "status": "unverified"
+        }
+      }
+    ],
+    "live": [
+      {
+        "amountIdr": 28000,
+        "basis": "person",
+        "evidence": {
+          "sourceType": "curated",
+          "sourceRef": "https://jogjacagar.jogjaprov.go.id/detail/4327/benteng-vredeburg",
+          "checkedAt": "2026-11-25T09:08:00+07:00",
+          "status": "checked"
+        }
+      }
+    ]
+  }
+]

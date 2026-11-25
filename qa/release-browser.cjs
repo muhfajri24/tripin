@@ -1,8 +1,8 @@
 const {chromium}=require('./browser/node_modules/playwright-core');
 const fs=require('fs');const assert=require('assert');
-const OUT='qa/release';const BASE=process.env.TRIPIN_QA_BASE_URL || 'http://localhost:3002';
+const OUT=process.env.TRIPIN_QA_OUTPUT || 'qa/release';fs.mkdirSync(`${OUT}/screenshots`,{recursive:true});const BASE=process.env.TRIPIN_QA_BASE_URL || 'http://localhost:3002';
 (async()=>{const browser=await chromium.launch({executablePath:process.env.TRIPIN_QA_CHROME_PATH || 'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});const report={base:BASE,engine:'installed Google Chrome via Playwright, headless',steps:[],consoleErrors:[],httpErrors:[]};
-async function shot(p,name){await p.screenshot({path:`${OUT}/screenshots/${name}.png`,fullPage:true});}
+async function shot(p,name){await p.screenshot({path:`${OUT}/screenshots/${name}.png`,fullPage:true,animations:'disabled'});}
 async function step(name,fn,p){try{await fn();report.steps.push({name,status:'passed'});}catch(e){report.steps.push({name,status:'failed',error:e.message});await shot(p,`failure-${report.steps.length}`);throw e;}}
 const ctx=await browser.newContext({viewport:{width:1440,height:960}});const page=await ctx.newPage();page.on('pageerror',e=>report.consoleErrors.push(e.stack || String(e)));page.on('requestfailed',r=>{if(r.failure()?.errorText!=='net::ERR_ABORTED')report.httpErrors.push({url:r.url(),failure:r.failure()?.errorText})});page.on('response',r=>{if(r.status()>=400)report.httpErrors.push({status:r.status(),url:r.url()});});
 let original,current;

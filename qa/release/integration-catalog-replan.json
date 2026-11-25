@@ -1,0 +1,14 @@
+{
+  "sameLabel": "yogyakarta-v0_3_0",
+  "scenario": "saved local itinerary submitted to changed live catalog with same version",
+  "status": "needs_user_decision",
+  "revised": null,
+  "conflicts": [
+    {
+      "code": "DISRUPTION_CONFLICT",
+      "dayIndex": null,
+      "stopIds": [],
+      "message": "Isi katalog berubah sejak itinerary disimpan meskipun label versinya sama; buat rencana baru dan periksa kembali harga, jam, dan sumber data"
+    }
+  ]
+}
