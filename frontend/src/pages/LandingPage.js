@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Sparkles, Store, Map, Award, ArrowRight, ChevronDown, ChevronRight, Play
 } from 'lucide-react';
 import logoFull from '../assets/logo-full.png';
-import { mockRecommendations } from '../data/mockData';
 
 const heroDestinations = [
   { name: 'Banda Neira',    image: '/images/hero/hero-bandaneira.jpg', tagline: 'Benteng Belgica & Surga Rempah Banda Neira', region: 'Maluku' },
@@ -18,32 +17,32 @@ const heroDestinations = [
 const features = [
   {
     icon: Sparkles,
-    title: 'AI Trip Planner',
-    description: 'Satu pertanyaan — jadwal lengkap teroptimasi otomatis sesuai budget, durasi, dan minat wisata Anda.',
+    title: 'Guest Trip Planner',
+    description: 'Tulis brief, periksa kebutuhan, lalu susun jadwal Yogyakarta 1-3 hari sesuai batas waktu dan budget.',
     color: '#FF6B5E',
     bg: 'rgba(255,107,94,0.1)',
     emoji: '✨',
   },
   {
     icon: Store,
-    title: 'Local Discovery & UMKM',
-    description: 'Temukan warung kuliner legendaris, bengkel kerajinan lokal, dan hidden gems yang menghidupkan ekonomi warga.',
+    title: 'Katalog Bersumber',
+    description: 'Periksa sumber tempat, koordinat, harga, dan jam. Data yang belum diketahui ditampilkan secara eksplisit.',
     color: '#059669',
     bg: 'rgba(5,150,105,0.1)',
     emoji: '🌿',
   },
   {
     icon: Map,
-    title: 'Smart Route Optimizer',
-    description: 'Urutan destinasi otomatis dioptimasi untuk waktu tempuh minimum dan pengalaman maksimal.',
+    title: 'Adaptive Replan',
+    description: 'Uji keterlambatan atau penutupan tempat, lalu bandingkan perubahan. Waktu perjalanan masih estimasi heuristik.',
     color: '#176B67',
     bg: 'rgba(23,107,103,0.1)',
     emoji: '🗺️',
   },
   {
     icon: Award,
-    title: 'Impact Dashboard',
-    description: 'Pantau kontribusi nyata setiap rupiah belanja perjalanan Anda bagi pelaku usaha lokal (SDG 8).',
+    title: 'Budget Transparan',
+    description: 'Lihat ledger biaya dan asumsi grup. Estimasi alokasi tidak dianggap transaksi atau dampak ekonomi terukur.',
     color: '#D97706',
     bg: 'rgba(217,119,6,0.1)',
     emoji: '🏆',
@@ -51,9 +50,9 @@ const features = [
 ];
 
 const steps = [
-  { step: '01', title: 'Ketik Destinasi', desc: 'Tulis nama kota atau pulau tujuan di Indonesia', emoji: '📍' },
-  { step: '02', title: 'AI Menyusun Rute', desc: 'Dalam detik, jadwal lengkap otomatis terbentuk dengan rekomendasi UMKM lokal', emoji: '🤖' },
-  { step: '03', title: 'Jelajahi & Nikmati', desc: 'Buka navigasi, ikuti rute, dan dukung ekonomi lokal di tiap destinasi', emoji: '🌟' },
+  { step: '01', title: 'Ketik Destinasi', desc: 'Pilot Yogyakarta, 1-3 hari dengan mobil', emoji: '📍' },
+  { step: '02', title: 'Periksa & Susun Jadwal', desc: 'Periksa hasil parser dan asumsi sebelum backend menyusun jadwal', emoji: '🤖' },
+  { step: '03', title: 'Jelajahi & Nikmati', desc: 'Simpan pada browser, revisi jadwal, dan buka navigasi', emoji: '🌟' },
 ];
 
 function LandingPage() {
@@ -105,23 +104,8 @@ function LandingPage() {
           />
         </button>
         <div className="relative flex items-center gap-3">
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="hidden sm:block text-white/75 hover:text-white font-semibold text-sm transition-colors"
-          >
-            Dashboard
-          </button>
-          <button
-            onClick={() => navigate('/create')}
-            className="font-bold text-sm px-5 py-2.5 rounded-xl transition-all hover:scale-[1.03] btn-press"
-            style={{
-              background: 'linear-gradient(135deg, #FF6B5E 0%, #E55A4E 100%)',
-              color: 'white',
-              boxShadow: '0 6px 20px rgba(255,107,94,0.4)',
-            }}
-          >
-            Mulai Perjalanan
-          </button>
+          <Link to="/my-itineraries" className="text-white/75 hover:text-white font-semibold text-sm">My Trips</Link>
+          <Link to="/create" className="font-bold text-sm px-5 py-2.5 rounded-xl bg-coral text-white">Mulai rencana</Link>
         </div>
       </nav>
 
@@ -190,7 +174,7 @@ function LandingPage() {
               className="text-white/80 text-base md:text-lg leading-relaxed mb-8 max-w-lg animate-fadeInUp"
               style={{ animationDelay: '100ms' }}
             >
-              {heroDestinations[heroIdx].tagline} — TRIPIN menyusun itinerary AI cerdas yang menghemat waktu & budget, sembari membuka rezeki bagi UMKM lokal.
+              {heroDestinations[heroIdx].tagline} - Inspirasi Nusantara. Planner aktif mendukung Yogyakarta 1-3 hari; tujuan lain belum tersedia.
             </p>
 
             {/* Search box */}
@@ -384,7 +368,7 @@ function LandingPage() {
               <span className="text-xs font-bold tracking-widest uppercase mb-2 block" style={{ color: '#1E8A85' }}>
                 Destinasi
               </span>
-              <h2 className="text-3xl font-extrabold text-white tracking-tight">Jelajahi Nusantara</h2>
+              <h2 className="text-3xl font-extrabold text-white tracking-tight">Inspirasi Nusantara</h2><p className="text-white/60 mt-2 text-sm">Galeri inspirasi; hanya Yogyakarta tersedia untuk perencanaan saat ini.</p>
             </div>
             <button
               onClick={() => navigate('/create')}
@@ -490,14 +474,14 @@ function LandingPage() {
               style={{ filter: 'brightness(1.05) drop-shadow(0 2px 8px rgba(255,200,87,0.2))' }}
             />
             <p className="text-white/40 text-xs text-center md:text-left max-w-xs mt-1">
-              AI Travel Planner & Eksplorasi UMKM Terpadu — Pariwisata Berkelanjutan Seluruh Indonesia (SDG 8).
+              Guest travel planner Yogyakarta - katalog bersumber - estimasi dan data unknown terbuka.
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-xs text-white/50">
             {[
-              { label: 'Dashboard',       path: '/dashboard' },
+              { label: 'Home', path: '/' },
               { label: 'Local Discovery', path: '/discovery' },
-              { label: 'AI Trip Planner', path: '/create' },
+              { label: 'Plan a Trip', path: '/create' },
               { label: 'My Itineraries', path: '/my-itineraries' },
             ].map((link) => (
               <button

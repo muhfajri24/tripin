@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
-  LayoutDashboard, Sparkles, Compass, BookOpen, Heart, Settings,
+  Home, Sparkles, Compass, BookOpen,
   ChevronLeft, ChevronRight, X
 } from 'lucide-react';
 import clsx from 'clsx';
 import logoFull from '../assets/logo-full.png';
 import logoIcon from '../assets/logo-icon.png';
-import { getStoredItineraries, mockDestinations, mockLocalBusinesses } from '../data/mockData';
+import { loadTrips } from '../services/itineraryStorage';
 
 const navItems = [
-  { label: 'Dashboard',       icon: LayoutDashboard, path: '/dashboard' },
-  { label: 'Local Discovery', icon: Compass,         path: '/discovery' },
-  { label: 'My Itineraries',  icon: BookOpen,        path: '/my-itineraries', dynamicBadge: 'trips' },
-  { label: 'Saved Places',    icon: Heart,           path: '/saved',          dynamicBadge: 'saved' },
-  { label: 'Settings',        icon: Settings,        path: '/settings' },
+  { label: 'Home', icon: Home, path: '/' },
+  { label: 'Plan a Trip', icon: Sparkles, path: '/create' },
+  { label: 'My Trips', icon: BookOpen, path: '/my-itineraries', dynamicBadge: 'trips' },
+  { label: 'Explore Yogyakarta', icon: Compass, path: '/discovery' },
 ];
 
 function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
@@ -22,18 +21,22 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
   const location = useLocation();
 
   const [tripCount, setTripCount] = useState(0);
-  const [savedCount, setSavedCount] = useState(0);
 
   useEffect(() => {
-    try {
-      const trips = getStoredItineraries();
-      setTripCount(trips ? trips.length : 0);
-      const savedDests = mockDestinations.filter(d => d.saved).length;
-      const savedUMKM = mockLocalBusinesses.filter(b => b.saved).length;
-      setSavedCount(savedDests + savedUMKM);
-    } catch (e) {
-      // fallback
-    }
+    const refresh = () => {
+      try {
+        setTripCount(loadTrips().length);
+      } catch (e) {
+        setTripCount(0);
+      }
+    };
+    refresh();
+    window.addEventListener('tripin:trips-changed', refresh);
+    window.addEventListener('storage', refresh);
+    return () => {
+      window.removeEventListener('tripin:trips-changed', refresh);
+      window.removeEventListener('storage', refresh);
+    };
   }, [location.pathname]);
 
   return (
@@ -54,7 +57,6 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
           onToggleCollapse={onToggleCollapse}
           navigate={navigate}
           tripCount={tripCount}
-          savedCount={savedCount}
         />
       </aside>
 
@@ -64,6 +66,8 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
           'flex lg:hidden flex-col text-white fixed left-0 top-0 h-full z-40 w-[260px] sidebar-transition select-none shadow-2xl',
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         )}
+        inert={mobileOpen ? undefined : ""}
+        aria-hidden={!mobileOpen}
         style={{ background: '#0d2221' }}
       >
         <SidebarContent
@@ -73,7 +77,6 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
           isMobile
           onClose={onMobileClose}
           tripCount={tripCount}
-          savedCount={savedCount}
         />
       </aside>
     </>
@@ -87,7 +90,6 @@ function SidebarContent({
   isMobile,
   onClose,
   tripCount,
-  savedCount,
 }) {
   return (
     <div className="flex flex-col h-full py-4 px-3">
@@ -134,6 +136,7 @@ function SidebarContent({
           </button>
         ) : (
           <button
+            aria-label="Tutup menu"
             onClick={onClose}
             className="w-7 h-7 rounded-lg flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10"
           >
@@ -156,13 +159,13 @@ function SidebarContent({
             }}
           >
             <Sparkles size={14} />
-            <span>AI Trip Planner</span>
+            <span>Plan a Trip</span>
           </button>
         ) : (
           <button
             onClick={() => navigate('/create')}
             className="w-full flex items-center justify-center rounded-xl p-2.5 transition-all hover:opacity-95"
-            title="AI Trip Planner"
+            title="Plan a Trip"
             style={{ background: '#FF6B5E' }}
           >
             <Sparkles size={16} />
@@ -175,12 +178,13 @@ function SidebarContent({
         {navItems.map((item) => {
           let countBadge = null;
           if (item.dynamicBadge === 'trips' && tripCount > 0) countBadge = tripCount;
-          if (item.dynamicBadge === 'saved' && savedCount > 0) countBadge = savedCount;
 
           return (
             <NavLink
               key={item.path}
               to={item.path}
+              aria-label={item.label}
+              end={item.path === "/"}
               title={collapsed ? item.label : ''}
               onClick={() => {
                 if (isMobile && onClose) onClose();

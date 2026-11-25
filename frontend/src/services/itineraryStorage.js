@@ -64,6 +64,7 @@ function write(trips) {
       "Trip belum tersimpan: penyimpanan browser tidak tersedia atau penuh. Jadwal tetap dapat dilihat.",
     );
   }
+  window.dispatchEvent(new Event("tripin:trips-changed"));
 }
 export function saveTrip(trip) {
   if (!isItinerary(trip)) throw new Error("Format itinerary tidak valid.");
