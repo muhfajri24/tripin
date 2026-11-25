@@ -1,0 +1,62 @@
+{
+  "checkedAt": "2026-11-24T19:19:49+07:00",
+  "baseCommit": "ee3c90e7d1e8df4f7d1d207a04bbf793f405ce4c",
+  "scope": "Current uncommitted working tree; not a release SHA",
+  "backendPytest": {
+    "passed": 127,
+    "failed": 0,
+    "warning": "Starlette/httpx deprecation"
+  },
+  "ruffCheck": "passed",
+  "ruffFormatCheck": "passed: 35 files",
+  "pipCheck": "passed",
+  "contractAndSeedExportDrift": "none",
+  "catalogQuality": "passed",
+  "proposedCatalogQuality": "passed; not activated",
+  "localLiveParity": "passed",
+  "http": {
+    "local": "passed",
+    "supabase": "passed",
+    "planDays": [
+      1,
+      2,
+      3
+    ],
+    "parseReplanClosure": "passed",
+    "filterDetail": "passed"
+  },
+  "frontendTests": {
+    "passed": 12,
+    "failed": 2,
+    "failures": [
+      "GuestFlow: fictional My Trips history with empty storage",
+      "GuestFlow: missing brief textarea/parse-review flow"
+    ]
+  },
+  "productionBuild": "passed",
+  "browser": {
+    "desktop": "blocked by FE #42, reproduced",
+    "mobileEmulation": "blocked by FE #42, reproduced",
+    "physicalDevice": "not performed"
+  },
+  "hostedSecurity": "RLS/grants/view inspected; no advisors reported",
+  "dockerPostgresRerun": "blocked: Docker Desktop Linux engine pipe unavailable; historical postgres-catalog.json is not a new result",
+  "remoteCI": "not run: local workflow not pushed; no runs in current GitHub inventory",
+  "push": "held: user allows push only when all gates are safe; 2 frontend tests still fail",
+  "deployment": "not performed",
+  "emptySourceRegression": "Reproduced HTTP 200 for empty catalog before fix; now canonical HTTP 503 without local substitution. Actual live 9-row preflight and HTTP smoke reverified after restart.",
+  "crosscheck": {
+    "backendPassed": 127,
+    "frontendPassed": 12,
+    "frontendFailed": 2,
+    "build": "passed",
+    "ruffCheck": "passed",
+    "ruffFormatCheck": "passed",
+    "pipCheck": "passed",
+    "catalogAndSeed": "passed; no export drift",
+    "liveSourceParity": "passed: 9 rows",
+    "hostedSqlRowCount": "passed: 9 rows (connector recovered after one transient transport failure)",
+    "frontendSourceChanged": false,
+    "localAndRemoteDev": "ee3c90e7d1e8df4f7d1d207a04bbf793f405ce4c"
+  }
+}

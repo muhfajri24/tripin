@@ -1,0 +1,34 @@
+{
+  "checks": [
+    {
+      "check": "cors",
+      "origin": "http://localhost:3000",
+      "allowed": true,
+      "status": 200
+    },
+    {
+      "check": "cors",
+      "origin": "https://untrusted.invalid",
+      "allowed": false,
+      "status": 400
+    },
+    {
+      "check": "spa-routing",
+      "path": "/itinerary/demo/edit",
+      "status": 200
+    },
+    {
+      "check": "spa-routing",
+      "path": "/static/missing.js",
+      "status": 404
+    },
+    {
+      "check": "spa-routing",
+      "path": "/api/v1/missing",
+      "status": 404
+    }
+  ],
+  "highConfidenceSecretPatternFiles": [],
+  "secretScanScope": "Tracked and non-ignored worktree text files; pattern scan, not proof of absence. Credentials not printed.",
+  "limits": "Single-process rate limit; not distributed DDoS protection. Proxy headers disabled in demo launcher."
+}

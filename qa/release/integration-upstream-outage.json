@@ -1,0 +1,18 @@
+{
+  "scenario": "Real upstream outage, explicitly selected Supabase with unreachable loopback HTTPS endpoint",
+  "source": "supabase",
+  "checks": [
+    {
+      "route": "/places",
+      "status": 503,
+      "noLocalFallback": true,
+      "errorCode": "PLACE_SOURCE_UNAVAILABLE"
+    },
+    {
+      "route": "/itineraries/plan",
+      "status": 503,
+      "noLocalFallback": true,
+      "errorCode": "PLACE_SOURCE_UNAVAILABLE"
+    }
+  ]
+}

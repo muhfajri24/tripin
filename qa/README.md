@@ -19,3 +19,5 @@ Chrome mobile adalah emulasi, bukan perangkat fisik. Pop-up Maps/URL diverifikas
 
 
 Latest source/data inventory: `backend/.venv/Scripts/python qa/audit_sources.py` from root. Current build demo origin can be selected with `TRIPIN_QA_BASE_URL=http://127.0.0.1:8015` for all three release scripts. Default 3002 remains a historical dev-server choice. Same-origin demo startup is in backend README. The latest master report supersedes old checkpoint counts in the release report.
+
+25 November integration evidence: set `TRIPIN_QA_OUTPUT=qa/release/integration-local` (or `integration-live`) before running desktop/mobile scripts, then `node qa/integration-recovery.cjs`. Output directories are created automatically. Mobile failures/page errors/document overflow return a failing exit code. Recovery injects 503/network/quota/corrupt-storage failures only in isolated browser contexts. See `docs/INTEGRATION_RECHECK.md` for results and the unresolved live/local data parity gate.

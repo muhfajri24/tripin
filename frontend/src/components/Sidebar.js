@@ -2,21 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard, Sparkles, Compass, BookOpen, Heart, Settings,
+  Home, Sparkles, Compass, BookOpen,
   ChevronLeft, ChevronRight, X
 } from 'lucide-react';
 import clsx from 'clsx';
 import logoFull from '../assets/logo-full.png';
 import logoIcon from '../assets/logo-icon.png';
-import { getStoredItineraries, mockDestinations, mockLocalBusinesses } from '../data/mockData';
+import { loadTrips } from '../services/itineraryStorage';
 import { AnimatedIcon, MagneticButton, useReducedMotion } from '../motion';
 
 const navItems = [
-  { label: 'Dashboard',       icon: LayoutDashboard, path: '/dashboard', anim: 'bounce' },
-  { label: 'Local Discovery', icon: Compass,         path: '/discovery', anim: 'rotate' },
-  { label: 'My Itineraries',  icon: BookOpen,        path: '/my-itineraries', dynamicBadge: 'trips', anim: 'scale' },
-  { label: 'Saved Places',    icon: Heart,           path: '/saved',          dynamicBadge: 'saved', anim: 'pulse' },
-  { label: 'Settings',        icon: Settings,        path: '/settings', anim: 'rotate' },
+  { label: 'Home', icon: Home, path: '/', anim: 'bounce' },
+  { label: 'Plan a Trip', icon: Sparkles, path: '/create', anim: 'bounce' },
+  { label: 'My Trips', icon: BookOpen, path: '/my-itineraries', dynamicBadge: 'trips', anim: 'scale' },
+  { label: 'Explore Yogyakarta', icon: Compass, path: '/discovery', anim: 'rotate' },
 ];
 
 function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
@@ -25,18 +24,22 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
   const prefersReduced = useReducedMotion();
 
   const [tripCount, setTripCount] = useState(0);
-  const [savedCount, setSavedCount] = useState(0);
 
   useEffect(() => {
-    try {
-      const trips = getStoredItineraries();
-      setTripCount(trips ? trips.length : 0);
-      const savedDests = mockDestinations.filter((d) => d.saved).length;
-      const savedUMKM = mockLocalBusinesses.filter((b) => b.saved).length;
-      setSavedCount(savedDests + savedUMKM);
-    } catch (e) {
-      // fallback
-    }
+    const refresh = () => {
+      try {
+        setTripCount(loadTrips().length);
+      } catch (e) {
+        setTripCount(0);
+      }
+    };
+    refresh();
+    window.addEventListener('tripin:trips-changed', refresh);
+    window.addEventListener('storage', refresh);
+    return () => {
+      window.removeEventListener('tripin:trips-changed', refresh);
+      window.removeEventListener('storage', refresh);
+    };
   }, [location.pathname]);
 
   return (
@@ -62,7 +65,6 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
           onToggleCollapse={onToggleCollapse}
           navigate={navigate}
           tripCount={tripCount}
-          savedCount={savedCount}
           prefersReduced={prefersReduced}
         />
       </motion.aside>
@@ -79,6 +81,7 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
               damping: 25,
               stiffness: 280,
             }}
+            aria-hidden={!mobileOpen}
             className="flex lg:hidden flex-col text-white fixed left-0 top-0 h-full z-40 w-[260px] select-none shadow-2xl"
             style={{ background: '#0d2221' }}
           >
@@ -89,7 +92,6 @@ function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
               isMobile
               onClose={onMobileClose}
               tripCount={tripCount}
-              savedCount={savedCount}
               prefersReduced={prefersReduced}
             />
           </motion.aside>
@@ -106,7 +108,6 @@ function SidebarContent({
   isMobile,
   onClose,
   tripCount,
-  savedCount,
   prefersReduced,
 }) {
   const [hoveredItem, setHoveredItem] = useState(null);
@@ -161,14 +162,14 @@ function SidebarContent({
           <button
             onClick={onClose}
             className="w-7 h-7 rounded-lg flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 focus:outline-none"
-            aria-label="Tutup Menu"
+            aria-label="Tutup menu"
           >
             <X size={16} />
           </button>
         )}
       </div>
 
-      {/* Primary CTA: AI Trip Planner with Magnetic feel */}
+      {/* Primary CTA: Plan a Trip */}
       <div className="mb-4">
         {!collapsed ? (
           <MagneticButton
@@ -180,10 +181,10 @@ function SidebarContent({
             style={{
               background: 'linear-gradient(135deg, #FF6B5E 0%, #FF8A80 100%)',
             }}
-            aria-label="Buka AI Trip Planner"
+            aria-label="Plan a Trip"
           >
             <AnimatedIcon icon={Sparkles} size={15} animation="bounce" />
-            <span className="tracking-wide">AI Trip Planner</span>
+            <span className="tracking-wide">Plan a Trip</span>
           </MagneticButton>
         ) : (
           <div className="relative group flex justify-center">
@@ -191,14 +192,14 @@ function SidebarContent({
               onClick={() => navigate('/create')}
               className="w-11 h-11 flex items-center justify-center rounded-xl transition-all shadow-md"
               style={{ background: 'linear-gradient(135deg, #FF6B5E 0%, #FF8A80 100%)' }}
-              aria-label="Buka AI Trip Planner"
+              aria-label="Plan a Trip"
             >
               <Sparkles size={16} />
             </MagneticButton>
 
             {/* Collapsed Tooltip */}
             <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 hidden group-hover:flex items-center px-2.5 py-1.5 rounded-lg bg-[#1a3836] border border-white/15 text-white text-xs font-semibold whitespace-nowrap shadow-xl z-50 pointer-events-none">
-              AI Trip Planner
+              Plan a Trip
             </div>
           </div>
         )}
@@ -209,7 +210,6 @@ function SidebarContent({
         {navItems.map((item) => {
           let countBadge = null;
           if (item.dynamicBadge === 'trips' && tripCount > 0) countBadge = tripCount;
-          if (item.dynamicBadge === 'saved' && savedCount > 0) countBadge = savedCount;
 
           return (
             <div
@@ -220,6 +220,9 @@ function SidebarContent({
             >
               <NavLink
                 to={item.path}
+                aria-label={item.label}
+                end={item.path === '/'}
+                title={collapsed ? item.label : ''}
                 onClick={() => {
                   if (isMobile && onClose) onClose();
                 }}
@@ -309,10 +312,7 @@ function SidebarContent({
       {!collapsed && (
         <div className="pt-3 border-t border-white/5 text-[11px] text-white/40 px-2 flex items-center justify-between">
           <span>TRIPIN v1.2</span>
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-teal-light animate-pulse" />
-            Nusantara AI
-          </span>
+          <span>Open Web</span>
         </div>
       )}
     </div>

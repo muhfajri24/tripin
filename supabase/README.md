@@ -1,6 +1,6 @@
 # Setup katalog Supabase TRIPIN
 
-Status: migration + seed diuji pada PostgreSQL 16 lokal terisolasi; **belum diterapkan ke project Supabase live**. Pengguna mengizinkan pengerjaan database setelah teammate belum menyiapkannya. Tidak memerlukan login pada produk TRIPIN.
+Status 24 November 2026: migration + seed sudah diterapkan pada project tim `TRIPPIN` (`dhumijynoiiysyeppaqj`). Hosted read preflight, parity local/live 9 record, RLS/grants/view inspection dan HTTP parse/plan/replan berhasil. Organisasi terverifikasi Free. `saved_places` existing tetap 1 record dan tidak diubah. Ini bukan acceptance frontend atau jaminan kondisi operasional tempat. Bukti tersanitasi: `qa/release/owner-live-source.json`, `owner-live-http-smoke.json`, dan `owner-data-review.json`.
 
 ## Objek yang dibuat
 
@@ -28,6 +28,10 @@ TRPIN_SUPABASE_DATASET_VERSION=yogyakarta-v0_3_0
 
 5. Restart backend, lalu dari backend jalankan `.venv/Scripts/python -m scripts.check_place_source`. Harus melaporkan `source=supabase`, `rows=9`, `liveRead=true`. Key tidak dicetak. Setelah itu ulangi HTTP smoke dan browser QA. Jangan menganggap migration sukses sebagai bukti PostgREST/RLS/HTTP sudah berfungsi.
 6. Jika gagal/kuota pause: pilih eksplisit `TRPIN_PLACE_SOURCE=local` dan restart untuk demo. Tidak ada silent fallback atau mixing. `TRPIN_SERVE_FRONTEND=true` tetap dapat melayani build pada satu origin.
+
+Untuk membandingkan isi live/local, jalankan `.venv/Scripts/python -m scripts.check_place_source --compare-local`. Pemeriksaan membandingkan versi dan SHA-256 canonical JSON yang diurutkan berdasarkan ID; berbeda isi pada versi sama dianggap gagal. Quality gate lokal: `.venv/Scripts/python -m scripts.check_catalog_quality`.
+
+Kandidat bantuan data ada di `backend/app/data/proposals/yogyakarta-v0.4.0.json`. Kandidat belum aktif, belum di-seed dan belum mengubah view/RLS/env live. Tinjau catatan `qa/release/owner-data-review.json` sebelum mengaktifkannya lewat versi/seed/migration yang konsisten. Tidak menimpa arsip v0.3.
 
 View hanya mengekspos versi v0.3 saat ini dan urutan place_id deterministik. Untuk revisi data berikutnya buat migration/version/view-policy update yang ditinjau, regenerate seed dan ubah env version secara serentak; jangan mengganti isi di bawah versi sama. Tidak ada booking, rating rekaan, atau tabel guest public-write.
 

@@ -361,9 +361,20 @@ def validate_schedule(itinerary, repo):
     errors = []
     seen = set()
     req = itinerary.request
+    lodging = repo.get_place(req.lodging.placeId) if req.lodging else None
+    if req.lodging and (
+        not lodging or lodging.kind != "lodging" or not scope(lodging.coordinates)
+    ):
+        return ["LODGING_ANCHOR"]
+    if not scope(req.arrivalAnchor) or not scope(req.departureAnchor):
+        errors.append("ANCHOR_SCOPE")
     for i, day in enumerate(itinerary.days):
+        expected_start = req.arrivalAnchor if i == 0 else lodging.coordinates
+        expected_end = req.departureAnchor if i == req.days - 1 else lodging.coordinates
+        if day.startAnchor != expected_start or day.endAnchor != expected_end:
+            errors.append("ANCHOR_MISMATCH")
         cursor = at(day.date, req.dayWindows[i].start)
-        pos = day.startAnchor
+        pos = expected_start
         last = "start-" + str(i)
         progress = next(
             (p for p in itinerary.replanState.progress if p.date == day.date), None
@@ -425,7 +436,7 @@ def validate_schedule(itinerary, repo):
             cursor = progress.notBefore
             pos = progress.location
             last = "current-location"
-        if day.finalLeg != travel(pos, day.endAnchor, last, "end-" + str(i)):
+        if day.finalLeg != travel(pos, expected_end, last, "end-" + str(i)):
             errors.append("FINAL_LEG")
         end = (
             cursor
@@ -445,6 +456,51 @@ def validate_schedule(itinerary, repo):
         errors.append("MISSING_MANDATORY")
     if itinerary.totals.knownCostIdr > req.budget.totalIdr - req.budget.reserveIdr:
         errors.append("BUDGET")
+    stops = [s for day in itinerary.days for s in day.stops]
+    places = {p.id: p for p in repo.list_places("yogyakarta")}
+    try:
+        expected = {x.id: x for x in ledger_for(req, stops, places, lodging)}
+        actual = {x.id: x for x in itinerary.ledger}
+        if set(expected) != set(actual) or len(actual) != len(itinerary.ledger):
+            errors.append("LEDGER_ENTRIES")
+        frozen = {
+            "visit-" + s.id
+            for s in stops
+            if s.status == "completed"
+            or any(
+                p.date == itinerary.days[s.dayIndex].date and s.arrivalAt < p.notBefore
+                for p in itinerary.replanState.progress
+            )
+        }
+        for key in expected.keys() & actual.keys():
+            item, wanted = actual[key], expected[key]
+            if key not in frozen:
+                if item != wanted:
+                    errors.append("LEDGER_PRICE")
+            else:
+                # Historical user estimates are allocations, not receipts. Known catalog
+                # tariffs and ledger identity must still not be forged to bypass budget.
+                place = places[wanted.placeId]
+                price = place.prices[0]
+                if (
+                    item.placeId != wanted.placeId
+                    or item.category != wanted.category
+                    or (
+                        price.amountIdr is not None
+                        and item.unitAmountIdr != price.amountIdr
+                    )
+                    or (price.basis == "group" and item.quantity != 1)
+                    or (price.basis == "person" and not 1 <= item.quantity <= 6)
+                ):
+                    errors.append("LEDGER_PRICE")
+    except (Conflict, KeyError):
+        errors.append("LEDGER_BASIS")
+    if itinerary.totals.knownCostIdr != sum(
+        x.totalIdr or 0 for x in itinerary.ledger
+    ) or itinerary.totals.unknownCostItems != sum(
+        x.totalIdr is None for x in itinerary.ledger
+    ):
+        errors.append("LEDGER_TOTALS")
     return errors
 
 
@@ -498,7 +554,17 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
             else relevance
         ), p.id
 
-    candidates.sort(key=score)
+    invalid_prices = []
+    valid_candidates = []
+    for p in candidates:
+        try:
+            visit_price(p, req)
+            valid_candidates.append(p)
+        except Conflict as exc:
+            if p.id in required:
+                return None, [str(exc)]
+            invalid_prices.append(str(exc))
+    candidates = sorted(valid_candidates, key=score)
     pending = [repo.get_place(x) for x in required if x not in frozen_ids]
     if any(x is None for x in pending):
         return None, ["Mandatory place tidak ditemukan"]
@@ -518,7 +584,7 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
         ]
     )
     used = set(frozen_ids)
-    failures = []
+    failures = invalid_prices
     for p in pending:
         if not p:
             continue
@@ -604,6 +670,11 @@ def replan(payload, repo):
     if original.datasetVersion != repo.version:
         reason = (
             "Versi katalog berubah; buat rencana baru agar sumber data tidak tercampur"
+        )
+    elif any(repo.get_place(place.id) != place for place in original.places):
+        reason = (
+            "Isi katalog berubah sejak itinerary disimpan meskipun label versinya sama; "
+            "buat rencana baru dan periksa kembali harga, jam, dan sumber data"
         )
     elif validate_schedule(original, repo):
         reason = "Snapshot itinerary tidak lolos validasi constraint independen"

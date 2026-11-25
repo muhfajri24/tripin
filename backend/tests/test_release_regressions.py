@@ -4,6 +4,30 @@ from app.domain.planner import generate, replan
 from app.models import Itinerary
 
 
+@pytest.mark.parametrize("field", ["price", "hours", "evidence", "missing"])
+def test_same_version_catalog_change_requires_new_plan(field):
+    repo = Repo()
+    generated, _ = generate(request(), repo)
+    original = Itinerary.model_validate_json(generated.model_dump_json())
+    saved = original.model_dump_json()
+    target = next(p for p in repo.items if p.id == original.days[0].stops[0].placeId)
+    if field == "price":
+        target.prices[0].amountIdr += 1000
+    elif field == "hours":
+        target.openingWindows[0].closes = "15:00"
+    elif field == "evidence":
+        target.openingEvidence.sourceRef = "https://example.com/revised-source"
+    else:
+        repo.items = [p for p in repo.items if p.id != target.id]
+    result = replan(payload(original, {"type": "delay", "minutes": 30}), repo)
+    assert result.status == "needs_user_decision"
+    assert result.revised is None
+    assert any(
+        "Isi katalog berubah" in v.message for v in result.disruptedOriginalViolations
+    )
+    assert original.model_dump_json() == saved
+
+
 def test_acknowledged_delay_survives_next_edit():
     repo = Repo()
     original, _ = generate(request(), repo)
@@ -161,3 +185,55 @@ def test_catalog_change_requires_explicit_new_plan():
     result = replan(payload(original, {"type": "delay", "minutes": 30}), repo)
     assert result.revised is None
     assert "katalog" in result.disruptedOriginalViolations[0].message
+
+
+def test_validator_detects_missing_visit_ledger_entry():
+    from app.domain.planner import validate_schedule
+
+    trip, _ = generate(request(), Repo())
+    trip.ledger = [
+        x for x in trip.ledger if x.id != "visit-" + trip.days[0].stops[0].id
+    ]
+    trip.totals.knownCostIdr = sum(x.totalIdr or 0 for x in trip.ledger)
+    assert "LEDGER_ENTRIES" in validate_schedule(trip, Repo())
+
+
+def test_validator_rejects_underpriced_known_ticket():
+    from app.domain.planner import validate_schedule
+
+    trip, _ = generate(request(), Repo())
+    item = next(x for x in trip.ledger if x.category == "ticket")
+    item.unitAmountIdr = 0
+    item.totalIdr = 0
+    trip.totals.knownCostIdr = sum(x.totalIdr or 0 for x in trip.ledger)
+    assert "LEDGER_PRICE" in validate_schedule(trip, Repo())
+
+
+def test_validator_rejects_changed_final_anchor():
+    from app.domain.planner import validate_schedule, travel
+
+    trip, _ = generate(request(), Repo())
+    day = trip.days[0]
+    last = day.stops[-1]
+    origin = Repo().get_place(last.placeId).coordinates
+    day.endAnchor = origin.model_copy(update={"lng": origin.lng + 0.002})
+    day.finalLeg = travel(origin, day.endAnchor, last.placeId, "end-0")
+    assert "ANCHOR_MISMATCH" in validate_schedule(trip, Repo())
+
+
+def test_bad_optional_price_basis_does_not_crash_plan():
+    repo = Repo()
+    repo.items[-2].prices[0].basis = "room_night"
+    trip, errors = generate(request(), repo)
+    assert trip and not errors
+    assert repo.items[-2].id not in [s.placeId for d in trip.days for s in d.stops]
+    assert any("Basis harga" in u for u in trip.uncertainties)
+
+
+def test_bad_mandatory_price_basis_returns_conflict_not_exception():
+    repo = Repo()
+    repo.items[0].prices[0].basis = "room_night"
+    req = request()
+    req.mustVisitPlaceIds = [repo.items[0].id]
+    trip, errors = generate(req, repo)
+    assert trip is None and any("Basis harga" in error for error in errors)

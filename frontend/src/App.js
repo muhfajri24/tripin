@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
-import DashboardPage from './pages/DashboardPage';
 import CreateItineraryPage from './pages/CreateItineraryPage';
 import ItineraryResultPage from './pages/ItineraryResultPage';
 import ItineraryEditorPage from './pages/ItineraryEditorPage';
 import LocalDiscoveryPage from './pages/LocalDiscoveryPage';
 import MyItinerariesPage from './pages/MyItinerariesPage';
-import SavedPlacesPage from './pages/SavedPlacesPage';
-import SettingsPage from './pages/SettingsPage';
 import AppLayout from './layouts/AppLayout';
 import { CustomCursor, ToastContainer, SmoothScroll, PageTransition } from './motion';
 
@@ -58,6 +55,11 @@ function TripRedirect({ edit = false }) {
   return <Navigate replace to={`/itinerary/${id}${edit ? '/edit' : ''}`} />;
 }
 
+function TripPage({ edit = false }) {
+  const { id } = useParams();
+  return edit ? <ItineraryEditorPage key={id} /> : <ItineraryResultPage key={id} />;
+}
+
 export default function App() {
   return (
     <ErrorBoundary>
@@ -81,16 +83,16 @@ export default function App() {
               }
             />
 
-            {/* Internal app pages with sidebar navigation */}
+            {/* Guest pages with sidebar navigation */}
             <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/dashboard" element={<Navigate to="/my-itineraries" replace />} />
               <Route path="/discovery" element={<LocalDiscoveryPage />} />
               <Route path="/create" element={<CreateItineraryPage />} />
               <Route path="/my-itineraries" element={<MyItinerariesPage />} />
-              <Route path="/itinerary/:id" element={<ItineraryResultPage />} />
-              <Route path="/itinerary/:id/edit" element={<ItineraryEditorPage />} />
-              <Route path="/saved" element={<SavedPlacesPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/itinerary/:id" element={<TripPage />} />
+              <Route path="/itinerary/:id/edit" element={<TripPage edit />} />
+              <Route path="/saved" element={<Navigate to="/discovery" replace />} />
+              <Route path="/settings" element={<Navigate to="/my-itineraries" replace />} />
 
               {/* Legacy & parameter redirects to prevent 404s */}
               <Route path="/explore" element={<Navigate to="/discovery" replace />} />

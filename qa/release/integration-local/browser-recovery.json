@@ -1,0 +1,22 @@
+{
+  "base": "http://127.0.0.1:8015",
+  "steps": [
+    {
+      "name": "503 preserves reviewed form, no fake trip; retry uses actual backend",
+      "status": "passed"
+    },
+    {
+      "name": "quota failure keeps canonical result and editor draft visible without false saved message",
+      "status": "passed"
+    },
+    {
+      "name": "corrupt storage stays intact while new result remains viewable",
+      "status": "passed"
+    },
+    {
+      "name": "catalog outage and retry preserve input and review stays required",
+      "status": "passed"
+    }
+  ],
+  "pageErrors": []
+}

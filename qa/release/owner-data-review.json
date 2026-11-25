@@ -1,0 +1,156 @@
+{
+  "checkedAt": "2026-11-24T16:17:08+07:00",
+  "primaryOwner": "tianisasianipar",
+  "helper": "muhfajri24 / Codex, authorized by user",
+  "attribution": "No commit by Tianisa observed in fetched dev history or current GitHub default-branch commit listing, and no Tianisa issue comments observed. This does not prove she has not worked locally, in another branch, or in the Dashboard. Existing data is credited to repository history, not assumed to be authored by her.",
+  "hosted": {
+    "project": "TRIPPIN",
+    "projectRef": "dhumijynoiiysyeppaqj",
+    "organizationPlan": "free",
+    "activeVersion": "yogyakarta-v0_3_0",
+    "catalogRows": 9,
+    "savedPlacesRows": 1,
+    "savedPlacesModified": false,
+    "savedPlacesPurpose": "Existing saved-place metadata; not a canonical public planning catalog. Ownership model not established by column inspection.",
+    "savedPlacesColumns": {
+      "id": "uuid",
+      "name": "text",
+      "category": "text",
+      "address": "text",
+      "lat": "double precision",
+      "lng": "double precision",
+      "image_url": "text",
+      "notes": "text",
+      "created_at": "timestamptz"
+    },
+    "tableRls": true,
+    "viewSecurityInvoker": true,
+    "anonAndAuthenticated": {
+      "select": true,
+      "insert": false,
+      "update": false,
+      "delete": false
+    },
+    "securityAdvisors": []
+  },
+  "activeCompleteness": {
+    "records": 9,
+    "addresses": 5,
+    "coordinates": 7,
+    "openingWindows": 3,
+    "knownPrices": 1,
+    "knownLocalBusinessClassifications": 0
+  },
+  "proposedCompleteness": {
+    "records": 9,
+    "addresses": 8,
+    "coordinates": 7,
+    "openingWindows": 4,
+    "knownPrices": 1,
+    "knownLocalBusinessClassifications": 0
+  },
+  "proposal": {
+    "path": "backend/app/data/proposals/yogyakarta-v0.4.0.json",
+    "version": "yogyakarta-v0_4_0",
+    "activated": false,
+    "liveDataChangedThisTurn": false,
+    "changes": [
+      {
+        "placeId": "yog-vredeburg",
+        "fields": [
+          "address",
+          "openingWindows",
+          "identityEvidence",
+          "openingEvidence"
+        ],
+        "source": "https://vredeburg.id/ticket-information/page/waktu-kunjungan",
+        "scope": "Published address and Tue-Thu 08:00-20:00 / Fri-Sun 08:00-21:00; Monday closed. No holiday guarantee."
+      },
+      {
+        "placeId": "yog-ibis-styles",
+        "fields": [
+          "address",
+          "identityEvidence"
+        ],
+        "source": "https://all.accor.com/hotel/7460/index.en.shtml",
+        "scope": "Published address; previously absent in canonical catalog."
+      },
+      {
+        "placeId": "yog-bebek-cak-koting",
+        "fields": [
+          "address",
+          "identityEvidence"
+        ],
+        "source": "https://visitingjogja.jogjaprov.go.id/12838/bebek-cak-koting/",
+        "scope": "Published street/location from tourism agency article dated 2017-12-29. Not a current-operation confirmation; coordinates retain academic provenance."
+      }
+    ]
+  },
+  "lodgingSupplement": [
+    {
+      "placeId": "yog-ibis-styles",
+      "source": "https://all.accor.com/hotel/7460/index.en.shtml",
+      "publishedCheckInFrom": "14:00",
+      "publishedCheckOutUntil": "12:00",
+      "timezone": "Asia/Jakarta",
+      "rateIdr": null,
+      "availability": null,
+      "capacity": "Room-type-specific; no universal occupancy assumption.",
+      "application": "Source note only: Place has no hotel policy fields. TravelRequest.lodging.checkInAt remains user arrival deadline; do not overwrite it with provider check-in start."
+    },
+    {
+      "placeId": "yog-phoenix",
+      "source": "https://all.accor.com/hotel/5451/index.en.shtml",
+      "publishedCheckInFrom": "14:00",
+      "publishedCheckOutUntil": "12:00",
+      "timezone": "Asia/Jakarta",
+      "rateIdr": null,
+      "availability": null,
+      "capacity": "Room-type-specific; no universal occupancy assumption.",
+      "application": "Source note only: Place has no hotel policy fields. TravelRequest.lodging.checkInAt remains user arrival deadline; do not overwrite it with provider check-in start."
+    }
+  ],
+  "remainingReview": [
+    {
+      "issue": 10,
+      "placeId": "yog-vredeburg",
+      "reason": "Ticket varies by weekday and entry time: official tourism page lists Tue-Thu adult 15000, Fri-Sun before 16:00 adult 20000, after 16:00 adult 25000. Current Price contract cannot encode applicability. Keep null instead of using first price for all dates.",
+      "source": "https://www.indonesia.travel/id/id/destination/java/yogyakarta/museum-benteng-vredeburg"
+    },
+    {
+      "issue": 10,
+      "placeId": "yog-museum-kereta",
+      "reason": "Operator lists Tue-Sun 09:00-15:00; government sources from 2023 list domestic adult 20000. Live ticket endpoint returned 403. A secondary source flags a possible temporary renovation closure in Nov 2026; not confirmed in fetched primary material, so do not encode a fabricated dateException or claim open. Confirm directly before demo.",
+      "sources": [
+        "https://tourism.kratonjogja.id/id-ID/destination/4-kagungan-dalem-wahanarata/",
+        "https://visitingjogja.jogjaprov.go.id/38875/harga-tiket-masuk-htm-baru-di-sejumlah-unit-pariwisata-keraton-yogyakarta/"
+      ],
+      "unconfirmedLead": "https://sekali.id/destinasi-atraksi/wisata-di-jogja/"
+    },
+    {
+      "issue": 11,
+      "placeId": "yog-gudeg-yu-djum-pusat",
+      "reason": "Official site confirms outlet identity/address but fetched text did not establish coordinates, opening windows or applicable meal price. Leave these null; Cak Koting remains routable with historical academic coordinates and explicit uncertainty.",
+      "source": "https://gudegyudjumpusat.com/"
+    },
+    {
+      "issue": 12,
+      "reason": "Hotel room rates and availability depend on dates/room type and remain unknown. Check-in/out can be handed off as supplement; no booking or capacity guarantee."
+    },
+    {
+      "issue": 33,
+      "placeId": "yog-sonobudoyo",
+      "reason": "Provincial operator confirms exhibition Tue-Sun 08:00-21:00, last ticket 20:00. Older sonobudoyo.com guide differs. Use provincial exhibition schedule, retain conflict note, confirm holiday exceptions for actual demo date.",
+      "source": "https://sonobudoyo.jogjaprov.go.id/id/hubungi"
+    },
+    {
+      "issue": 35,
+      "reason": "Actual demo date/time not supplied; fixture 2026-12-01 to 2026-12-02 is test input only. No final operational freeze."
+    },
+    {
+      "issue": 33,
+      "reason": "Local-business/UMKM classifications remain null for all 9 places; no evidence establishing eligibility. Food business identity does not establish UMKM status."
+    }
+  ],
+  "handoff": "Tianisa reviews candidate addresses/hours, supplements and unresolved sources. After approval activate a new version consistently, regenerate seed, update hosted view/policy/env, then rerun parity and QA. Do not silently edit existing v0.3 rows."
+}

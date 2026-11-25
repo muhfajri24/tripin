@@ -1,0 +1,10 @@
+{
+  "source": "supabase",
+  "datasetVersion": "yogyakarta-v0_3_0",
+  "rows": 9,
+  "canonicalValidation": "passed",
+  "liveRead": true,
+  "permissionWriteTest": "not performed; verify grants/RLS with owner",
+  "localLiveParity": "passed",
+  "canonicalSha256": "7c0cf24fc140ebcb62ecd8eb69d38a3388e1d0d0a3c7ba2e367ac6cf3b78e2d3"
+}
