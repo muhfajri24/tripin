@@ -24,6 +24,12 @@ Dependencies did not change from foundation. Full tested dependency snapshot is 
 - GET `/api/v1/places?destinationId=yogyakarta&q=...&kind=food&routable=true`:
   `{places,datasetVersion,warnings}`; query/kind/routable optional.
 - GET `/api/v1/places/{id}`: canonical Place or 404.
+- GET `/api/v1/demo/places?area=Depok&kind=attraction&q=Situ`: separate
+  Jabodetabek discovery sample from `tripin_demo_places` in Supabase. Requires
+  `TRPIN_SUPABASE_URL` and a publishable/anon read key even when the planner
+  source is local. Returns `{places,datasetVersion,complete:false}`. This is
+  not planner input; missing coordinates/hours/prices remain null. Without
+  configuration or on upstream failure, returns 503.
 - POST `/api/v1/requests/parse`: `{text,locale:"id-ID"}` -> draft/missingFields/ambiguities.
 - POST `/api/v1/itineraries/plan`: `{request:TravelRequest}` ->
   `{itinerary:Itinerary|null,conflicts,searchOutcome}`.

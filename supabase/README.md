@@ -10,6 +10,11 @@ Koordinat, jam buka, dan harga tetap null sampai ada bukti yang cocok untuk
 tanggal kunjungan. Migration `20261126184727_jabodetabek_demo_catalog.sql`
 sudah diterapkan di project TRIPPIN; `tests/jabodetabek_demo_checks.sql`
 memeriksa jumlah, null dan hak akses. RLS mengizinkan SELECT publik saja.
+Migration `20261126185951_jabodetabek_demo_kind.sql` menambahkan kategori
+`attraction`, `food`, `lodging`; lima contoh awal semuanya `attraction`.
+Backend mengekspos sampel ini lewat `GET /api/v1/demo/places` dengan filter
+`area`, `kind`, dan `q`, memakai URL dan publishable/anon key Supabase yang
+diatur pada environment backend. Respons selalu `complete:false`.
 
 FE/BE itinerary masih dibatasi Yogyakarta. Untuk menjadikan Jabodetabek
 tujuan planner, perlu perluasan kontrak destination, cakupan geografis,
