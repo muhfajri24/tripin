@@ -39,3 +39,5 @@ export async function api(path, body, signal) {
   }
 }
 export const listPlaces = (signal) => api("/places", undefined, signal);
+export const listDemoPlaces = (area, signal) =>
+  api(`/demo/places?area=${encodeURIComponent(area)}`, undefined, signal);

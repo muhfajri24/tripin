@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { listPlaces } from "../services/plannerApi";
+import { listPlaces, listDemoPlaces } from "../services/plannerApi";
 import { Notice, PlaceDetails } from "../components/GuestUI";
 export default function LocalDiscoveryPage() {
   const [params, setParams] = useSearchParams();
   const [places, setPlaces] = useState([]);
   const [kind, setKind] = useState("");
+  const [source, setSource] = useState("yogyakarta");
+  const [area, setArea] = useState("Jakarta");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(true);
   const [retry, setRetry] = useState(0);
@@ -15,7 +17,7 @@ export default function LocalDiscoveryPage() {
     setBusy(true);
     setError("");
     setPlaces([]);
-    listPlaces(c.signal)
+    (source === "jabodetabek" ? listDemoPlaces(area, c.signal) : listPlaces(c.signal))
       .then((d) => { if (!c.signal.aborted) setPlaces(d.places); })
       .catch((e) => {
         if (!c.signal.aborted) setError(e.message);
@@ -24,11 +26,11 @@ export default function LocalDiscoveryPage() {
         if (!c.signal.aborted) setBusy(false);
       });
     return () => c.abort();
-  }, [retry]);
+  }, [retry, source, area]);
   const filtered = places.filter(
     (p) =>
       (!kind || p.kind === kind) &&
-      `${p.name} ${p.address || ""} ${p.categories.join(" ")}`
+      `${p.name} ${p.address || ""} ${(p.categories || []).join(" ")}`
         .toLowerCase()
         .includes(q.toLowerCase()),
   );
@@ -36,12 +38,29 @@ export default function LocalDiscoveryPage() {
     <div className="max-w-6xl mx-auto space-y-5 pb-12 animate-fadeIn">
       <header>
         <p className="eyebrow">Dataset pilot bersumber</p>
-        <h1 className="page-title">Explore Yogyakarta</h1>
+        <h1 className="page-title">Explore {source === "jabodetabek" ? "Jabodetabek" : "Yogyakarta"}</h1>
         <p>
           Periksa kandidat dan kelengkapan data sebelum merencanakan kunjungan.
         </p>
       </header>
       <div className="flex flex-wrap gap-3">
+        <label className="field">
+          Katalog
+          <select value={source} onChange={(e) => setSource(e.target.value)}>
+            <option value="yogyakarta">Yogyakarta (planner)</option>
+            <option value="jabodetabek">Jabodetabek (sampel demo)</option>
+          </select>
+        </label>
+        {source === "jabodetabek" && (
+          <label className="field">
+            Area
+            <select value={area} onChange={(e) => setArea(e.target.value)}>
+              {["Jakarta", "Bogor", "Depok", "Tangerang", "Bekasi"].map((name) => (
+                <option key={name} value={name}>{name}</option>
+              ))}
+            </select>
+          </label>
+        )}
         <label className="field flex-1">
           Cari tempat
           <input
@@ -63,6 +82,9 @@ export default function LocalDiscoveryPage() {
         </label>
       </div>
       <Notice error>{error}</Notice>
+      {source === "jabodetabek" && (
+        <Notice>Sampel demo belum lengkap. Data ini belum dapat dipakai untuk menyusun itinerary.</Notice>
+      )}
       {error && (
         <button
           className="btn-secondary"
@@ -81,13 +103,18 @@ export default function LocalDiscoveryPage() {
           <article className="bg-white rounded-3xl p-6 sm:p-8 shadow-soft border border-gray-100 space-y-3" key={p.id}>
             <p className="eyebrow">{p.kind}</p>
             <h2 className="text-xl font-bold">{p.name}</h2>
-            <PlaceDetails place={p} />
+            {source === "jabodetabek" ? (
+              <div className="text-sm space-y-2">
+                <p>{p.address}</p>
+                <p>Harga, jam buka, dan koordinat: belum diketahui.</p>
+                <p>Diperiksa: {p.checked_on}</p>
+                <a className="underline text-teal" href={p.source_url} target="_blank" rel="noreferrer">Lihat sumber</a>
+              </div>
+            ) : <PlaceDetails place={p} />}
             {!p.coordinates && (
               <Notice>Belum routable; koordinat perlu diverifikasi.</Notice>
             )}
-            <Link className="btn-secondary" to="/create">
-              Rencanakan trip
-            </Link>
+            {source === "yogyakarta" && <Link className="btn-secondary" to="/create">Rencanakan trip</Link>}
           </article>
         ))}
       </div>
