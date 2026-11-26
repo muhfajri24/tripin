@@ -1,11 +1,13 @@
--- Expected: five rows across five metro areas, unknowns preserved,
+-- Expected: 15 rows, one in each of five metro areas x three categories;
+-- this is sample coverage, not geographic or business completeness.
+-- Unknowns preserved,
 -- and anonymous clients can only SELECT.
 select metro_area, count(*) as rows,
        bool_and(coordinates is null and opening_hours is null
                     and ticket_price_idr is null) as unknowns_preserved
 from public.tripin_demo_places group by metro_area order by metro_area;
 
--- Coverage matrix: missing food/lodging cells are visible as zero.
+-- Coverage matrix: every demo category cell should now contain one sample.
 select areas.metro_area, kinds.kind, count(p.id) as rows
 from (values ('Jakarta'),('Bogor'),('Depok'),('Tangerang'),('Bekasi'))
      as areas(metro_area)
