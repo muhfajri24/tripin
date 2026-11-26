@@ -1,5 +1,23 @@
 # Setup katalog Supabase TRIPIN
 
+## Sampel Jabodetabek untuk demo — 27 November 2026
+
+`tripin_demo_places` adalah tabel discovery terpisah, versi
+`jabodetabek-demo-v1`. Isinya lima contoh tempat di Jakarta, Bogor, Depok,
+Tangerang, dan Bekasi dengan sumber pemerintah/operator di setiap baris.
+Ini bukan cakupan lengkap Jabodetabek dan belum menjadi input planner.
+Koordinat, jam buka, dan harga tetap null sampai ada bukti yang cocok untuk
+tanggal kunjungan. Migration `20261126184727_jabodetabek_demo_catalog.sql`
+sudah diterapkan di project TRIPPIN; `tests/jabodetabek_demo_checks.sql`
+memeriksa jumlah, null dan hak akses. RLS mengizinkan SELECT publik saja.
+
+FE/BE itinerary masih dibatasi Yogyakarta. Untuk menjadikan Jabodetabek
+tujuan planner, perlu perluasan kontrak destination, cakupan geografis,
+anchor, kandidat routable, lodging, parser, FE, dan tes. Deploy ke Vercel
+tidak mengaktifkan Google Places secara otomatis; integrasi itu memerlukan
+project Google Cloud dengan billing, API key, field mask, dan penanganan
+atribusi/retensi konten sesuai ketentuan Google.
+
 ## Keamanan tabel prototipe — 27 November 2026
 
 Audit project TRIPPIN menemukan `public.itineraries`, `public.itinerary_items`,
