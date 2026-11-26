@@ -1,5 +1,21 @@
 # Setup katalog Supabase TRIPIN
 
+## Keamanan tabel prototipe — 27 November 2026
+
+Audit project TRIPPIN menemukan `public.itineraries`, `public.itinerary_items`,
+`public.saved_places`, dan `public.app_settings` memiliki policy `anon ALL`
+dengan grant luas. Keempat tabel ini tidak dipakai oleh alur guest aktif. Migration
+`20261126183417_secure_legacy_guest_tables.sql` sudah diterapkan untuk mencabut
+akses `anon` dan `authenticated` serta menghapus policy tersebut, tanpa menghapus
+baris. Verifikasi SQL menunjukkan hak SELECT/INSERT `anon` dan SELECT
+`authenticated` bernilai false untuk semuanya. RLS tetap aktif. Advisor INFO
+`rls_enabled_no_policy` berarti deny-all yang disengaja pada tabel lama ini.
+
+Penyimpanan itinerary pengunjung masih di browser. Penyimpanan cloud memerlukan
+identitas sesi dan policy kepemilikan pada tabel terpisah; API key publik saja
+tidak membedakan pengunjung. Lacak pekerjaan lanjut di issue #44. Jangan
+mengembalikan policy public-all untuk memperbaiki error tulis aplikasi lama.
+
 Status 24 November 2026: migration + seed sudah diterapkan pada project tim `TRIPPIN` (`dhumijynoiiysyeppaqj`). Hosted read preflight, parity local/live 9 record, RLS/grants/view inspection dan HTTP parse/plan/replan berhasil. Organisasi terverifikasi Free. `saved_places` existing tetap 1 record dan tidak diubah. Ini bukan acceptance frontend atau jaminan kondisi operasional tempat. Bukti tersanitasi: `qa/release/owner-live-source.json`, `owner-live-http-smoke.json`, dan `owner-data-review.json`.
 
 ## Objek yang dibuat
