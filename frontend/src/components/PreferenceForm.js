@@ -23,6 +23,7 @@ export function initialForm(req) {
   if (req)
     return {
       date: req.startDate,
+      destinationId: req.destinationId,
       days: req.days,
       adults: req.travelers.adults,
       budget: req.budget.totalIdr,
@@ -44,9 +45,11 @@ export function initialForm(req) {
       endLat: req.departureAnchor.lat,
       endLng: req.departureAnchor.lng,
       mustVisit: req.mustVisitPlaceIds,
+      objective: req.objective || "balanced",
     };
   return {
     date: today(),
+    destinationId: "yogyakarta",
     days: 1,
     adults: 2,
     budget: "",
@@ -68,6 +71,7 @@ export function initialForm(req) {
     endLat: -7.7956,
     endLng: 110.3695,
     mustVisit: [],
+    objective: "balanced",
   };
 }
 
@@ -80,7 +84,7 @@ export function toRequest(f) {
   const amount = (x) => (x === "" ? null : Number(x));
   return {
     schemaVersion: 1,
-    destinationId: "yogyakarta",
+    destinationId: f.destinationId || "yogyakarta",
     startDate: f.date,
     days: Number(f.days),
     timezone: "Asia/Jakarta",
@@ -108,7 +112,7 @@ export function toRequest(f) {
     periodPreferences: f.periodPreferences,
     mustVisitPlaceIds: f.mustVisit,
     excludedPlaceIds: [],
-    objective: "balanced",
+    objective: f.objective || "balanced",
     allowUnverifiedData: f.allowUnknown,
     costAssumptions: {
       foodPersonIdr: amount(f.food),

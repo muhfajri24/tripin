@@ -118,13 +118,13 @@ function StopReasonAccordion({ place, reduced }) {
   if (!place) return null;
 
   const jamLabel =
-    place.openingEvidence?.status === "verified"
+    place.openingEvidence?.status === "checked"
       ? "Jam buka terverifikasi"
       : "Jam buka belum terverifikasi";
   const hargaLabel =
-    place.prices?.[0]?.evidence?.status === "verified"
+    place.prices?.[0]?.evidence?.status === "checked"
       ? "Harga terverifikasi"
-      : "Harga masih perkiraan";
+      : place.prices?.[0]?.amountIdr == null ? "Harga belum tersedia" : "Harga masih perkiraan";
 
   return (
     <div className="pt-2 border-t border-gray-100">
@@ -400,6 +400,10 @@ export default function TripView({
             <p className="text-2xl sm:text-3xl font-black text-[#FFF9F0] mt-1">
               {costLabel}
             </p>
+            <p className="text-xs text-white/80 mt-1">
+              Budget tercatat: {rupiah(trip.request.budget.totalIdr)} total
+              {trip.request.budget.originalBasis === "person" ? " (input per orang)" : " (input rombongan)"}
+            </p>
             {totalLedgerCount > 0 && pricedRatio < 100 && (
               <p className="text-xs text-white/75 mt-0.5">
                 baru {pricedLedgerCount} dari {totalLedgerCount} komponen berharga
@@ -566,6 +570,7 @@ export default function TripView({
                   const isFocused = focusedStopId === s.id;
                   const showUmkm = place?.isLocalBusiness === true;
                   const showHiddenGem = place?.isHiddenGem === true;
+                  const visitCost = trip.ledger.find((item) => item.placeId === s.placeId && (item.category === "ticket" || item.category === "food"));
 
                   return (
                     <React.Fragment key={s.id}>
@@ -656,6 +661,12 @@ export default function TripView({
                             </a>
                           )}
                         </div>
+
+                        <p className="text-xs font-semibold text-charcoal-lighter">
+                          {visitCost?.totalIdr == null
+                            ? "Harga kunjungan belum tersedia"
+                            : `${visitCost.evidence?.sourceType === "user" ? "Estimasi dari kamu" : "Harga katalog"}: ${rupiah(visitCost.totalIdr)} untuk ${visitCost.quantity} unit`}
+                        </p>
 
                         <StopReasonAccordion place={place} reduced={reduced} />
                       </motion.article>
@@ -798,7 +809,7 @@ export default function TripView({
                     {trip.ledger.map((x) => {
                       const catLabel =
                         LEDGER_CATEGORY_LABELS[x.category] || x.category;
-                      const isVerified = x.evidence?.status === "verified";
+                      const isVerified = x.evidence?.status === "checked";
                       return (
                         <tr className="border-t border-gray-100" key={x.id}>
                           <td className="py-3 pr-3 font-medium text-charcoal">

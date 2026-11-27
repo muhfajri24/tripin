@@ -90,7 +90,9 @@ test("brief parse is editable and generation requires review", async () => {
   await act(async () => {
     Simulate.click(sendBtn);
   });
-  expect(container.textContent).toContain("Menginap di mana?");
+  expect(container.textContent).toContain("Menginap di hotel mana?");
+  expect(container.textContent).toContain("Rp\u00a0500.000 per orang");
+  expect(container.textContent).toContain("Mau diprioritaskan yang mana?");
   expect(
     [...container.querySelectorAll("button")].find((x) =>
       x.textContent.includes("Susun sekarang"),

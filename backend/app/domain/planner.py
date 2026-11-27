@@ -550,11 +550,13 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
     def score(p):
         relevance = 10 * len(set(p.categories) & set(req.interests))
         price, _, _ = visit_price(p, req)
-        return -(
-            relevance + (2 if p.isLocalBusiness is True else 0) - (price or 0) / 10000
-            if req.objective == "budget"
-            else relevance
-        ), p.id
+        if req.objective == "budget":
+            # Unknown is uncertainty, not a free ticket.
+            return (price is None, -(relevance + (2 if p.isLocalBusiness is True else 0) - (price or 0) / 10000), p.id)
+        if req.objective == "travel_time":
+            direct = travel(req.arrivalAnchor, p.coordinates, "start", p.id)
+            return (direct.estimatedDurationMin, -relevance, p.id)
+        return (-relevance, p.id)
 
     invalid_prices = []
     valid_candidates = []

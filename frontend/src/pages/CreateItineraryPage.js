@@ -60,6 +60,12 @@ const BUDGET_TIERS = [
   { id: "bebas", label: "Bebas", subtitle: "Yang penting berkesan", amount: 2000000, stacks: 4 },
 ];
 
+const PLAN_PRIORITIES = [
+  { id: "travel_time", label: "Terdekat", detail: "Kurangi perkiraan waktu tempuh antar tempat." },
+  { id: "budget", label: "Hemat", detail: "Utamakan tempat dengan biaya yang diketahui lebih rendah." },
+  { id: "balanced", label: "Seimbang", detail: "Padukan kategori pilihan dan waktu perjalanan." },
+];
+
 const PLACEHOLDER_EXAMPLES = [
   "2 hari di Yogyakarta bersama keluarga, budget Rp500.000 per orang, wisata budaya",
   "1 hari di Yogyakarta untuk 2 orang, kuliner khas dan sejarah, budget Rp400.000 per orang",
@@ -722,9 +728,9 @@ export default function CreateItineraryPage() {
         (p) =>
           p.kind === "lodging" &&
           p.coordinates &&
-          (!p.destinationId || p.destinationId === "yogyakarta"),
+          (!p.destinationId || p.destinationId === (form.destinationId || "yogyakarta")),
       ),
-    [places],
+    [places, form.destinationId],
   );
 
   // Persist active result in sessionStorage so navigating away and returning keeps it
@@ -909,8 +915,8 @@ export default function CreateItineraryPage() {
       } else {
         setTimeout(() => setViewMode("result"), 700);
       }
-    } catch {
-      setError("Layanan perencana belum bisa dihubungi");
+    } catch (err) {
+      setError(err.message || "Layanan perencana belum bisa dihubungi");
     } finally {
       setBusy(false);
     }
@@ -929,6 +935,7 @@ export default function CreateItineraryPage() {
       const d = parsed.draft;
       const merged = {
         ...form,
+        destinationId: d.destinationId || form.destinationId || "yogyakarta",
         days: d.days ?? "",
         adults: d.adults ?? form.adults,
         budget: d.budgetAmountIdr ?? form.budget ?? "",
@@ -948,22 +955,10 @@ export default function CreateItineraryPage() {
 
       setUnsupported(needDestination);
 
-      if (needDestination || needDays || needBudget || needLodging) {
-        setClarify({
-          needDestination,
-          needDays,
-          needBudget,
-          needLodging,
-        });
-        setBusy(false);
-        return;
-      }
-
-      setClarify(null);
+      setClarify({ needDestination, needDays, needBudget, needLodging });
       setBusy(false);
-      await executePlan(merged);
-    } catch {
-      setError("Layanan perencana belum bisa dihubungi");
+    } catch (err) {
+      setError(err.message || "Layanan perencana belum bisa dihubungi");
       setBusy(false);
     }
   }
@@ -972,7 +967,8 @@ export default function CreateItineraryPage() {
     !unsupported &&
     Number(form.days) >= 1 &&
     Number(form.budget) > 0 &&
-    (Number(form.days) <= 1 || Boolean(form.lodging));
+    (Number(form.days) <= 1 || Boolean(form.lodging)) &&
+    catalogRegions.includes(form.destinationId || "yogyakarta");
 
   const activeCompanion = COMPANION_OPTIONS.find((c) => c.id === companionId);
   const activeBudgetTier = BUDGET_TIERS.find((b) => b.id === budgetTierId);
@@ -1455,7 +1451,6 @@ export default function CreateItineraryPage() {
                         type="button"
                         onClick={() => {
                           setBudgetTierId("");
-                          setForm((f) => ({ ...f, budget: "" }));
                         }}
                         aria-label={`Hapus ${activeBudgetTier.label}`}
                         className="w-5 h-5 rounded-full hover:bg-white/15 inline-flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#2EC4B6]"
@@ -1489,7 +1484,10 @@ export default function CreateItineraryPage() {
                               <button
                                 key={regId}
                                 type="button"
-                                onClick={() => setUnsupported(false)}
+                                onClick={() => {
+                                  setUnsupported(false);
+                                  setForm((f) => ({ ...f, destinationId: regId, lodging: "" }));
+                                }}
                                 className={`px-4 py-2 rounded-full text-sm font-bold min-h-[48px] transition-colors ${
                                   selected
                                     ? "bg-[#F4A261] text-[#0B3B45]"
@@ -1501,6 +1499,7 @@ export default function CreateItineraryPage() {
                             );
                           })}
                         </div>
+                        <p className="text-xs text-[#FBF5E9]/75">Katalog perencana saat ini tersedia untuk Yogyakarta. Pilihan daerah lain akan muncul setelah datanya siap.</p>
                       </div>
                     )}
 
@@ -1543,19 +1542,20 @@ export default function CreateItineraryPage() {
                       </div>
                     )}
 
-                    {clarify.needBudget && (
-                      <div className="space-y-2">
-                        <p className="text-sm font-bold text-[#FBF5E9]">
+                    <div className="space-y-3">
+                        <label htmlFor="trip-budget" className="text-sm font-bold text-[#FBF5E9] block">
                           Perkiraan budgetnya berapa?
-                        </p>
+                        </label>
+                        <p className="text-xs text-[#FBF5E9]/75">Nominal ini dipakai sebagai batas anggaran saat menyusun trip.</p>
                         <div className="flex flex-wrap items-center gap-2">
                           {[500000, 1000000, 2000000].map((amt) => (
                             <button
                               key={amt}
                               type="button"
-                              onClick={() =>
-                                setForm((f) => ({ ...f, budget: amt }))
-                              }
+                              onClick={() => {
+                                setBudgetTierId("");
+                                setForm((f) => ({ ...f, budget: amt }));
+                              }}
                               className={`px-3.5 py-2 rounded-full text-xs font-bold min-h-[40px] ${
                                 Number(form.budget) === amt
                                   ? "bg-[#F4A261] text-[#0B3B45]"
@@ -1566,32 +1566,60 @@ export default function CreateItineraryPage() {
                             </button>
                           ))}
                           <input
+                            id="trip-budget"
                             type="number"
                             min={1}
+                            inputMode="numeric"
                             placeholder="Nominal (Rp)"
                             value={form.budget}
-                            onChange={(e) =>
-                              setForm((f) => ({ ...f, budget: e.target.value }))
-                            }
-                            className="px-3 py-2 rounded-xl bg-[#FBF5E9] text-[#0A1A1C] text-sm font-bold w-40 outline-none"
+                            onChange={(e) => {
+                              setBudgetTierId("");
+                              setForm((f) => ({ ...f, budget: e.target.value }));
+                            }}
+                            className="px-3 py-2 rounded-xl bg-[#FBF5E9] text-[#0A1A1C] text-sm font-bold w-full sm:w-40 outline-none"
                           />
                         </div>
-                      </div>
-                    )}
+                        <div className="flex flex-wrap gap-2" aria-label="Basis budget">
+                          {[{ id: "person", label: "Per orang" }, { id: "group", label: "Total rombongan" }].map((option) => (
+                            <button key={option.id} type="button" onClick={() => setForm((f) => ({ ...f, basis: option.id }))}
+                              aria-pressed={form.basis === option.id}
+                              className={`px-3.5 py-2 rounded-full text-xs font-bold min-h-[40px] ${form.basis === option.id ? "bg-[#F4A261] text-[#0B3B45]" : "bg-white/10 text-[#FBF5E9] hover:bg-white/20"}`}>
+                              {option.label}
+                            </button>
+                          ))}
+                        </div>
+                        {Number(form.budget) > 0 && <p className="text-xs text-[#FBF5E9]/85">Tercatat: {rupiah(Number(form.budget))} {form.basis === "person" ? `per orang · total ${rupiah(Number(form.budget) * Number(form.adults))}` : "untuk rombongan"}</p>}
+                    </div>
 
-                    {Number(form.days) > 1 && !form.lodging && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-bold text-[#FBF5E9]">Mau diprioritaskan yang mana?</p>
+                      <div className="flex flex-wrap gap-2" aria-label="Prioritas rekomendasi">
+                        {PLAN_PRIORITIES.map((option) => (
+                          <button key={option.id} type="button" title={option.detail}
+                            onClick={() => setForm((f) => ({ ...f, objective: option.id }))}
+                            aria-pressed={(form.objective || "balanced") === option.id}
+                            className={`px-3.5 py-2 rounded-full text-xs font-bold min-h-[40px] ${(form.objective || "balanced") === option.id ? "bg-[#F4A261] text-[#0B3B45]" : "bg-white/10 text-[#FBF5E9] hover:bg-white/20"}`}>
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
+                      <p className="text-xs text-[#FBF5E9]/75">{PLAN_PRIORITIES.find((option) => option.id === (form.objective || "balanced"))?.detail}</p>
+                    </div>
+
+                    {Number(form.days) > 1 && (
                       <div className="space-y-2">
                         <p className="text-sm font-bold text-[#FBF5E9]">
-                          Menginap di mana?
+                          Menginap di hotel mana?
                         </p>
+                        <p className="text-xs text-[#FBF5E9]/75">Hotel menjadi titik awal dan akhir rute, bukan destinasi wisata.</p>
                         <div className="flex flex-wrap gap-2">
                           {lodgingPlaces.map((p) => (
                             <button
                               key={p.id}
                               type="button"
-                              onClick={() =>
-                                setForm((f) => ({ ...f, lodging: p.id }))
-                              }
+                              onClick={() => setForm((f) => ({ ...f, lodging: p.id,
+                                lat: p.coordinates.lat, lng: p.coordinates.lng,
+                                endLat: p.coordinates.lat, endLng: p.coordinates.lng }))}
                               className={`px-3.5 py-2 rounded-full text-xs font-bold min-h-[40px] ${
                                 form.lodging === p.id
                                   ? "bg-[#F4A261] text-[#0B3B45]"
@@ -1602,8 +1630,28 @@ export default function CreateItineraryPage() {
                             </button>
                           ))}
                         </div>
+                        {!lodgingPlaces.length && <p className="text-xs text-[#FBF5E9]/75">Belum ada hotel dengan lokasi terverifikasi untuk daerah ini.</p>}
                       </div>
                     )}
+
+                    <details className="rounded-2xl border border-white/20 bg-white/5 p-3">
+                      <summary className="cursor-pointer text-sm font-bold text-[#FBF5E9]">Lengkapi perkiraan harga lainnya</summary>
+                      <p className="text-xs text-[#FBF5E9]/75 mt-2">Angka ini adalah estimasi dari kamu dan akan tercatat di rincian biaya, bukan tarif resmi.</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+                        {[
+                          { key: "food", label: "Makan per orang per kunjungan" },
+                          ...(Number(form.days) > 1 ? [{ key: "hotel", label: "Kamar per malam" }] : []),
+                          { key: "vehicle", label: "Kendaraan per hari" },
+                        ].map(({ key, label }) => (
+                          <label key={key} className="text-xs font-semibold text-[#FBF5E9] flex flex-col gap-1">
+                            <span>{label} (Rp)</span>
+                            <input type="number" min="0" inputMode="numeric" value={form[key]}
+                              onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
+                              className="w-full rounded-xl bg-[#FBF5E9] text-[#0A1A1C] px-3 py-2 text-sm" />
+                          </label>
+                        ))}
+                      </div>
+                    </details>
 
                     <div className="flex justify-end pt-1">
                       <button

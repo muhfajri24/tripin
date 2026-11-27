@@ -101,6 +101,10 @@ test("review form normalizes per-person budget and 3-day lodging", () => {
     basis: "person",
     lodging: "hotel",
     rooms: 2,
+    objective: "travel_time",
+    food: 35000,
+    hotel: 250000,
+    vehicle: 80000,
   };
   const r = toRequest(f);
   expect(r.budget.totalIdr).toBe(1000000);
@@ -112,7 +116,12 @@ test("review form normalizes per-person budget and 3-day lodging", () => {
     "2026-12-02",
     "2026-12-03",
   ]);
-  expect(r.costAssumptions.foodPersonIdr).toBeNull();
+  expect(r.objective).toBe("travel_time");
+  expect(r.costAssumptions).toEqual({
+    foodPersonIdr: 35000,
+    lodgingRoomNightIdr: 250000,
+    vehicleDayIdr: 80000,
+  });
 });
 test("canonical fixture round-trips through review with group total intact", () => {
   const r = fixture().request;
