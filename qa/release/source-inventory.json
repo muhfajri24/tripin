@@ -4,6 +4,10 @@
     "classification": "active"
   },
   {
+    "file": "frontend/src/AppRender.test.js",
+    "classification": "test"
+  },
+  {
     "file": "frontend/src/components/BudgetCard.js",
     "classification": "unused_by_active_entry"
   },
@@ -44,6 +48,10 @@
     "classification": "unused_by_active_entry"
   },
   {
+    "file": "frontend/src/components/PlaceImage.js",
+    "classification": "active"
+  },
+  {
     "file": "frontend/src/components/PreferenceForm.js",
     "classification": "active"
   },
@@ -65,7 +73,7 @@
   },
   {
     "file": "frontend/src/data/mockData.js",
-    "classification": "unused_by_active_entry"
+    "classification": "active"
   },
   {
     "file": "frontend/src/EditorReload.test.js",
@@ -80,6 +88,10 @@
     "classification": "active"
   },
   {
+    "file": "frontend/src/IntegrationRecovery.test.js",
+    "classification": "test"
+  },
+  {
     "file": "frontend/src/LayoutNavigation.test.js",
     "classification": "test"
   },
@@ -88,12 +100,56 @@
     "classification": "active"
   },
   {
+    "file": "frontend/src/motion/AnimatedIcon.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/motion/CustomCursor.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/motion/index.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/motion/MagneticButton.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/motion/PageTransition.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/motion/RevealOnScroll.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/motion/SmoothScroll.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/motion/TiltCard.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/motion/Toast.js",
+    "classification": "active"
+  },
+  {
+    "file": "frontend/src/motion/TripinSkeleton.js",
+    "classification": "unused_by_active_entry"
+  },
+  {
+    "file": "frontend/src/motion/useReducedMotion.js",
+    "classification": "active"
+  },
+  {
     "file": "frontend/src/pages/CreateItineraryPage.js",
     "classification": "active"
   },
   {
     "file": "frontend/src/pages/DashboardPage.js",
-    "classification": "unused_by_active_entry"
+    "classification": "active"
   },
   {
     "file": "frontend/src/pages/ItineraryEditorPage.js",
@@ -117,11 +173,11 @@
   },
   {
     "file": "frontend/src/pages/SavedPlacesPage.js",
-    "classification": "unused_by_active_entry"
+    "classification": "active"
   },
   {
     "file": "frontend/src/pages/SettingsPage.js",
-    "classification": "unused_by_active_entry"
+    "classification": "active"
   },
   {
     "file": "frontend/src/services/googleMapsService.js",
@@ -137,7 +193,7 @@
   },
   {
     "file": "frontend/src/services/placesService.js",
-    "classification": "unused_by_active_entry"
+    "classification": "active"
   },
   {
     "file": "frontend/src/services/plannerApi.js",

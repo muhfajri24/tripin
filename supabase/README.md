@@ -19,6 +19,13 @@ food/lodging. Kehadiran baris bukan bukti usaha buka pada tanggal perjalanan.
 Backend mengekspos sampel ini lewat `GET /api/v1/demo/places` dengan filter
 `area`, `kind`, dan `q`, memakai URL dan publishable/anon key Supabase yang
 diatur pada environment backend. Respons selalu `complete:false`.
+Migration `20261127044944_jabodetabek_admin_area.sql` menandai 15 baris lama
+ke wilayah administratif yang didukung alamat/sumbernya. Audit 14 wilayah x
+3 kategori menghasilkan 42 sel: 15 terisi satu sampel dan 27 masih kosong.
+API juga menerima `administrativeArea`, `limit` (1–100, default 50), dan
+`offset` (0–10.000), dengan urutan ID stabil dan `hasMore`. `q` diterapkan
+di Supabase sebelum pagination. Wilayah kosong memberi daftar kosong, bukan
+klaim bahwa di sana tidak ada tempat wisata. Inventaris masih sampel demo.
 
 FE/BE itinerary masih dibatasi Yogyakarta. Untuk menjadikan Jabodetabek
 tujuan planner, perlu perluasan kontrak destination, cakupan geografis,
