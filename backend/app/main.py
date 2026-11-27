@@ -5,6 +5,7 @@ from .limits import GuestLimits
 from .api.health import router
 from .errors import install_error_handlers
 from .api.planner import router as planner_router
+from .api.demo_places import router as demo_places_router
 from .repositories.places import LocalPlaceRepository
 from .repositories.supabase_places import SupabasePlaceRepository
 
@@ -13,6 +14,7 @@ def create_app(settings: Settings | None = None):
     settings = settings or Settings()
     application = FastAPI(title=settings.app_name, version="0.2.0")
     install_error_handlers(application)
+    application.state.settings = settings
     application.include_router(router, prefix="/api/v1")
     application.add_middleware(GuestLimits)
     if settings.place_source == "supabase":
@@ -25,6 +27,7 @@ def create_app(settings: Settings | None = None):
     else:
         application.state.places = LocalPlaceRepository()
     application.include_router(planner_router, prefix="/api/v1")
+    application.include_router(demo_places_router, prefix="/api/v1")
     if settings.serve_frontend:
         from .static import install_frontend
 

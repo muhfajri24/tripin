@@ -1,7 +1,7 @@
 import React from 'react';
 import { MapPin, Star, Clock, Bookmark, BookmarkCheck } from 'lucide-react';
 import { formatCurrency, getCategoryColor } from '../data/mockData';
-import clsx from 'clsx';
+import PlaceImage from './PlaceImage';
 
 function DestinationCard({ destination, onSave, onClick, variant = 'default' }) {
   const {
@@ -15,10 +15,11 @@ function DestinationCard({ destination, onSave, onClick, variant = 'default' }) 
         className="flex items-center gap-3 bg-white rounded-2xl p-3 shadow-soft hover:shadow-card card-hover cursor-pointer"
         onClick={onClick}
       >
-        <img
+        <PlaceImage
           src={image}
-          alt={name}
+          alt={`${name} di ${city}`}
           className="w-16 h-16 rounded-xl object-cover flex-shrink-0"
+          iconSize={16}
         />
         <div className="min-w-0 flex-1">
           <h4 className="font-semibold text-charcoal text-sm truncate">{name}</h4>
@@ -45,9 +46,9 @@ function DestinationCard({ destination, onSave, onClick, variant = 'default' }) 
     >
       {/* Image */}
       <div className="relative h-44 overflow-hidden">
-        <img
+        <PlaceImage
           src={image}
-          alt={name}
+          alt={`${name} di ${city}`}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />

@@ -3,62 +3,68 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { resolveTrip, saveTrip } from "../services/itineraryStorage";
 import TripView from "../components/TripView";
 import { Notice } from "../components/GuestUI";
+
 export default function ItineraryResultPage() {
   const { id } = useParams();
   const location = useLocation();
+
   const [loaded] = useState(() => {
     const resolved = resolveTrip(id, location.state?.trip);
-    return { ...resolved, error: resolved.error || location.state?.storageError || "" };
+    return {
+      ...resolved,
+      error: resolved.error || location.state?.storageError || "",
+    };
   });
   const [error, setError] = useState(loaded.error);
-  const [saved, setSaved] = useState("");
+  const [savedSuccess, setSavedSuccess] = useState(false);
+
   const trip = loaded.trip;
+
   if (!trip)
     return (
-      <div className="card space-y-3">
+      <div className="bg-white rounded-3xl p-6 shadow-soft border border-gray-100 space-y-3">
         <h1 className="page-title">Trip tidak ditemukan</h1>
         <Notice error>{error}</Notice>
-        <p>
-          ID ini tidak tersedia pada browser ini. Trip tidak disinkronkan
+        <p className="text-base text-charcoal-lighter">
+          ID ini tidak tersedia pada peramban ini. Trip tidak disinkronkan
           antarperangkat.
         </p>
-        <Link className="btn-primary" to="/my-itineraries">
-          My Trips
+        <Link className="btn-primary inline-block" to="/my-itineraries">
+          My Itineraries
         </Link>
       </div>
     );
+
+  const handleSave = () => {
+    try {
+      saveTrip(trip);
+      setError("");
+      setSavedSuccess(true);
+    } catch (e) {
+      setError(e.message);
+    }
+  };
+
   return (
-    <div className="max-w-6xl mx-auto space-y-6 pb-12 animate-fadeIn">
-      <header className="relative rounded-3xl overflow-hidden shadow-soft bg-charcoal text-white p-6 sm:p-8 min-h-56 flex flex-wrap items-end justify-between gap-4" style={{backgroundImage: "linear-gradient(0deg, rgba(0,0,0,.8), rgba(0,0,0,.5)), url(/images/hero/hero-malioboro.jpg)", backgroundSize: "cover"}}>
-        <div>
-          <p className="text-xs uppercase tracking-widest font-bold mb-2">Trip tamu - revisi {trip.revision}</p>
-          <h1 className="text-2xl sm:text-3xl font-extrabold">Yogyakarta, {trip.request.days} hari</h1>
-        </div>
+    <div className="max-w-6xl mx-auto space-y-6 pb-12 text-[15px]">
+      <header className="flex flex-wrap items-center justify-between gap-2 text-xs text-charcoal-lighter">
+        <span>Hasil Itinerary · revisi {trip.revision ?? 1}</span>
         <Link
-          className="btn-primary"
-          to={`/itinerary/${id}/edit`}
-          state={{ trip }}
+          to="/create"
+          state={{ resumePhase: 2, promptText: location.state?.promptText || "" }}
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 text-charcoal font-semibold transition-colors"
         >
-          Edit & reschedule
+          Mulai lagi
         </Link>
       </header>
       <Notice error>{error}</Notice>
-      <Notice>{saved}</Notice>
-      <button
-        className="btn-secondary"
-        onClick={() => {
-          try {
-            saveTrip(trip);
-            setError("");
-            setSaved("Tersimpan pada browser ini.");
-          } catch (e) {
-            setError(e.message);
-          }
-        }}
-      >
-        Simpan ulang
-      </button>
-      <TripView trip={trip} />
+      <TripView
+        trip={trip}
+        editTo={`/itinerary/${id}/edit`}
+        editState={{ trip }}
+        onSave={handleSave}
+        savedSuccess={savedSuccess}
+      />
     </div>
   );
 }

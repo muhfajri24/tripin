@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import {createRoot} from 'react-dom/client';
 import {act} from 'react';
 import {MemoryRouter, Routes, Route, Link} from 'react-router-dom';

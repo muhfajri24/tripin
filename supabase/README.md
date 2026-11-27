@@ -1,5 +1,48 @@
 # Setup katalog Supabase TRIPIN
 
+## Sampel Jabodetabek untuk demo — 27 November 2026
+
+`tripin_demo_places` adalah tabel discovery terpisah, versi
+`jabodetabek-demo-v1`. Isinya 15 contoh: masing-masing satu attraction, food,
+dan lodging di Jakarta, Bogor, Depok, Tangerang, dan Bekasi, dengan sumber
+pemerintah/operator di setiap baris. Area ini masih label metro, belum
+memisahkan Kota/Kabupaten Bogor, Tangerang, Bekasi, dan Tangerang Selatan.
+Ini bukan cakupan lengkap Jabodetabek dan belum menjadi input planner.
+Koordinat, jam buka, dan harga tetap null sampai ada bukti yang cocok untuk
+tanggal kunjungan. Migration `20261126184727_jabodetabek_demo_catalog.sql`
+sudah diterapkan di project TRIPPIN; `tests/jabodetabek_demo_checks.sql`
+memeriksa jumlah, null dan hak akses. RLS mengizinkan SELECT publik saja.
+Migration `20261126185951_jabodetabek_demo_kind.sql` menambahkan kategori
+`attraction`, `food`, `lodging`; migration
+`20261126190339_jabodetabek_demo_category_samples.sql` menambah 10 contoh
+food/lodging. Kehadiran baris bukan bukti usaha buka pada tanggal perjalanan.
+Backend mengekspos sampel ini lewat `GET /api/v1/demo/places` dengan filter
+`area`, `kind`, dan `q`, memakai URL dan publishable/anon key Supabase yang
+diatur pada environment backend. Respons selalu `complete:false`.
+
+FE/BE itinerary masih dibatasi Yogyakarta. Untuk menjadikan Jabodetabek
+tujuan planner, perlu perluasan kontrak destination, cakupan geografis,
+anchor, kandidat routable, lodging, parser, FE, dan tes. Deploy ke Vercel
+tidak mengaktifkan Google Places secara otomatis; integrasi itu memerlukan
+project Google Cloud dengan billing, API key, field mask, dan penanganan
+atribusi/retensi konten sesuai ketentuan Google.
+
+## Keamanan tabel prototipe — 27 November 2026
+
+Audit project TRIPPIN menemukan `public.itineraries`, `public.itinerary_items`,
+`public.saved_places`, dan `public.app_settings` memiliki policy `anon ALL`
+dengan grant luas. Keempat tabel ini tidak dipakai oleh alur guest aktif. Migration
+`20261126183417_secure_legacy_guest_tables.sql` sudah diterapkan untuk mencabut
+akses `anon` dan `authenticated` serta menghapus policy tersebut, tanpa menghapus
+baris. Verifikasi SQL menunjukkan hak SELECT/INSERT `anon` dan SELECT
+`authenticated` bernilai false untuk semuanya. RLS tetap aktif. Advisor INFO
+`rls_enabled_no_policy` berarti deny-all yang disengaja pada tabel lama ini.
+
+Penyimpanan itinerary pengunjung masih di browser. Penyimpanan cloud memerlukan
+identitas sesi dan policy kepemilikan pada tabel terpisah; API key publik saja
+tidak membedakan pengunjung. Lacak pekerjaan lanjut di issue #44. Jangan
+mengembalikan policy public-all untuk memperbaiki error tulis aplikasi lama.
+
 Status 24 November 2026: migration + seed sudah diterapkan pada project tim `TRIPPIN` (`dhumijynoiiysyeppaqj`). Hosted read preflight, parity local/live 9 record, RLS/grants/view inspection dan HTTP parse/plan/replan berhasil. Organisasi terverifikasi Free. `saved_places` existing tetap 1 record dan tidak diubah. Ini bukan acceptance frontend atau jaminan kondisi operasional tempat. Bukti tersanitasi: `qa/release/owner-live-source.json`, `owner-live-http-smoke.json`, dan `owner-data-review.json`.
 
 ## Objek yang dibuat

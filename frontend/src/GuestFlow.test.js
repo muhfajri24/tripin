@@ -5,6 +5,8 @@ import { Simulate } from "react-dom/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import Create from "./pages/CreateItineraryPage";
 import MyTrips from "./pages/MyItinerariesPage";
+
+jest.mock("./components/MapView", () => () => null);
 let container, root;
 beforeEach(() => {
   global.IS_REACT_ACT_ENVIRONMENT = true;
@@ -36,7 +38,17 @@ test("brief parse is editable and generation requires review", async () => {
     ok: true,
     json: async () =>
       url.includes("/places")
-        ? { places: [] }
+        ? {
+            places: [
+              {
+                id: "p1",
+                name: "Candi Prambanan",
+                kind: "attraction",
+                destinationId: "yogyakarta",
+                coordinates: { lat: -7.752, lng: 110.491 },
+              },
+            ],
+          }
         : {
             draft: {
               days: 2,
@@ -60,23 +72,28 @@ test("brief parse is editable and generation requires review", async () => {
       </MemoryRouter>,
     ),
   );
+  for (let i = 0; i < 3; i += 1) {
+    const nextBtn = [...container.querySelectorAll("button")]
+      .filter((x) => x.textContent.includes("Lanjut"))
+      .pop();
+    await act(async () => {
+      Simulate.click(nextBtn);
+    });
+  }
   const textarea = container.querySelector("textarea");
   await act(async () => {
     Simulate.change(textarea, {
       target: { value: "Yogyakarta 2 hari budget Rp500.000 per orang" },
     });
   });
-  const parse = [...container.querySelectorAll("button")].find((x) =>
-    x.textContent.includes("Baca kebutuhan"),
-  );
+  const sendBtn = container.querySelector('button[aria-label="Kirim permintaan"]');
   await act(async () => {
-    Simulate.click(parse);
+    Simulate.click(sendBtn);
   });
-  expect(container.textContent).toContain("Periksa/lengkapi: lodging");
-  expect(container.textContent).toContain("1.500.000");
+  expect(container.textContent).toContain("Menginap di mana?");
   expect(
     [...container.querySelectorAll("button")].find((x) =>
-      x.textContent.includes("Susun itinerary"),
+      x.textContent.includes("Susun sekarang"),
     ).disabled,
   ).toBe(true);
 });

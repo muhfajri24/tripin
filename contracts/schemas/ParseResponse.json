@@ -25,6 +25,8 @@
         "days": {
           "anyOf": [
             {
+              "maximum": 3,
+              "minimum": 1,
               "type": "integer"
             },
             {
@@ -37,6 +39,8 @@
         "adults": {
           "anyOf": [
             {
+              "maximum": 6,
+              "minimum": 1,
               "type": "integer"
             },
             {
@@ -65,6 +69,7 @@
         "budgetAmountIdr": {
           "anyOf": [
             {
+              "exclusiveMinimum": 0,
               "type": "integer"
             },
             {

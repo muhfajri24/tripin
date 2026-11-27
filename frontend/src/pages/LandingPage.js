@@ -1954,8 +1954,8 @@ export default function LandingPage() {
       >
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <span className="text-xs font-bold tracking-widest uppercase text-[#2EC4B6] block mb-2">
-              Mode Optimasi · Contoh Yogyakarta
+            <span className="text-sm font-semibold text-[#2EC4B6] block mb-2">
+              Dengan TRIPIN, kamu dapat mencoba memilih gaya perjalanan
             </span>
             <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-[#FBF5E9] tracking-tight">
               Pilih Gaya Perjalananmu
@@ -2329,18 +2329,6 @@ export default function LandingPage() {
             alt="TRIPIN"
             className="h-8 w-auto object-contain"
           />
-
-          <nav aria-label="Tautan Footer" className="flex flex-wrap items-center justify-center gap-6 font-medium text-[#FBF5E9]/75">
-            <Link to="/dashboard" className="hover:text-[#2EC4B6] transition-colors">
-              Dashboard
-            </Link>
-            <Link to="/discovery" className="hover:text-[#2EC4B6] transition-colors">
-              Local Discovery
-            </Link>
-            <Link to="/create" className="hover:text-[#2EC4B6] transition-colors">
-              Susun Perjalanan
-            </Link>
-          </nav>
 
           <p className="text-[#FBF5E9]/50 text-center md:text-right">
             Mendukung SDG 8 (Pertumbuhan Ekonomi Berkelanjutan) dan SDG 12 (Konsumsi & Produksi Bertanggung Jawab).

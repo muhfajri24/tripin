@@ -49,8 +49,7 @@ export async function searchPlacesAcrossIndonesia({
             name: p.displayName?.text || cleanQuery,
             city: p.formattedAddress || 'Indonesia',
             category: 'Heritage',
-            image:
-              'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80',
+            image: '/images/hero/hero-bromo.jpg',
             rating: p.rating || 4.5,
             reviews: p.userRatingCount || 100,
             priceLabel: p.priceLevel ? `Level ${p.priceLevel}` : 'Variatif',
@@ -87,8 +86,7 @@ export async function searchPlacesAcrossIndonesia({
             name: item.display_name.split(',')[0],
             city: item.address?.city || item.address?.county || item.address?.state || 'Indonesia',
             category: 'Heritage',
-            image:
-              'https://images.unsplash.com/photo-1584810359583-96fc3448beaa?w=600&q=80',
+            image: '/images/hero/hero-malioboro.jpg',
             rating: 4.6,
             reviews: 320,
             priceLabel: 'Tiket Masuk',

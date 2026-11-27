@@ -27,24 +27,31 @@ test('catalog outage keeps review draft and retry restores generation without mo
   const trip = fixture();
   global.fetch = jest.fn().mockRejectedValueOnce(new TypeError('offline')).mockResolvedValue({ok:true,json:async()=>({places:trip.places})});
   await render(<Create />);
-  expect(container.querySelector('[role=alert]').textContent).toContain('Backend');
+  for (let i = 0; i < 3; i += 1) {
+    const nextBtn = [...container.querySelectorAll('button')].filter((b) => b.textContent.includes('Lanjut')).pop();
+    await act(async () => Simulate.click(nextBtn));
+  }
+  expect(container.querySelector('[role=alert]').textContent).toContain('Layanan perencana');
   await act(async () => Simulate.change(container.querySelector('textarea'), {target:{value:'Yogyakarta 1 hari'}}));
-  await act(async () => Simulate.click(button('Muat ulang katalog')));
+  await act(async () => Simulate.click(button('Coba lagi')));
   expect(container.querySelector('textarea').value).toBe('Yogyakarta 1 hari');
   expect(container.querySelector('[role=alert]')).toBeNull();
-  expect(button('Susun itinerary').disabled).toBe(true);
   expect(localStorage.length).toBe(0);
   expect(global.fetch.mock.calls.every(([url])=>url.endsWith('/places'))).toBe(true);
 });
 test('destination passed from landing cannot silently become Yogyakarta', async () => {
-  global.fetch = jest.fn().mockResolvedValue({ok:true,json:async()=>({places:fixture().places})});
+  global.fetch = jest.fn()
+    .mockResolvedValueOnce({ok:true,json:async()=>({places:fixture().places})})
+    .mockResolvedValueOnce({ok:true,json:async()=>({draft:{unsupportedDestination:true,days:null,budgetAmountIdr:null,interests:[],periodPreferences:[]},missingFields:['destinationId'],ambiguities:[],parserSource:'deterministic-id-v1'})});
   await render(<Create />, {pathname:'/create',state:{destination:'Bali'}});
-  const reviewed = [...container.querySelectorAll('label')].find(label => label.textContent.includes('Saya sudah memeriksa')).querySelector('input');
-  await act(async () => Simulate.change(reviewed, {target:{checked:true}}));
-  expect(reviewed.checked).toBe(true);
-  expect(container.textContent).toContain('Saya memilih Yogyakarta secara eksplisit');
-  expect(button('Susun itinerary').disabled).toBe(true);
-  expect(global.fetch).toHaveBeenCalledTimes(1);
+  for (let i = 0; i < 3; i += 1) {
+    const nextBtn = [...container.querySelectorAll('button')].filter((b) => b.textContent.includes('Lanjut')).pop();
+    await act(async () => Simulate.click(nextBtn));
+  }
+  await act(async () => Simulate.click(container.querySelector('button[aria-label="Kirim permintaan"]')));
+  expect(container.textContent).toContain('Mau ke daerah mana?');
+  expect(button('Susun sekarang').disabled).toBe(true);
+  expect(global.fetch).toHaveBeenCalledTimes(2);
 });
 test('result uses latest stored revision over stale navigation state', async () => {
   const old = fixture();

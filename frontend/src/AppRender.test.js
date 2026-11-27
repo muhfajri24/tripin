@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { act } from 'react';
+import App from './App';
 
 jest.mock('react-leaflet', () => ({
   MapContainer: ({ children }) => <div data-testid="map">{children}</div>,
@@ -17,8 +18,6 @@ jest.mock('leaflet', () => ({
   divIcon: jest.fn(() => ({})),
   latLngBounds: jest.fn(() => ({ extend: jest.fn() })),
 }));
-
-import App from './App';
 
 test('App mounts and renders without blank crash', async () => {
   const container = document.createElement('div');

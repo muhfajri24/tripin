@@ -1,0 +1,90 @@
+﻿{
+    "date":  "2026-11-25",
+    "baseCommit":  "ce714bc",
+    "scope":  "Local uncommitted backend compatibility fixes; local catalog only",
+    "backendTests":  148,
+    "frontendTests":  19,
+    "ruff":  "passed",
+    "frontendBuild":  "passed",
+    "httpSmoke":  "passed: list/filter/detail, parse, plan 1/2/3 days, closure replan",
+    "browser":  {
+                    "base":  "http://127.0.0.1:8015",
+                    "engine":  "installed Google Chrome via Playwright, headless",
+                    "steps":  [
+                                  {
+                                      "name":  "open active create form directly (legacy landing locator skipped)",
+                                      "status":  "passed"
+                                  },
+                                  {
+                                      "name":  "parse, review and lodging selection",
+                                      "status":  "passed"
+                                  },
+                                  {
+                                      "name":  "plan generation and canonical result",
+                                      "status":  "passed"
+                                  },
+                                  {
+                                      "name":  "budget and map markers",
+                                      "status":  "passed"
+                                  },
+                                  {
+                                      "name":  "save and reload result",
+                                      "status":  "passed"
+                                  },
+                                  {
+                                      "name":  "My Trips genuine saved trip",
+                                      "status":  "passed"
+                                  },
+                                  {
+                                      "name":  "fixed lock refuses two-hour delay",
+                                      "status":  "passed"
+                                  },
+                                  {
+                                      "name":  "unlock and successful delay with before-after",
+                                      "status":  "passed"
+                                  },
+                                  {
+                                      "name":  "remove optional stop after delay and save revision",
+                                      "status":  "passed"
+                                  },
+                                  {
+                                      "name":  "saved editor revision survives reload",
+                                      "status":  "passed"
+                                  },
+                                  {
+                                      "name":  "closure repairs known conflict",
+                                      "status":  "passed"
+                                  },
+                                  {
+                                      "name":  "Google Maps handoff opens actual URL",
+                                      "status":  "passed"
+                                  }
+                              ],
+                    "consoleErrors":  [
+
+                                      ],
+                    "httpErrors":  [
+
+                                   ],
+                    "map":  {
+                                "markerCount":  3,
+                                "tiles":  1
+                            },
+                    "delay":  {
+                                  "costDeltaIdr":  null,
+                                  "travelDeltaMin":  0,
+                                  "removedOptionalStops":  0
+                              },
+                    "googleMaps":  {
+                                       "requestedUrl":  "https://www.google.com/maps/dir/?api=1\u0026origin=-7.7956%2C110.3695\u0026destination=-7.793635%2C110.3614\u0026travelmode=driving\u0026waypoints=-7.805456%2C110.362751%7C-7.80275%2C110.36380555555554",
+                                       "actualUrl":  "",
+                                       "title":  "Google Maps",
+                                       "loaded":  true
+                                   },
+                    "note":  "Navigation-aborted requests are excluded from defects. Google Maps URL/popup tested; full external map rendering is separately unverified."
+                },
+    "limitations":  [
+                        "Original legacy landing locator timed out; rerun starts at /create without editing repository QA script. Landing navigation is not verified.",
+                        "Live catalog parity and physical mobile acceptance are not part of this verification."
+                    ]
+}

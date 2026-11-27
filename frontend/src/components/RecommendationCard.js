@@ -1,5 +1,6 @@
 import React from 'react';
-import { TrendingUp, MapPin, Star } from 'lucide-react';
+import { TrendingUp, Star } from 'lucide-react';
+import PlaceImage from './PlaceImage';
 
 function RecommendationCard({ rec, onClick }) {
   const { destination, tagline, image, rating, avgBudget, duration, tags, trendingScore } = rec;
@@ -8,9 +9,9 @@ function RecommendationCard({ rec, onClick }) {
       className="relative rounded-2xl overflow-hidden h-52 cursor-pointer group card-hover"
       onClick={onClick}
     >
-      <img
+      <PlaceImage
         src={image}
-        alt={destination}
+        alt={`${destination} — ${tagline || 'Destinasi rekomendasi Indonesia'}`}
         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />

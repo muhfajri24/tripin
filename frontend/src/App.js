@@ -7,6 +7,8 @@ import ItineraryEditorPage from './pages/ItineraryEditorPage';
 import LocalDiscoveryPage from './pages/LocalDiscoveryPage';
 import MyItinerariesPage from './pages/MyItinerariesPage';
 import DashboardPage from './pages/DashboardPage';
+import SavedPlacesPage from './pages/SavedPlacesPage';
+import SettingsPage from './pages/SettingsPage';
 import AppLayout from './layouts/AppLayout';
 import { CustomCursor, ToastContainer, SmoothScroll, PageTransition } from './motion';
 
@@ -92,8 +94,8 @@ export default function App() {
               <Route path="/my-itineraries" element={<MyItinerariesPage />} />
               <Route path="/itinerary/:id" element={<TripPage />} />
               <Route path="/itinerary/:id/edit" element={<TripPage edit />} />
-              <Route path="/saved" element={<Navigate to="/discovery" replace />} />
-              <Route path="/settings" element={<Navigate to="/my-itineraries" replace />} />
+              <Route path="/saved" element={<SavedPlacesPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
 
               {/* Legacy & parameter redirects to prevent 404s */}
               <Route path="/explore" element={<Navigate to="/discovery" replace />} />

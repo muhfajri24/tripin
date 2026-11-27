@@ -491,6 +491,14 @@ class Edit(Contract):
     request: TravelRequest | None = None
     locks: dict[Id, StopLock] = Field(default_factory=dict)
 
+    @model_validator(mode="after")
+    def unique_selection(self):
+        if len(self.selectedPlaceIds) != len(set(self.selectedPlaceIds)):
+            raise ValueError("duplicate selected place identifiers")
+        if set(self.locks) - set(self.selectedPlaceIds):
+            raise ValueError("locks must refer to selected places")
+        return self
+
 
 class ReplanRequest(Contract):
     itinerary: Itinerary

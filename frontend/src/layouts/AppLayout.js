@@ -41,7 +41,13 @@ function AppLayout() {
           sidebarCollapsed={sidebarCollapsed}
         />
         <main ref={mainRef} className="flex-1 overflow-y-auto">
-          <div className="p-4 md:p-6 max-w-7xl mx-auto">
+          <div
+            className={
+              location.pathname === "/create"
+                ? "w-full min-h-full"
+                : "p-4 md:p-6 max-w-7xl mx-auto"
+            }
+          >
             <PageTransition key={location.pathname}>
               <Outlet />
             </PageTransition>

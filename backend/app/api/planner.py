@@ -24,10 +24,10 @@ class ParseBody(Contract):
 class ParseDraft(Contract):
     destinationId: Literal["yogyakarta"] | None = None
     unsupportedDestination: bool = False
-    days: int | None = None
-    adults: int | None = None
+    days: int | None = Field(default=None, ge=1, le=3)
+    adults: int | None = Field(default=None, ge=1, le=6)
     budgetBasis: Literal["person", "group"] | None = None
-    budgetAmountIdr: int | None = None
+    budgetAmountIdr: int | None = Field(default=None, gt=0)
     transportMode: Literal["driving"] | None = None
     startDate: str | None = None
     interests: list[str]

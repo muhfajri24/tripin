@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Compass } from 'lucide-react';
+import { Compass } from 'lucide-react';
 
 function EmptyState({ icon: Icon = Compass, title = 'Nothing here yet', description = '', action }) {
   return (

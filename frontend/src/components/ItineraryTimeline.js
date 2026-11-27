@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Clock, Navigation, DollarSign, ChevronRight, ChevronDown, MapPin, ExternalLink, Info, Sparkles } from 'lucide-react';
+import { Clock, Navigation, DollarSign, ChevronRight, ChevronDown, MapPin, ExternalLink, Sparkles } from 'lucide-react';
 import { formatCurrency, getPeriodIcon, getCategoryColor } from '../data/mockData';
-import clsx from 'clsx';
 
 // AI reasons for destinations (simulated)
 const AI_REASONS = [

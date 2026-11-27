@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Home, Sparkles, Compass, BookOpen,
+  LayoutDashboard, Sparkles, Compass, BookOpen, Heart, Settings,
   ChevronLeft, ChevronRight, X
 } from 'lucide-react';
 import clsx from 'clsx';
@@ -12,10 +12,11 @@ import { loadTrips } from '../services/itineraryStorage';
 import { AnimatedIcon, MagneticButton, useReducedMotion } from '../motion';
 
 const navItems = [
-  { label: 'Home', icon: Home, path: '/', anim: 'bounce' },
-  { label: 'Plan a Trip', icon: Sparkles, path: '/create', anim: 'bounce' },
-  { label: 'My Trips', icon: BookOpen, path: '/my-itineraries', dynamicBadge: 'trips', anim: 'scale' },
-  { label: 'Explore Yogyakarta', icon: Compass, path: '/discovery', anim: 'rotate' },
+  { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard', anim: 'bounce' },
+  { label: 'Local Discovery', icon: Compass, path: '/discovery', anim: 'rotate' },
+  { label: 'My Itineraries', icon: BookOpen, path: '/my-itineraries', dynamicBadge: 'trips', anim: 'scale' },
+  { label: 'Saved Places', icon: Heart, path: '/saved', anim: 'pulse' },
+  { label: 'Settings', icon: Settings, path: '/settings', anim: 'rotate' },
 ];
 
 function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }) {
@@ -169,7 +170,7 @@ function SidebarContent({
         )}
       </div>
 
-      {/* Primary CTA: Plan a Trip */}
+      {/* Primary CTA: AI Trip Planner */}
       <div className="mb-4">
         {!collapsed ? (
           <MagneticButton
@@ -177,29 +178,30 @@ function SidebarContent({
               navigate('/create');
               if (isMobile && onClose) onClose();
             }}
-            className="w-full flex items-center justify-center gap-2 text-white rounded-xl px-4 py-2.5 font-bold text-xs shadow-md group relative overflow-hidden"
+            className="w-full flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 font-bold text-xs shadow-md group relative overflow-hidden"
             style={{
-              background: 'linear-gradient(135deg, #FF6B5E 0%, #FF8A80 100%)',
+              background: '#F4A261',
+              color: '#0B3B45',
             }}
-            aria-label="Plan a Trip"
+            aria-label="AI Trip Planner"
           >
             <AnimatedIcon icon={Sparkles} size={15} animation="bounce" />
-            <span className="tracking-wide">Plan a Trip</span>
+            <span className="tracking-wide">AI Trip Planner</span>
           </MagneticButton>
         ) : (
           <div className="relative group flex justify-center">
             <MagneticButton
               onClick={() => navigate('/create')}
               className="w-11 h-11 flex items-center justify-center rounded-xl transition-all shadow-md"
-              style={{ background: 'linear-gradient(135deg, #FF6B5E 0%, #FF8A80 100%)' }}
-              aria-label="Plan a Trip"
+              style={{ background: '#F4A261', color: '#0B3B45' }}
+              aria-label="AI Trip Planner"
             >
               <Sparkles size={16} />
             </MagneticButton>
 
             {/* Collapsed Tooltip */}
             <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 hidden group-hover:flex items-center px-2.5 py-1.5 rounded-lg bg-[#1a3836] border border-white/15 text-white text-xs font-semibold whitespace-nowrap shadow-xl z-50 pointer-events-none">
-              Plan a Trip
+              AI Trip Planner
             </div>
           </div>
         )}
@@ -221,7 +223,6 @@ function SidebarContent({
               <NavLink
                 to={item.path}
                 aria-label={item.label}
-                end={item.path === '/'}
                 title={collapsed ? item.label : ''}
                 onClick={() => {
                   if (isMobile && onClose) onClose();
@@ -307,14 +308,6 @@ function SidebarContent({
           );
         })}
       </nav>
-
-      {/* Minimal Footer */}
-      {!collapsed && (
-        <div className="pt-3 border-t border-white/5 text-[11px] text-white/40 px-2 flex items-center justify-between">
-          <span>TRIPIN v1.2</span>
-          <span>Open Web</span>
-        </div>
-      )}
     </div>
   );
 }
