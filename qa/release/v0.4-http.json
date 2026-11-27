@@ -1,0 +1,65 @@
+{
+  "scenario": "Actual API catalog, two days, parsed per-person budget, user cost assumptions, reported closure",
+  "datasetVersion": "yogyakarta-v0_4_0",
+  "catalogRows": 9,
+  "listFilterDetail": "passed",
+  "planDays": {
+    "2": "passed",
+    "1": "passed",
+    "3": "passed"
+  },
+  "normalizedBudgetIdr": 1000000,
+  "before": {
+    "knownCostIdr": 470000,
+    "unknownCostItems": 3,
+    "travelMin": 27,
+    "distanceMeters": 6909
+  },
+  "after": {
+    "knownCostIdr": 470000,
+    "unknownCostItems": 3,
+    "travelMin": 27,
+    "distanceMeters": 6916
+  },
+  "conflicts": [
+    "Penutupan dilaporkan: Museum Kereta Kraton Ngayogyakarta Hadiningrat"
+  ],
+  "changes": [
+    {
+      "stopId": "stop-yog-museum-kereta",
+      "action": "moved",
+      "reasonCode": "REPLAN_MOVED",
+      "explanation": "Waktu dihitung ulang dengan perjalanan dan jam buka."
+    },
+    {
+      "stopId": "stop-yog-vredeburg",
+      "action": "moved",
+      "reasonCode": "REPLAN_MOVED",
+      "explanation": "Waktu dihitung ulang dengan perjalanan dan jam buka."
+    },
+    {
+      "stopId": "stop-yog-bebek-cak-koting",
+      "action": "moved",
+      "reasonCode": "REPLAN_MOVED",
+      "explanation": "Waktu dihitung ulang dengan perjalanan dan jam buka."
+    },
+    {
+      "stopId": "stop-yog-malioboro",
+      "action": "retained",
+      "reasonCode": "REPLAN_RETAINED",
+      "explanation": "Aktivitas tetap dipertahankan."
+    },
+    {
+      "stopId": "stop-yog-sonobudoyo",
+      "action": "moved",
+      "reasonCode": "REPLAN_MOVED",
+      "explanation": "Waktu dihitung ulang dengan perjalanan dan jam buka."
+    }
+  ],
+  "delta": {
+    "costDeltaIdr": null,
+    "travelDeltaMin": 0,
+    "removedOptionalStops": 0
+  },
+  "note": "Actual HTTP smoke; source provenance requires check_place_source evidence. Not provider freshness or browser navigation verification."
+}

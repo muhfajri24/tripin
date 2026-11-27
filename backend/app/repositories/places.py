@@ -61,7 +61,7 @@ class LocalPlaceRepository(PlaceCatalog):
     def __init__(self, path: Path | None = None):
         path = (
             path
-            or Path(__file__).resolve().parents[1] / "data" / "yogyakarta-v0.3.0.json"
+            or Path(__file__).resolve().parents[1] / "data" / "yogyakarta-v0.4.0.json"
         )
         self.dataset = PilotDataset.model_validate_json(
             path.read_text(encoding="utf-8")

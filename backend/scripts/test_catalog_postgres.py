@@ -75,6 +75,10 @@ def main():
                 encoding="utf-8-sig"
             )
         )
+        sql(
+            (ROOT / "supabase/migrations/20261127040535_activate_yogyakarta_v0_4_0.sql")
+            .read_text(encoding="utf-8-sig")
+        )
         seed = (ROOT / "supabase/seed.sql").read_text(encoding="utf8")
         sql(seed)
         sql(seed)

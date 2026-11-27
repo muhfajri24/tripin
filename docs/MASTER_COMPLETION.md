@@ -2,6 +2,14 @@
 
 Sumber backlog aktif: **[GitHub Project](https://github.com/users/muhfajri24/projects/1)** dan [Issues](https://github.com/muhfajri24/tripin/issues). Detail implementasi/acceptance/tes ada di issue, tidak diduplikasi ke banyak MD. Sprint **usulan 24–30 November 2026**; target dapat diubah PM setelah baseline dan kapasitas disepakati.
 
+Update 27 November: katalog Yogyakarta v0.4 kini aktif secara lokal dan di Supabase
+sebagai versi baru yang immutable. Sembilan baris live dan lokal memiliki checksum
+canonical sama (`e025f8cd2217feed2b04f26e6ff738297411c3a7908221ebff1170714c378eb1`).
+Uji HTTP live pada v0.4 lulus untuk list/filter/detail, plan 1/2/3 hari, dan
+replan. Arsip v0.3 tidak diubah. Gate operasional tanggal perjalanan, FE
+Discovery terbaru, HTTPS, perangkat fisik, rehearsal manusia, dan review release
+tetap terpisah. Paragraf status v0.3 di bawah adalah riwayat audit sebelumnya.
+
 Update 25 November: [integration recheck](INTEGRATION_RECHECK.md) mencatat pemulihan canonical guest flow, browser desktop/mobile/recovery local dan live yang lulus, serta blocker baru parity katalog live/local di bawah versi v0.3 yang sama. Temuan FE-00 di bawah adalah baseline historis; acceptance/release tidak otomatis Done. Final SHA dan CI dicatat pada issue.
 
 ## Tim dan akses

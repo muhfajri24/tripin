@@ -48,7 +48,7 @@ def main(argv=None):
         "--dataset", type=Path, help="Validate a proposed catalog without activating it"
     )
     args = parser.parse_args(argv)
-    active = ROOT / "backend/app/data/yogyakarta-v0.3.0.json"
+    active = ROOT / "backend/app/data/yogyakarta-v0.4.0.json"
     path = args.dataset or active
     raw = json.loads(path.read_text(encoding="utf8"))
     errors = quality_errors(raw)

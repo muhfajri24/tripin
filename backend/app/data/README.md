@@ -48,9 +48,16 @@ tiles with attribution: https://www.openstreetmap.org/copyright . Respect tile u
 no prefetch/offline bulk downloads. Static curated data is a small sourced factual compilation;
 source content and photos are not redistributed. Runtime does not scrape these sites.
 
-## Katalog v0.3.0 (24 November 2026)
+## Katalog aktif v0.4.0 (27 November 2026)
 
-Sumber aktif kini `yogyakarta-v0.3.0.json`; v0.2.0 tetap arsip immutable. Jumlah tetap 9; fokus enrichment, bukan menambah metadata rekaan. Jam terpublikasi ditambahkan untuk Kedhaton (Selasa–Minggu 08.30–14.30) dan Museum Kereta/Wahanarata (09.00–15.00), berdasarkan halaman operator Keraton yang dirujuk pada openingEvidence. Identitas Museum Kereta dipetakan secara editorial ke Wahanarata berdasarkan koleksi kereta kerajaan, pengelola Keraton dan lokasi Rotowijayan; ID/nama historis dipertahankan. Sumber berbeda mencantumkan nomor alamat berbeda: jangan menganggap pintu masuk sudah diverifikasi lapangan.
+Versi baru mempertahankan tarif Museum Kereta dan Vredeburg sebagai unknown,
+menambah alamat bersumber, serta jam reguler Vredeburg dari operator. Senin
+tutup; status libur khusus dan operasional pada tanggal perjalanan tetap perlu
+diperiksa. Arsip v0.3 tidak ditimpa.
+
+## Arsip v0.3.0 (24 November 2026)
+
+Sumber aktif saat versi ini adalah `yogyakarta-v0.3.0.json`; v0.2.0 tetap arsip immutable. Jumlah tetap 9; fokus enrichment, bukan menambah metadata rekaan. Jam terpublikasi ditambahkan untuk Kedhaton (Selasa–Minggu 08.30–14.30) dan Museum Kereta/Wahanarata (09.00–15.00), berdasarkan halaman operator Keraton yang dirujuk pada openingEvidence. Identitas Museum Kereta dipetakan secara editorial ke Wahanarata berdasarkan koleksi kereta kerajaan, pengelola Keraton dan lokasi Rotowijayan; ID/nama historis dipertahankan. Sumber berbeda mencantumkan nomor alamat berbeda: jangan menganggap pintu masuk sudah diverifikasi lapangan.
 
 Sonobudoyo kini memakai jam pameran tetap operator provinsi (08.00–21.00, Selasa–Minggu), bukan jam kantor. Alamat ditambahkan dari halaman operator yang sama. Tiket terakhir 20.00; dengan durasi editorial 60 menit, batas keluar 21.00 membatasi kedatangan maksimal 20.00. Tidak dimodelkan sebagai berlaku untuk semua program pertunjukan. Harga domestik dewasa sebelumnya tetap; tidak ada tarif baru yang ditebak.
 

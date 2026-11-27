@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def seed_sql():
     dataset = PilotDataset.model_validate_json(
-        (ROOT / "backend/app/data/yogyakarta-v0.3.0.json").read_text(encoding="utf8")
+        (ROOT / "backend/app/data/yogyakarta-v0.4.0.json").read_text(encoding="utf8")
     )
     rows = json.dumps(
         [

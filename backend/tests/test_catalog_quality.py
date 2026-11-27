@@ -13,7 +13,7 @@ from scripts.check_place_source import compare_catalogs
 def raw_catalog():
     return json.loads(
         (
-            Path(__file__).resolve().parents[1] / "app/data/yogyakarta-v0.3.0.json"
+            Path(__file__).resolve().parents[1] / "app/data/yogyakarta-v0.4.0.json"
         ).read_text(encoding="utf8")
     )
 

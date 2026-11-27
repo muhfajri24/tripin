@@ -66,7 +66,7 @@ TRPIN_PLACE_SOURCE=supabase
 TRPIN_SUPABASE_URL=https://PROJECT.supabase.co
 TRPIN_SUPABASE_ANON_KEY=PUBLIC_READ_KEY
 TRPIN_SUPABASE_PLACES_VIEW=tripin_places_api
-TRPIN_SUPABASE_DATASET_VERSION=yogyakarta-v0_3_0
+TRPIN_SUPABASE_DATASET_VERSION=yogyakarta-v0_4_0
 ```
 
 5. Restart backend, lalu dari backend jalankan `.venv/Scripts/python -m scripts.check_place_source`. Harus melaporkan `source=supabase`, `rows=9`, `liveRead=true`. Key tidak dicetak. Setelah itu ulangi HTTP smoke dan browser QA. Jangan menganggap migration sukses sebagai bukti PostgREST/RLS/HTTP sudah berfungsi.
@@ -74,9 +74,12 @@ TRPIN_SUPABASE_DATASET_VERSION=yogyakarta-v0_3_0
 
 Untuk membandingkan isi live/local, jalankan `.venv/Scripts/python -m scripts.check_place_source --compare-local`. Pemeriksaan membandingkan versi dan SHA-256 canonical JSON yang diurutkan berdasarkan ID; berbeda isi pada versi sama dianggap gagal. Quality gate lokal: `.venv/Scripts/python -m scripts.check_catalog_quality`.
 
-Kandidat bantuan data ada di `backend/app/data/proposals/yogyakarta-v0.4.0.json`. Kandidat belum aktif, belum di-seed dan belum mengubah view/RLS/env live. Tinjau catatan `qa/release/owner-data-review.json` sebelum mengaktifkannya lewat versi/seed/migration yang konsisten. Tidak menimpa arsip v0.3.
+Katalog aktif `backend/app/data/yogyakarta-v0.4.0.json` dan migration
+`20261127040535_activate_yogyakarta_v0_4_0.sql` menggunakan versi baru. Arsip
+v0.3 tidak ditimpa. Harga Vredeburg tetap unknown karena tarif operator berubah
+menurut hari dan jam; status kunjungan tanggal demo tetap perlu konfirmasi.
 
-View hanya mengekspos versi v0.3 saat ini dan urutan place_id deterministik. Untuk revisi data berikutnya buat migration/version/view-policy update yang ditinjau, regenerate seed dan ubah env version secara serentak; jangan mengganti isi di bawah versi sama. Tidak ada booking, rating rekaan, atau tabel guest public-write.
+View hanya mengekspos versi v0.4 saat ini dan urutan place_id deterministik. Untuk revisi data berikutnya buat migration/version/view-policy update yang ditinjau, regenerate seed dan ubah env version secara serentak; jangan mengganti isi di bawah versi sama. Tidak ada booking, rating rekaan, atau tabel guest public-write.
 
 ## Pengujian tanpa project live
 
