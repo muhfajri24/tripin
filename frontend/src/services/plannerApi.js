@@ -6,7 +6,8 @@ export async function api(path, body, signal) {
     if (signal.aborted) abort();
     else signal.addEventListener("abort", abort);
   }
-  const timeoutMs = path.startsWith("/destinations/lookup") ? 65000 : 20000;
+  const timeoutMs = path.startsWith("/destinations/") || path === "/itineraries/plan" ||
+    path === "/itineraries/replan" ? 65000 : 20000;
   const timeout = setTimeout(abort, timeoutMs);
   try {
     const res = await fetch(`${BASE}${path}`, {

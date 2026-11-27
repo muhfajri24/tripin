@@ -22,6 +22,7 @@ OVERPASS = (
     "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
 )
 DESTINATION = re.compile(r"^osm-(-?\d+)_(-?\d+)$")
+OSM_PLACE = re.compile(r"^osm-(node|way|relation)-(\d{1,15})$")
 
 
 class NationalCatalogError(RuntimeError):
@@ -92,17 +93,46 @@ def _convert(element, destination_id):
         return None
     tourism = tags.get("tourism", "")
     amenity = tags.get("amenity", "")
+    natural = tags.get("natural", "")
+    historic = tags.get("historic", "")
+    leisure = tags.get("leisure", "")
     if tourism in {"hotel", "guest_house", "hostel", "motel"}:
         kind, categories, duration, basis = "lodging", ["lodging"], 1, "room_night"
     elif amenity in {"restaurant", "cafe", "fast_food"}:
         kind, categories, duration, basis = "food", ["food"], 60, "person"
-    elif tourism in {"attraction", "museum", "viewpoint", "zoo", "theme_park"}:
+    elif (
+        tourism
+        in {
+            "attraction",
+            "museum",
+            "viewpoint",
+            "zoo",
+            "theme_park",
+            "gallery",
+            "artwork",
+            "picnic_site",
+        }
+        or natural in {"beach", "waterfall", "peak", "cave_entrance"}
+        or historic
+        in {
+            "monument",
+            "memorial",
+            "castle",
+            "ruins",
+            "archaeological_site",
+            "fort",
+            "temple",
+        }
+        or leisure in {"park", "garden"}
+    ):
         kind = "attraction"
         categories = (
             ["culture", "attraction"]
-            if tourism == "museum"
+            if tourism in {"museum", "gallery", "artwork"} or historic
+            else ["beach", "nature"]
+            if natural == "beach"
             else ["nature", "attraction"]
-            if tourism == "viewpoint"
+            if tourism == "viewpoint" or natural or leisure
             else ["attraction"]
         )
         duration, basis = 90, "person"
@@ -163,6 +193,8 @@ class NationalPlaceRepository:
         self._live_calls = []
         self._seed_names = {}
         self._seed_ids = set()
+        self._extra_lodgings = {}
+        self._lodging_search_cache = {}
         seed_path = (
             Path(__file__).resolve().parents[1] / "data" / "national-osm-snapshot.json"
         )
@@ -247,17 +279,27 @@ class NationalPlaceRepository:
 
     def list_places(self, destination_id, query="", kind=None):
         if destination_id == "yogyakarta":
-            return self.base.list_places(destination_id, query, kind)
+            places = self.base.list_places(destination_id, query, kind)
+            extras = self._extra_lodgings.get(destination_id, {}).values()
+            return places + [
+                p.model_copy(deep=True)
+                for p in extras
+                if (not kind or kind == "lodging")
+                and query.casefold() in p.name.casefold()
+            ]
         lat, lng = _destination_center(destination_id)
         with self._lock:
             cached = self._cache.get(destination_id)
             if cached and cached[0] > time.monotonic():
                 places = cached[1]
             else:
-                around = f"(around:5000,{lat:.5f},{lng:.5f})"
+                around = f"(around:20000,{lat:.5f},{lng:.5f})"
                 osm_query = (
                     "[out:json][timeout:18];"
-                    f'nwr{around}[name][tourism~"^(attraction|museum|viewpoint|zoo|theme_park)$"];out center 70;'
+                    f'nwr{around}[name][tourism~"^(attraction|museum|viewpoint|zoo|theme_park|gallery|artwork|picnic_site)$"];out center 70;'
+                    f'nwr{around}[name][natural~"^(beach|waterfall|peak|cave_entrance)$"];out center 40;'
+                    f'nwr{around}[name][historic~"^(monument|memorial|castle|ruins|archaeological_site|fort|temple)$"];out center 40;'
+                    f'nwr{around}[name][leisure~"^(park|garden)$"];out center 40;'
                     f'nwr{around}[name][amenity~"^(restaurant|cafe|fast_food)$"];out center 50;'
                     f'nwr{around}[name][tourism~"^(hotel|guest_house|hostel|motel)$"];out center 40;'
                 )
@@ -293,7 +335,7 @@ class NationalPlaceRepository:
         words = query.casefold()
         return [
             p.model_copy(deep=True)
-            for p in places
+            for p in [*places, *self._extra_lodgings.get(destination_id, {}).values()]
             if (not kind or p.kind == kind)
             and words
             in (
@@ -304,6 +346,9 @@ class NationalPlaceRepository:
     def get_place(self, place_id):
         if not place_id.startswith("osm-"):
             return self.base.get_place(place_id)
+        for extras in self._extra_lodgings.values():
+            if place_id in extras:
+                return extras[place_id].model_copy(deep=True)
         for _, places in self._cache.values():
             for place in places:
                 if place.id == place_id:
@@ -312,6 +357,108 @@ class NationalPlaceRepository:
 
     def list_lodging(self, destination_id):
         return self.list_places(destination_id, kind="lodging")
+
+    def ensure_lodging(self, destination_id, place_id):
+        """Resolve a selected OSM hotel on a different worker or after restart."""
+        if any(p.id == place_id for p in self.list_lodging(destination_id)):
+            return
+        match = OSM_PLACE.fullmatch(place_id)
+        if not match:
+            return
+        if destination_id != "yogyakarta":
+            _destination_center(destination_id)
+        osm_query = f"[out:json][timeout:18];{match[1]}({match[2]});out center;"
+        with self._lock:
+            last_error = None
+            for endpoint in OVERPASS:
+                try:
+                    self._check_live_budget()
+                    data = _json_request(
+                        endpoint, urlencode({"data": osm_query}).encode(), timeout=23
+                    )
+                    break
+                except NationalCatalogError as exc:
+                    last_error = exc
+            else:
+                raise last_error
+            if not isinstance(data, dict) or not isinstance(data.get("elements"), list):
+                raise NationalCatalogError("Respons hotel tidak valid.")
+            for element in data["elements"]:
+                place = _convert(element, destination_id)
+                if (
+                    place
+                    and place.id == place_id
+                    and place.kind == "lodging"
+                    and scope(place.coordinates, destination_id)
+                ):
+                    self._extra_lodgings.setdefault(destination_id, {})[place.id] = (
+                        place
+                    )
+                    return
+
+    def search_lodging(self, destination_id, query):
+        """Search a named hotel in the planning area, then retain it for planning."""
+        query = query.strip()
+        if len(query) < 3 or len(query) > 80:
+            raise NationalCatalogError("Ketik sedikitnya 3 huruf nama hotel.")
+        if destination_id != "yogyakarta":
+            _destination_center(destination_id)
+        key = (destination_id, query.casefold())
+        known = [
+            p
+            for p in self.list_places(destination_id, kind="lodging")
+            if query.casefold() in p.name.casefold()
+        ]
+        with self._lock:
+            if key in self._lodging_search_cache:
+                return [
+                    p.model_copy(deep=True) for p in self._lodging_search_cache[key]
+                ]
+            if destination_id == "yogyakarta":
+                lat, lng = -7.7956, 110.3695
+            else:
+                lat, lng = _destination_center(destination_id)
+            # Limit by name and distance on the provider side. Escape user input
+            # before embedding it in the Overpass regular expression.
+            pattern = json.dumps(
+                re.escape(query).replace(r"\ ", " "), ensure_ascii=False
+            )
+            osm_query = (
+                "[out:json][timeout:18];"
+                f"nwr(around:30000,{lat:.5f},{lng:.5f})[name~{pattern},i]"
+                '[tourism~"^(hotel|guest_house|hostel|motel)$"];out center 100;'
+            )
+            last_error = None
+            for endpoint in OVERPASS:
+                try:
+                    self._check_live_budget()
+                    data = _json_request(
+                        endpoint, urlencode({"data": osm_query}).encode(), timeout=23
+                    )
+                    break
+                except NationalCatalogError as exc:
+                    last_error = exc
+            else:
+                if known:
+                    return known
+                raise last_error
+            if not isinstance(data, dict) or not isinstance(data.get("elements"), list):
+                raise NationalCatalogError("Respons pencarian hotel tidak valid.")
+            found = {p.id: p for p in known}
+            extras = self._extra_lodgings.setdefault(destination_id, {})
+            for element in data["elements"]:
+                place = _convert(element, destination_id)
+                if (
+                    place
+                    and place.kind == "lodging"
+                    and scope(place.coordinates, destination_id)
+                    and query.casefold() in place.name.casefold()
+                ):
+                    found[place.id] = place
+                    extras[place.id] = place
+            result = list(found.values())
+            self._lodging_search_cache[key] = result
+            return [p.model_copy(deep=True) for p in result]
 
     def get_place_evidence(self, place_id):
         place = self.get_place(place_id)

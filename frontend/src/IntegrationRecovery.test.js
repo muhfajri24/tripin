@@ -72,6 +72,34 @@ test('national destination lookup replaces the pilot catalog and anchor explicit
   expect(container.textContent).toContain('Bali · 1 tempat ditemukan');
   expect(button('Susun sekarang').disabled).toBe(false);
 });
+test('hotel search result can be selected to unlock a two day trip', async () => {
+  const basePlaces = fixture().places;
+  const destinationId = 'osm--691750_10761910';
+  const museum = {...basePlaces[0], id:'museum-bandung', destinationId,
+    coordinates:{lat:-6.9175,lng:107.6191}};
+  const hotel = {...basePlaces[0], id:'osm-node-99', name:'Hotel Baru Bandung',
+    destinationId, kind:'lodging', categories:['lodging'],
+    coordinates:{lat:-6.91,lng:107.62}};
+  global.fetch = jest.fn()
+    .mockResolvedValueOnce({ok:true,json:async()=>({places:basePlaces})})
+    .mockResolvedValueOnce({ok:true,json:async()=>({draft:{unsupportedDestination:true,days:2,budgetAmountIdr:500000,budgetBasis:'group',interests:[],periodPreferences:[]},missingFields:[],ambiguities:[],parserSource:'deterministic-id-v1'})})
+    .mockResolvedValueOnce({ok:true,json:async()=>({destinationId,name:'Bandung',center:{lat:-6.9175,lng:107.6191},places:[museum]})})
+    .mockResolvedValueOnce({ok:true,json:async()=>({places:[hotel]})});
+  await render(<Create />, {pathname:'/create',state:{destination:'Bandung'}});
+  for (let i = 0; i < 3; i += 1) {
+    const nextBtn = [...container.querySelectorAll('button')].filter((b) => b.textContent.includes('Lanjut')).pop();
+    await act(async () => Simulate.click(nextBtn));
+  }
+  await act(async () => Simulate.click(container.querySelector('button[aria-label="Kirim permintaan"]')));
+  await act(async () => Simulate.click(button('Cari daerah')));
+  expect(button('Susun sekarang').disabled).toBe(true);
+  await act(async () => Simulate.change(container.querySelector('[aria-label="Cari nama hotel"]'), {target:{value:'Hotel Baru'}}));
+  await act(async () => { await new Promise((resolve) => setTimeout(resolve, 550)); });
+  expect(global.fetch.mock.calls[3][0]).toContain('/lodgings?q=Hotel%20Baru');
+  await act(async () => Simulate.click(button('Hotel Baru Bandung')));
+  expect(container.textContent).toContain('Hotel dipilih: Hotel Baru Bandung');
+  expect(button('Susun sekarang').disabled).toBe(false);
+});
 test('result uses latest stored revision over stale navigation state', async () => {
   const old = fixture();
   saveTrip({...old,revision:7});

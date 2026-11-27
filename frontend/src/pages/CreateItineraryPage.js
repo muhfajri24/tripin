@@ -709,6 +709,9 @@ export default function CreateItineraryPage() {
   const [destinationResolved, setDestinationResolved] = useState(!location.state?.destination || /^(yogyakarta|jogja|yogya)$/i.test(location.state.destination));
   const [lookupBusy, setLookupBusy] = useState(false);
   const [hotelQuery, setHotelQuery] = useState("");
+  const [hotelResults, setHotelResults] = useState([]);
+  const [hotelSearching, setHotelSearching] = useState(false);
+  const [hotelSearchError, setHotelSearchError] = useState("");
 
   // Chat-style clarification bubble state when required fields are missing after prompt parse
   const [clarify, setClarify] = useState(null);
@@ -737,6 +740,38 @@ export default function CreateItineraryPage() {
       ),
     [places, form.destinationId],
   );
+  const selectedHotel = lodgingPlaces.find((p) => p.id === form.lodging);
+  const matchingHotels = lodgingPlaces.filter((p) =>
+    p.name.toLowerCase().includes(hotelQuery.trim().toLowerCase()) || p.id === form.lodging,
+  );
+
+  useEffect(() => {
+    const query = hotelQuery.trim();
+    if (!clarify || Number(form.days) <= 1 || !destinationResolved ||
+        query.length < 3 || selectedHotel?.name === query) {
+      setHotelSearching(false);
+      setHotelResults([]);
+      setHotelSearchError("");
+      return;
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(() => {
+      setHotelSearching(true);
+      setHotelSearchError("");
+      api(`/destinations/${encodeURIComponent(form.destinationId || "yogyakarta")}/lodgings?q=${encodeURIComponent(query)}`,
+        undefined, controller.signal)
+        .then((result) => {
+          if (!controller.signal.aborted) setHotelResults(result.places || []);
+        })
+        .catch((err) => {
+          if (!controller.signal.aborted) setHotelSearchError(err.message);
+        })
+        .finally(() => {
+          if (!controller.signal.aborted) setHotelSearching(false);
+        });
+    }, 450);
+    return () => { clearTimeout(timer); controller.abort(); };
+  }, [hotelQuery, form.days, form.destinationId, destinationResolved, clarify, selectedHotel?.name]);
 
   // Persist active result in sessionStorage so navigating away and returning keeps it
   useEffect(() => {
@@ -878,6 +913,7 @@ export default function CreateItineraryPage() {
       setCatalogReady(true);
       setDestinationName(result.name);
       setHotelQuery("");
+      setHotelResults([]);
       setForm((f) => ({ ...f, destinationId: result.destinationId, destinationName: result.name, lodging: "",
         lat: result.center.lat, lng: result.center.lng,
         endLat: result.center.lat, endLng: result.center.lng }));
@@ -1631,20 +1667,30 @@ export default function CreateItineraryPage() {
                           Menginap di hotel mana?
                         </p>
                         <p className="text-xs text-[#FBF5E9]/75">Hotel menjadi titik awal dan akhir rute, bukan destinasi wisata.</p>
-                        <input type="search" value={hotelQuery} onChange={(e) => setHotelQuery(e.target.value)}
+                        <input type="search" value={hotelQuery} onChange={(e) => {
+                          setHotelQuery(e.target.value);
+                          setHotelResults([]);
+                          if (selectedHotel && e.target.value !== selectedHotel.name) {
+                            setForm((f) => ({ ...f, lodging: "" }));
+                          }
+                        }}
                           placeholder="Cari nama hotel" aria-label="Cari nama hotel"
                           className="w-full rounded-xl bg-[#FBF5E9] text-[#0A1A1C] px-3 py-2 text-sm" />
-                        <div className="flex flex-wrap gap-2">
-                          {lodgingPlaces.filter((p) => p.name.toLowerCase().includes(hotelQuery.toLowerCase()) || p.id === form.lodging).slice(0, 8).map((p) => (
+                        <p className="text-xs text-[#FBF5E9]/75">Ketik nama, lalu pilih hotel dari hasil di bawah. Pencarian mencakup area hingga 30 km.</p>
+                        <div className="max-h-56 overflow-y-auto flex flex-wrap gap-2" aria-label="Pilihan hotel">
+                          {Array.from(new Map([...matchingHotels, ...hotelResults].map((p) => [p.id, p])).values()).slice(0, 20).map((p) => (
                             <button
                               key={p.id}
                               type="button"
                               onClick={() => {
+                                setPlaces((current) => current.some((item) => item.id === p.id) ? current : [...current, p]);
                                 setHotelQuery(p.name);
+                                setHotelResults([]);
                                 setForm((f) => ({ ...f, lodging: p.id,
                                   lat: p.coordinates.lat, lng: p.coordinates.lng,
                                   endLat: p.coordinates.lat, endLng: p.coordinates.lng }));
                               }}
+                              aria-pressed={form.lodging === p.id}
                               className={`px-3.5 py-2 rounded-full text-xs font-bold min-h-[40px] ${
                                 form.lodging === p.id
                                   ? "bg-[#F4A261] text-[#0B3B45]"
@@ -1655,8 +1701,10 @@ export default function CreateItineraryPage() {
                             </button>
                           ))}
                         </div>
-                        {!lodgingPlaces.length && <p className="text-xs text-[#FBF5E9]/75">Belum ada hotel dengan lokasi tercatat untuk daerah ini.</p>}
-                        {lodgingPlaces.length > 0 && !lodgingPlaces.some((p) => p.name.toLowerCase().includes(hotelQuery.toLowerCase())) && <p className="text-xs text-[#FBF5E9]/75">Hotel tidak ditemukan di katalog area ini.</p>}
+                        {selectedHotel && <p className="text-xs font-bold text-[#F4A261]" role="status">Hotel dipilih: {selectedHotel.name}. Kamu bisa melanjutkan.</p>}
+                        {hotelSearching && <p className="text-xs text-[#FBF5E9]/75" role="status">Mencari hotel di area tujuan...</p>}
+                        {hotelSearchError && <p className="text-xs text-[#FBF5E9]/75" role="alert">{hotelSearchError}</p>}
+                        {!hotelSearching && hotelQuery.trim().length >= 3 && !matchingHotels.length && !hotelResults.length && !hotelSearchError && <p className="text-xs text-[#FBF5E9]/75">Belum ada hotel yang cocok. Coba nama lain atau daerah terdekat.</p>}
                       </div>
                     )}
 

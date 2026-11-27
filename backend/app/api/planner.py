@@ -75,6 +75,23 @@ def lookup_destination(request: Request, q: str = Query(min_length=2, max_length
     return {**result, "datasetVersion": repo.version_for(result["destinationId"])}
 
 
+@router.get("/destinations/{destination_id}/lodgings", response_model=PlacesResponse)
+def search_destination_lodgings(
+    destination_id: str,
+    request: Request,
+    q: str = Query(min_length=3, max_length=80),
+):
+    repo = request.app.state.places
+    data = repo.search_lodging(destination_id, q)
+    return PlacesResponse(
+        places=data,
+        datasetVersion=repo.version_for(destination_id),
+        warnings=[
+            "Hotel dari OpenStreetMap; lokasi dan ketersediaan perlu dikonfirmasi."
+        ],
+    )
+
+
 @router.get("/places", response_model=PlacesResponse)
 def places(
     request: Request,
@@ -120,6 +137,8 @@ def parse(body: ParseBody):
 @router.post("/itineraries/plan", response_model=PlanResponse)
 def plan(body: PlanBody, request: Request):
     repo = request.app.state.places
+    if body.request.lodging and hasattr(repo, "ensure_lodging"):
+        repo.ensure_lodging(body.request.destinationId, body.request.lodging.placeId)
     repo = repo.snapshot() if hasattr(repo, "snapshot") else repo
     itinerary, errors = generate(body.request, repo)
     return PlanResponse(
@@ -132,5 +151,10 @@ def plan(body: PlanBody, request: Request):
 @router.post("/itineraries/replan", response_model=ReplanResult)
 def repair(body: ReplanRequest, request: Request):
     repo = request.app.state.places
+    if body.itinerary.request.lodging and hasattr(repo, "ensure_lodging"):
+        repo.ensure_lodging(
+            body.itinerary.request.destinationId,
+            body.itinerary.request.lodging.placeId,
+        )
     repo = repo.snapshot() if hasattr(repo, "snapshot") else repo
     return replan(body, repo)

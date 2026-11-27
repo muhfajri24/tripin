@@ -15,3 +15,5 @@ Planner kini menerima daerah Indonesia yang dicari pengguna. Snapshot OpenStreet
 ## Perbaikan lokal saat ini
 
 Form review memperlihatkan daerah, budget dan basisnya, pilihan prioritas, hotel untuk trip menginap, serta estimasi makan/kamar/kendaraan. Daerah yang dipilih dikirim melalui kontrak planner dan nama kota bertahan setelah trip disimpan. Harga kunjungan yang masuk ledger tampil pada kartu aktivitas; rincian biaya menyimpan sumber dan status data. Semua biaya yang tidak diketahui tetap terbuka sebagai ketidakpastian.
+
+Pencarian hotel tambahan memakai nama yang diketik pengguna dalam radius 30 km dari pusat daerah, lalu menambahkan hotel yang dipilih ke katalog proses planner. Daerah tanpa snapshot mengambil wisata, pantai/alam, sejarah, taman, dan kuliner dari radius 20 km; hasil mengikuti kelengkapan OpenStreetMap dan ketersediaan layanan. Input teks hotel harus dipilih dari hasil agar koordinatnya pasti, dan UI menampilkan status hotel terpilih. Saat perencanaan pindah worker atau backend baru dimulai, planner memuat ulang ID hotel terpilih dari OpenStreetMap dan memvalidasi jenis serta koordinatnya.
