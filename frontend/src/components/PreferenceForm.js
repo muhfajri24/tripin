@@ -24,6 +24,7 @@ export function initialForm(req) {
     return {
       date: req.startDate,
       destinationId: req.destinationId,
+      destinationName: req.destinationName || (req.destinationId === "yogyakarta" ? "Yogyakarta" : ""),
       days: req.days,
       adults: req.travelers.adults,
       budget: req.budget.totalIdr,
@@ -50,6 +51,7 @@ export function initialForm(req) {
   return {
     date: today(),
     destinationId: "yogyakarta",
+    destinationName: "Yogyakarta",
     days: 1,
     adults: 2,
     budget: "",
@@ -85,6 +87,7 @@ export function toRequest(f) {
   return {
     schemaVersion: 1,
     destinationId: f.destinationId || "yogyakarta",
+    destinationName: f.destinationName || null,
     startDate: f.date,
     days: Number(f.days),
     timezone: "Asia/Jakarta",

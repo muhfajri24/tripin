@@ -53,6 +53,25 @@ test('destination passed from landing cannot silently become Yogyakarta', async 
   expect(button('Susun sekarang').disabled).toBe(true);
   expect(global.fetch).toHaveBeenCalledTimes(2);
 });
+test('national destination lookup replaces the pilot catalog and anchor explicitly', async () => {
+  const basePlaces = fixture().places;
+  const baliPlaces = basePlaces.slice(0, 2).map((p, i) => ({...p, id:`bali-${i}`, destinationId:'osm--840950_11518890', coordinates:{lat:-8.4095 + i * 0.001,lng:115.1889}}));
+  global.fetch = jest.fn()
+    .mockResolvedValueOnce({ok:true,json:async()=>({places:basePlaces})})
+    .mockResolvedValueOnce({ok:true,json:async()=>({draft:{unsupportedDestination:true,days:1,budgetAmountIdr:500000,budgetBasis:'group',interests:['culture'],periodPreferences:[]},missingFields:[],ambiguities:[],parserSource:'deterministic-id-v1'})})
+    .mockResolvedValueOnce({ok:true,json:async()=>({destinationId:'osm--840950_11518890',name:'Bali',center:{lat:-8.4095,lng:115.1889},places:baliPlaces,datasetVersion:'osm_user_query_v1'})});
+  await render(<Create />, {pathname:'/create',state:{destination:'Bali'}});
+  for (let i = 0; i < 3; i += 1) {
+    const nextBtn = [...container.querySelectorAll('button')].filter((b) => b.textContent.includes('Lanjut')).pop();
+    await act(async () => Simulate.click(nextBtn));
+  }
+  await act(async () => Simulate.click(container.querySelector('button[aria-label="Kirim permintaan"]')));
+  expect(button('Susun sekarang').disabled).toBe(true);
+  await act(async () => Simulate.click(button('Cari daerah')));
+  expect(global.fetch.mock.calls[2][0]).toContain('/destinations/lookup?q=Bali');
+  expect(container.textContent).toContain('Bali · 1 tempat ditemukan');
+  expect(button('Susun sekarang').disabled).toBe(false);
+});
 test('result uses latest stored revision over stale navigation state', async () => {
   const old = fixture();
   saveTrip({...old,revision:7});

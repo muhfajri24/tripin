@@ -23,7 +23,7 @@ function formatTripTitle(trip) {
   if (trip.title && !trip.title.toLowerCase().startsWith("itinerary")) {
     return trip.title;
   }
-  const dest = trip.request?.destinationId || "";
+  const dest = trip.request?.destinationName || trip.request?.destinationId || "";
   let cityName = "Nusantara";
   if (dest) {
     cityName = dest

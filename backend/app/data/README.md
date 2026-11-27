@@ -62,3 +62,14 @@ Sumber aktif saat versi ini adalah `yogyakarta-v0.3.0.json`; v0.2.0 tetap arsip 
 Sonobudoyo kini memakai jam pameran tetap operator provinsi (08.00–21.00, Selasa–Minggu), bukan jam kantor. Alamat ditambahkan dari halaman operator yang sama. Tiket terakhir 20.00; dengan durasi editorial 60 menit, batas keluar 21.00 membatasi kedatangan maksimal 20.00. Tidak dimodelkan sebagai berlaku untuk semua program pertunjukan. Harga domestik dewasa sebelumnya tetap; tidak ada tarif baru yang ditebak.
 
 Kelengkapan: identity/category 9/9, alamat 5/9, koordinat 7/9, jam 3/9, harga 1/9, klasifikasi local business 0/9. Duration semuanya estimated. Tidak ada availability/kapsitas kamar terverifikasi. Holiday closure, tarif aktual dan metadata food tetap perlu konfirmasi. Lihat `qa/release/data-readiness-v0.3.json` untuk matrix per record dan evidence/checked date.
+
+## National OpenStreetMap snapshot
+
+`national-osm-snapshot.json` contains a small, one-time extract for Medan,
+Bandung, Denpasar, Banjarmasin, Makassar, Jayapura, Jakarta, Padang,
+Labuan Bajo, Bali and a limited Raja Ampat area, collected on 2026-11-27.
+Source: © OpenStreetMap contributors, [Open Database License (ODbL)](https://www.openstreetmap.org/copyright).
+Place names and coordinates are approximate and may change. This extract does
+not assert current opening hours, ticket prices, room rates or popularity.
+Refresh deliberately with `python -m scripts.collect_national_snapshot <city...>`
+after reviewing provider usage limits and changes in source data.

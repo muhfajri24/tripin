@@ -1,7 +1,9 @@
 ﻿# TRIPIN — Guest adaptive travel planner
 
-Guest-access MVP for Yogyakarta, 1–3 days, driving. No account, email, booking, paid AI,
-Google Places or Google Routes key is required. Estimates and unknown metadata are explicit.
+Guest-access planner for Indonesian cities and regions, 1–3 days, driving. Eleven areas
+across the archipelago have offline OpenStreetMap snapshots; other Indonesian areas
+are queried on demand. No account, booking, paid AI, Google Places or Google Routes key
+is required. Estimates and unknown metadata are explicit.
 
 ## Run locally
 
@@ -34,7 +36,7 @@ Brief -> deterministic Indonesian parser -> editable review -> backend candidate
 -> bounded constraint-aware planning -> schedule/ledger/map -> edit or delay/closure replan
 -> local save/delete -> Google Maps sequential route segments.
 
-Navigation: Home, Plan a Trip, My Trips, Explore Yogyakarta. Legacy dashboard/settings/saved
+Navigation: Home, Plan a Trip, My Trips, Explore Indonesia. Legacy dashboard/settings/saved
 URLs redirect to guest pages. Prototype data files are retained for reference but are not
 imported by the active guest workflow. Existing fictional demo itineraries are not migrated.
 
@@ -61,7 +63,12 @@ cd backend
 
 ## Important limits
 
-Nine pilot candidates; not all are routable. One versioned local catalog (v0.3.0) is active.
+The curated Yogyakarta catalog remains available. National snapshots cover Medan,
+Bandung, Denpasar, Banjarmasin, Makassar, Jayapura, Jakarta, Padang, Labuan Bajo,
+Bali, and a limited Raja Ampat area. Other areas need a reachable
+Nominatim and Overpass service; errors are explicit and no fictional fallback is used.
+OpenStreetMap names/coordinates are approximate and the national catalog has unknown
+hours, entry prices and room rates. Hotel choice is a route anchor, not a visit stop.
 Unknown hours/prices are not free or always-open. Permit unverified data explicitly to
 receive a conditional plan; disable it to reject incomplete candidates. Route distance is
 straight-line Haversine with a documented duration heuristic, not actual road routing/traffic.

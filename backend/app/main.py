@@ -8,6 +8,7 @@ from .api.planner import router as planner_router
 from .api.demo_places import router as demo_places_router
 from .repositories.places import LocalPlaceRepository
 from .repositories.supabase_places import SupabasePlaceRepository
+from .repositories.national_places import NationalPlaceRepository
 
 
 def create_app(settings: Settings | None = None):
@@ -26,6 +27,7 @@ def create_app(settings: Settings | None = None):
         )
     else:
         application.state.places = LocalPlaceRepository()
+    application.state.places = NationalPlaceRepository(application.state.places)
     application.include_router(planner_router, prefix="/api/v1")
     application.include_router(demo_places_router, prefix="/api/v1")
     if settings.serve_frontend:

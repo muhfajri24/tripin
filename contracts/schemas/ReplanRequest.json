@@ -687,7 +687,9 @@
           "type": "string"
         },
         "destinationId": {
-          "const": "yogyakarta",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
           "title": "Destinationid",
           "type": "string"
         },
@@ -1184,9 +1186,25 @@
           "type": "integer"
         },
         "destinationId": {
-          "const": "yogyakarta",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$",
           "title": "Destinationid",
           "type": "string"
+        },
+        "destinationName": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Destinationname"
         },
         "startDate": {
           "pattern": "^\\d{4}-\\d{2}-\\d{2}$",

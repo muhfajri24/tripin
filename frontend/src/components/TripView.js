@@ -303,9 +303,9 @@ export default function TripView({
   };
 
   const destName =
-    trip.request?.destinationId === "yogyakarta"
+    trip.request?.destinationName || (trip.request?.destinationId === "yogyakarta"
       ? "Yogyakarta"
-      : trip.request?.destinationId || "Yogyakarta";
+      : trip.request?.destinationId || "Yogyakarta");
 
   const [copiedRoute, setCopiedRoute] = useState(false);
 

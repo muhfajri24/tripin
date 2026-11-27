@@ -2,6 +2,7 @@
 
 from datetime import datetime, timedelta, timezone
 from math import radians, sin, cos, sqrt, atan2, ceil
+import re
 from uuid import uuid4
 from app.models.contracts import (
     Itinerary,
@@ -45,8 +46,25 @@ def at(day, clock):
     return datetime.fromisoformat(day + "T" + clock + ":00+07:00")
 
 
-def scope(c):
-    return c is not None and -8.3 <= c.lat <= -7.3 and 110.0 <= c.lng <= 110.9
+def scope(c, destination_id="yogyakarta"):
+    if c is None:
+        return False
+    if destination_id == "yogyakarta":
+        return -8.3 <= c.lat <= -7.3 and 110.0 <= c.lng <= 110.9
+    match = re.fullmatch(r"osm-(-?\d+)_(-?\d+)", destination_id)
+    if not match:
+        return False
+    center_lat, center_lng = int(match[1]) / 100000, int(match[2]) / 100000
+    if not (-11.5 <= center_lat <= 6.5 and 94 <= center_lng <= 142):
+        return False
+    delta_lat = radians(center_lat - c.lat)
+    delta_lng = radians(center_lng - c.lng)
+    haversine = (
+        sin(delta_lat / 2) ** 2
+        + cos(radians(c.lat)) * cos(radians(center_lat)) * sin(delta_lng / 2) ** 2
+    )
+    distance = 6371000 * 2 * atan2(sqrt(haversine), sqrt(max(0, 1 - haversine)))
+    return distance <= 30000
 
 
 def travel(a, b, from_id, to_id):
@@ -169,16 +187,18 @@ def schedule(
             )
             if closure not in state.closures:
                 state.closures.append(closure)
-    places = {p.id: p for p in repo.list_places("yogyakarta")}
+    places = {p.id: p for p in repo.list_places(req.destinationId)}
     lodging = places.get(req.lodging.placeId) if req.lodging else None
     if req.lodging and (
-        not lodging or lodging.kind != "lodging" or not scope(lodging.coordinates)
+        not lodging
+        or lodging.kind != "lodging"
+        or not scope(lodging.coordinates, req.destinationId)
     ):
-        raise Conflict(
-            "Lodging anchor belum memiliki koordinat valid dalam wilayah pilot"
-        )
-    if not scope(req.arrivalAnchor) or not scope(req.departureAnchor):
-        raise Conflict("Anchor di luar cakupan pilot Yogyakarta")
+        raise Conflict("Hotel belum memiliki koordinat valid dalam wilayah tujuan")
+    if not scope(req.arrivalAnchor, req.destinationId) or not scope(
+        req.departureAnchor, req.destinationId
+    ):
+        raise Conflict("Titik awal atau akhir di luar wilayah tujuan")
     old = {s.placeId: s for d in previous.days for s in d.stops} if previous else {}
     days = []
     uncertainties = []
@@ -206,7 +226,11 @@ def schedule(
             raise Conflict("Maksimal enam aktivitas per hari")
         for pid in orders[i]:
             p = places.get(pid)
-            if not p or p.kind == "lodging" or not scope(p.coordinates):
+            if (
+                not p
+                or p.kind == "lodging"
+                or not scope(p.coordinates, req.destinationId)
+            ):
                 raise Conflict("Kandidat tidak dapat dijadwalkan: " + pid)
             if any(e.date == w.date and e.closed for e in p.dateExceptions):
                 raise Conflict("Tempat tutup pada tanggal ini: " + p.name)
@@ -337,7 +361,9 @@ def schedule(
         id=previous.id if previous else str(uuid4()),
         revision=previous.revision + 1 if previous else 1,
         request=req,
-        datasetVersion=repo.version,
+        datasetVersion=repo.version_for(req.destinationId)
+        if hasattr(repo, "version_for")
+        else repo.version,
         plannerVersion="insertion-v1",
         replanState=state,
         places=[places[x] for x in sorted(used)],
@@ -363,10 +389,14 @@ def validate_schedule(itinerary, repo):
     req = itinerary.request
     lodging = repo.get_place(req.lodging.placeId) if req.lodging else None
     if req.lodging and (
-        not lodging or lodging.kind != "lodging" or not scope(lodging.coordinates)
+        not lodging
+        or lodging.kind != "lodging"
+        or not scope(lodging.coordinates, req.destinationId)
     ):
         return ["LODGING_ANCHOR"]
-    if not scope(req.arrivalAnchor) or not scope(req.departureAnchor):
+    if not scope(req.arrivalAnchor, req.destinationId) or not scope(
+        req.departureAnchor, req.destinationId
+    ):
         errors.append("ANCHOR_SCOPE")
     for i, day in enumerate(itinerary.days):
         expected_start = req.arrivalAnchor if i == 0 else lodging.coordinates
@@ -393,7 +423,7 @@ def validate_schedule(itinerary, repo):
                 pos = progress.location
                 last = "current-location"
                 progress_used = True
-            if not p or not scope(p.coordinates):
+            if not p or not scope(p.coordinates, req.destinationId):
                 errors.append("PLACE_UNAVAILABLE")
                 continue
             expected_leg = travel(pos, p.coordinates, last, p.id)
@@ -457,7 +487,7 @@ def validate_schedule(itinerary, repo):
     if itinerary.totals.knownCostIdr > req.budget.totalIdr - req.budget.reserveIdr:
         errors.append("BUDGET")
     stops = [s for day in itinerary.days for s in day.stops]
-    places = {p.id: p for p in repo.list_places("yogyakarta")}
+    places = {p.id: p for p in repo.list_places(req.destinationId)}
     try:
         expected = {x.id: x for x in ledger_for(req, stops, places, lodging)}
         actual = {x.id: x for x in itinerary.ledger}
@@ -538,12 +568,12 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
             return (None, errors) if errors else (itinerary, [])
         except Conflict as exc:
             return None, [str(exc)]
-    candidates = repo.list_places("yogyakarta")
+    candidates = repo.list_places(req.destinationId)
     candidates = [
         p
         for p in candidates
         if p.kind != "lodging"
-        and scope(p.coordinates)
+        and scope(p.coordinates, req.destinationId)
         and p.id not in req.excludedPlaceIds
     ]
 
@@ -552,7 +582,15 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
         price, _, _ = visit_price(p, req)
         if req.objective == "budget":
             # Unknown is uncertainty, not a free ticket.
-            return (price is None, -(relevance + (2 if p.isLocalBusiness is True else 0) - (price or 0) / 10000), p.id)
+            return (
+                price is None,
+                -(
+                    relevance
+                    + (2 if p.isLocalBusiness is True else 0)
+                    - (price or 0) / 10000
+                ),
+                p.id,
+            )
         if req.objective == "travel_time":
             direct = travel(req.arrivalAnchor, p.coordinates, "start", p.id)
             return (direct.estimatedDurationMin, -relevance, p.id)
@@ -671,7 +709,12 @@ def replan(payload, repo):
         or s.placeId in req.mustVisitPlaceIds
     }
     reason = None
-    if original.datasetVersion != repo.version:
+    current_version = (
+        repo.version_for(original.request.destinationId)
+        if hasattr(repo, "version_for")
+        else repo.version
+    )
+    if original.datasetVersion != current_version:
         reason = (
             "Versi katalog berubah; buat rencana baru agar sumber data tidak tercampur"
         )

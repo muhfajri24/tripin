@@ -4,6 +4,7 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from app.repositories.supabase_places import PlaceSourceError
+from app.repositories.national_places import NationalCatalogError, DestinationNotFound
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +65,15 @@ def install_error_handlers(app):
             "PLACE_SOURCE_UNAVAILABLE",
             "Sumber data tempat tidak tersedia. Periksa koneksi atau pengaturan database.",
         )
+
+    @app.exception_handler(NationalCatalogError)
+    async def national_source_unavailable(request, exc):
+        logger.warning("National catalog unavailable: %s", exc)
+        return error(request, 503, "NATIONAL_CATALOG_UNAVAILABLE", str(exc))
+
+    @app.exception_handler(DestinationNotFound)
+    async def destination_not_found(request, exc):
+        return error(request, 422, "DESTINATION_NOT_FOUND", str(exc))
 
     @app.exception_handler(Exception)
     async def unexpected(request, exc):

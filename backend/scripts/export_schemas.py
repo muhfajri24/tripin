@@ -9,6 +9,7 @@ from app.api.planner import (
     PlanBody,
     PlanResponse,
     PlacesResponse,
+    DestinationLookupResponse,
 )
 
 NAMES = (
@@ -35,7 +36,14 @@ def schemas():
         }
         for name in NAMES
     }
-    for model in [ParseBody, ParseResponse, PlanBody, PlanResponse, PlacesResponse]:
+    for model in [
+        ParseBody,
+        ParseResponse,
+        PlanBody,
+        PlanResponse,
+        PlacesResponse,
+        DestinationLookupResponse,
+    ]:
         exported[model.__name__] = {
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             **model.model_json_schema(),

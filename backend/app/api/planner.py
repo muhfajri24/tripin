@@ -9,6 +9,9 @@ from app.models.contracts import (
     ReplanResult,
     Place,
     PeriodPreference,
+    Coordinates,
+    Id,
+    Text,
 )
 from app.domain.parser import parse_brief
 from app.domain.planner import generate, replan, scope
@@ -57,10 +60,27 @@ class PlacesResponse(Contract):
     warnings: list[str]
 
 
+class DestinationLookupResponse(Contract):
+    destinationId: Id
+    name: Text
+    center: Coordinates
+    places: list[Place]
+    datasetVersion: str
+
+
+@router.get("/destinations/lookup", response_model=DestinationLookupResponse)
+def lookup_destination(request: Request, q: str = Query(min_length=2, max_length=100)):
+    repo = request.app.state.places
+    result = repo.lookup(q)
+    return {**result, "datasetVersion": repo.version_for(result["destinationId"])}
+
+
 @router.get("/places", response_model=PlacesResponse)
 def places(
     request: Request,
-    destinationId: Literal["yogyakarta"] = "yogyakarta",
+    destinationId: str = Query(
+        "yogyakarta", max_length=100, pattern=r"^(?:yogyakarta|osm--?\d+_-?\d+)$"
+    ),
     q: str = Query("", max_length=100),
     kind: Literal["attraction", "food", "local_business", "lodging"] | None = None,
     routable: bool = False,
@@ -68,12 +88,16 @@ def places(
     repo = request.app.state.places
     data = repo.list_places(destinationId, q, kind)
     if routable:
-        data = [p for p in data if scope(p.coordinates)]
+        data = [p for p in data if scope(p.coordinates, destinationId)]
     return PlacesResponse(
         places=data,
-        datasetVersion=repo.version,
+        datasetVersion=repo.version_for(destinationId)
+        if hasattr(repo, "version_for")
+        else repo.version,
         warnings=[
-            "Pilot Yogyakarta. Metadata belum lengkap tetap unknown; sumber bukan jaminan kondisi saat ini."
+            "Data OpenStreetMap berdasarkan pencarian pengguna; harga dan jam buka yang tidak diketahui tetap unknown."
+            if destinationId != "yogyakarta"
+            else "Pilot Yogyakarta. Metadata belum lengkap tetap unknown; sumber bukan jaminan kondisi saat ini."
         ],
     )
 

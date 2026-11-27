@@ -6,7 +6,8 @@ export async function api(path, body, signal) {
     if (signal.aborted) abort();
     else signal.addEventListener("abort", abort);
   }
-  const timeout = setTimeout(abort, 20000);
+  const timeoutMs = path.startsWith("/destinations/lookup") ? 65000 : 20000;
+  const timeout = setTimeout(abort, timeoutMs);
   try {
     const res = await fetch(`${BASE}${path}`, {
       method: body === undefined ? "GET" : "POST",
@@ -26,7 +27,7 @@ export async function api(path, body, signal) {
   } catch (e) {
     if (e.name === "AbortError")
       throw new Error(
-        "Permintaan dibatalkan atau melebihi 20 detik. Coba lagi.",
+        "Permintaan dibatalkan atau melebihi batas waktu. Coba lagi.",
       );
     if (e instanceof TypeError || e instanceof SyntaxError)
       throw new Error(

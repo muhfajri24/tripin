@@ -1,0 +1,23 @@
+{
+  "base": "http://127.0.0.1:8020",
+  "viewport": "390x844",
+  "steps": [
+    {
+      "name": "open planner",
+      "status": "passed"
+    },
+    {
+      "name": "resolve Bandung and choose hotel",
+      "status": "passed"
+    },
+    {
+      "name": "plan with national ID and hotel anchor",
+      "status": "passed"
+    },
+    {
+      "name": "save and reload",
+      "status": "passed"
+    }
+  ],
+  "pageErrors": []
+}

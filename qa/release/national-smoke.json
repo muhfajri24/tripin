@@ -1,0 +1,105 @@
+{
+  "source": "OpenStreetMap user-triggered lookup",
+  "results": [
+    {
+      "area": "Medan",
+      "destinationId": "osm-358946_9867416",
+      "places": 73,
+      "hotels": 40,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
+    },
+    {
+      "area": "Bandung",
+      "destinationId": "osm--692185_10760708",
+      "places": 107,
+      "hotels": 40,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
+    },
+    {
+      "area": "Denpasar",
+      "destinationId": "osm--866533_11521762",
+      "places": 92,
+      "hotels": 40,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
+    },
+    {
+      "area": "Banjarmasin",
+      "destinationId": "osm--331875_11459258",
+      "places": 55,
+      "hotels": 40,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
+    },
+    {
+      "area": "Makassar",
+      "destinationId": "osm--513430_11941243",
+      "places": 59,
+      "hotels": 40,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
+    },
+    {
+      "area": "Jayapura",
+      "destinationId": "osm--253875_14070374",
+      "places": 16,
+      "hotels": 7,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
+    },
+    {
+      "area": "Jakarta",
+      "destinationId": "osm--617540_10682717",
+      "places": 85,
+      "hotels": 40,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
+    },
+    {
+      "area": "Padang",
+      "destinationId": "osm--92476_10036326",
+      "places": 68,
+      "hotels": 40,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
+    },
+    {
+      "area": "Labuan Bajo",
+      "destinationId": "osm--848993_11987646",
+      "places": 63,
+      "hotels": 40,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
+    },
+    {
+      "area": "Bali",
+      "destinationId": "osm--822713_11519192",
+      "places": 14,
+      "hotels": 5,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
+    }
+  ]
+}

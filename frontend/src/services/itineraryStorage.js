@@ -11,7 +11,9 @@ export function isItinerary(value) {
   try {
     const r = value.request;
     if (!(value.schemaVersion === 1 && text(value.id) && value.id.length && integer(value.revision) && value.revision > 0 &&
-      r.destinationId === "yogyakarta" && integer(r.days) && r.days >= 1 && r.days <= 3 && stamp(r.startDate) &&
+      (r.destinationId === "yogyakarta" || /^osm--?\d+_-?\d+$/.test(r.destinationId)) &&
+      (r.destinationName == null || (text(r.destinationName) && r.destinationName.length <= 1000)) &&
+      integer(r.days) && r.days >= 1 && r.days <= 3 && stamp(r.startDate) &&
       integer(r.travelers.adults) && r.travelers.adults > 0 && integer(r.budget.totalIdr) && integer(r.budget.reserveIdr) &&
       coord(r.arrivalAnchor) && coord(r.departureAnchor) && strings(r.interests) && strings(r.mustVisitPlaceIds) &&
       Array.isArray(r.periodPreferences) && Array.isArray(r.dayWindows) && r.dayWindows.length === r.days &&
@@ -19,7 +21,7 @@ export function isItinerary(value) {
       Array.isArray(value.days) && value.days.length === r.days && Array.isArray(value.places) && Array.isArray(value.ledger) &&
       strings(value.uncertainties) && Array.isArray(value.violations) && value.violations.every((v) => text(v.message)) &&
       integer(value.totals.knownCostIdr) && integer(value.totals.unknownCostItems) && integer(value.totals.travelMin) && integer(value.totals.distanceMeters))) return false;
-    if (!value.places.every((p) => text(p.id) && text(p.name) && strings(p.categories) &&
+    if (!value.places.every((p) => text(p.id) && text(p.name) && p.destinationId === r.destinationId && strings(p.categories) &&
       (p.coordinates === null || coord(p.coordinates)) && evidence(p.identityEvidence) && evidence(p.locationEvidence) &&
       evidence(p.durationEvidence) && evidence(p.openingEvidence) && Array.isArray(p.prices) && p.prices.length &&
       p.prices.every((x) => (x.amountIdr === null || integer(x.amountIdr)) && evidence(x.evidence)))) return false;

@@ -112,7 +112,7 @@ class DateException(Contract):
 class Place(Contract):
     id: Id
     name: Text
-    destinationId: Literal["yogyakarta"]
+    destinationId: Id
     coordinates: Coordinates | None
     address: Text | None
     categories: Annotated[list[Id], Field(min_length=1)]
@@ -197,7 +197,8 @@ class CostAssumptions(Contract):
 
 class TravelRequest(Contract):
     schemaVersion: Literal[1]
-    destinationId: Literal["yogyakarta"]
+    destinationId: Id
+    destinationName: Text | None = None
     startDate: LocalDate
     days: Annotated[int, Field(strict=True, ge=1, le=3)]
     timezone: Literal["Asia/Jakarta"]
@@ -557,7 +558,7 @@ class ReplanResult(Contract):
 class PilotDataset(Contract):
     schemaVersion: Literal[1]
     datasetVersion: Id
-    destinationId: Literal["yogyakarta"]
+    destinationId: Id
     places: Annotated[list[Place], Field(min_length=1)]
 
     @model_validator(mode="after")

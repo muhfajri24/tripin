@@ -4,6 +4,7 @@ import {
   findTrip,
   deleteTrip,
   resolveTrip,
+  isItinerary,
 } from "./itineraryStorage";
 import { navigationLinks } from "./googleMapsService";
 import { api } from "./plannerApi";
@@ -129,6 +130,16 @@ test("canonical fixture round-trips through review with group total intact", () 
   expect(normalized.budget.totalIdr).toBe(r.budget.totalIdr);
   expect(normalized.arrivalAnchor).toEqual(r.arrivalAnchor);
   expect(normalized.dayWindows).toEqual(r.dayWindows);
+});
+
+test("national itinerary keeps city name and can be saved locally", () => {
+  const trip = fixture();
+  trip.request.destinationId = "osm--692185_10760708";
+  trip.request.destinationName = "Bandung";
+  trip.places.forEach((place) => { place.destinationId = trip.request.destinationId; });
+  expect(isItinerary(trip)).toBe(true);
+  saveTrip(trip);
+  expect(loadTrips()[0].request.destinationName).toBe("Bandung");
 });
 test("API surfaces backend field errors and never substitutes mock", async () => {
   global.fetch = jest.fn().mockResolvedValue({

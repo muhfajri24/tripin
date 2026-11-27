@@ -7,6 +7,7 @@ import { saveTrip } from "../services/itineraryStorage";
 import { initialForm, toRequest } from "../components/PreferenceForm";
 import { rupiah } from "../components/GuestUI";
 import TripView from "../components/TripView";
+import { extractDestinationFromQuery } from "../services/regionService";
 
 const SESSION_DRAFT_KEY = "tripin_create_session_v1";
 
@@ -637,9 +638,9 @@ function buildResultSummary(trip) {
   if (!trip) return "";
   const daysCount = trip.days?.length || trip.request?.days || 1;
   const destName =
-    trip.request?.destinationId === "yogyakarta"
+    trip.request?.destinationName || (trip.request?.destinationId === "yogyakarta"
       ? "Yogyakarta"
-      : formatRegionName(trip.request?.destinationId || "");
+      : formatRegionName(trip.request?.destinationId || ""));
   const stopsCount = (trip.days || []).reduce(
     (sum, d) => sum + (d.stops?.length || 0),
     0,
@@ -704,6 +705,10 @@ export default function CreateItineraryPage() {
         !/^(yogyakarta|jogja|yogya)$/i.test(location.state.destination),
     ),
   );
+  const [destinationName, setDestinationName] = useState(location.state?.destination || savedSession?.form?.destinationName || "Yogyakarta");
+  const [destinationResolved, setDestinationResolved] = useState(!location.state?.destination || /^(yogyakarta|jogja|yogya)$/i.test(location.state.destination));
+  const [lookupBusy, setLookupBusy] = useState(false);
+  const [hotelQuery, setHotelQuery] = useState("");
 
   // Chat-style clarification bubble state when required fields are missing after prompt parse
   const [clarify, setClarify] = useState(null);
@@ -862,6 +867,30 @@ export default function CreateItineraryPage() {
     });
   };
 
+  async function resolveDestination() {
+    if (lookupBusy || !destinationName.trim()) return;
+    setLookupBusy(true);
+    setError("");
+    try {
+      const result = await api(`/destinations/lookup?q=${encodeURIComponent(destinationName.trim())}`);
+      if (!result.places?.length) throw new Error("Belum ada tempat untuk daerah ini.");
+      setPlaces(result.places);
+      setCatalogReady(true);
+      setDestinationName(result.name);
+      setHotelQuery("");
+      setForm((f) => ({ ...f, destinationId: result.destinationId, destinationName: result.name, lodging: "",
+        lat: result.center.lat, lng: result.center.lng,
+        endLat: result.center.lat, endLng: result.center.lng }));
+      setUnsupported(false);
+      setDestinationResolved(true);
+    } catch (err) {
+      setDestinationResolved(false);
+      setError(err.message || "Daerah belum dapat dimuat.");
+    } finally {
+      setLookupBusy(false);
+    }
+  }
+
   const performReset = () => {
     setViewMode("prompt");
     setResultTrip(null);
@@ -924,7 +953,7 @@ export default function CreateItineraryPage() {
 
   async function submitPrompt() {
     if (busy || !text.trim()) return;
-    if (!catalogReady || !places.length) {
+    if ((!catalogReady || !places.length) && /\b(yogyakarta|jogja|yogya)\b/i.test(text)) {
       setError("Layanan perencana belum bisa dihubungi");
       return;
     }
@@ -933,6 +962,12 @@ export default function CreateItineraryPage() {
     try {
       const parsed = await api("/requests/parse", { text });
       const d = parsed.draft;
+      const mentionedDestination = extractDestinationFromQuery(text);
+      const areaPhrase = text.match(/\b(?:di|ke)\s+([a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\s-]{1,50}?)(?=,|\.|\s+\d+\s*hari|\s+budget|\s+untuk|\s+bersama|$)/i);
+      if (d.unsupportedDestination || !d.destinationId) {
+        setDestinationName(location.state?.destination || mentionedDestination?.name || areaPhrase?.[1]?.trim() || "");
+        setDestinationResolved(false);
+      }
       const merged = {
         ...form,
         destinationId: d.destinationId || form.destinationId || "yogyakarta",
@@ -948,7 +983,7 @@ export default function CreateItineraryPage() {
       };
       setForm(merged);
 
-      const needDestination = Boolean(d.unsupportedDestination);
+      const needDestination = Boolean(d.unsupportedDestination || !destinationResolved);
       const needDays = !d.days;
       const needBudget = !merged.budget || Number(merged.budget) <= 0;
       const needLodging = Number(d.days || 1) > 1 && !merged.lodging;
@@ -964,7 +999,7 @@ export default function CreateItineraryPage() {
   }
 
   const clarifyReady =
-    !unsupported &&
+    !unsupported && destinationResolved &&
     Number(form.days) >= 1 &&
     Number(form.budget) > 0 &&
     (Number(form.days) <= 1 || Boolean(form.lodging)) &&
@@ -1471,37 +1506,21 @@ export default function CreateItineraryPage() {
                     exit={{ opacity: 0 }}
                     className="rounded-3xl bg-[#0B4F5C]/95 border border-[#2EC4B6]/45 p-5 space-y-4 shadow-xl"
                   >
-                    {clarify.needDestination && (
-                      <div className="space-y-2">
-                        <p className="text-sm font-bold text-[#FBF5E9]">
-                          Mau ke daerah mana?
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {catalogRegions.map((regId) => {
-                            const label = formatRegionName(regId);
-                            const selected = !unsupported;
-                            return (
-                              <button
-                                key={regId}
-                                type="button"
-                                onClick={() => {
-                                  setUnsupported(false);
-                                  setForm((f) => ({ ...f, destinationId: regId, lodging: "" }));
-                                }}
-                                className={`px-4 py-2 rounded-full text-sm font-bold min-h-[48px] transition-colors ${
-                                  selected
-                                    ? "bg-[#F4A261] text-[#0B3B45]"
-                                    : "bg-white/10 text-[#FBF5E9] hover:bg-white/20"
-                                }`}
-                              >
-                                {label}
-                              </button>
-                            );
-                          })}
-                        </div>
-                        <p className="text-xs text-[#FBF5E9]/75">Katalog perencana saat ini tersedia untuk Yogyakarta. Pilihan daerah lain akan muncul setelah datanya siap.</p>
+                    <div className="space-y-2">
+                      <label htmlFor="trip-destination" className="text-sm font-bold text-[#FBF5E9] block">Mau ke daerah mana?</label>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <input id="trip-destination" type="text" value={destinationName}
+                          onChange={(e) => { setDestinationName(e.target.value); setDestinationResolved(false); setUnsupported(true); }}
+                          placeholder="Kota atau daerah di Indonesia"
+                          className="w-full min-w-0 rounded-xl bg-[#FBF5E9] text-[#0A1A1C] px-3 py-2 text-sm" />
+                        <button type="button" onClick={resolveDestination} disabled={lookupBusy || !destinationName.trim()}
+                          className="shrink-0 rounded-xl bg-[#F4A261] text-[#0B3B45] px-4 py-2 text-sm font-bold disabled:opacity-50">
+                          {lookupBusy ? "Mencari..." : "Cari daerah"}
+                        </button>
                       </div>
-                    )}
+                      {destinationResolved && <p className="text-xs text-[#FBF5E9]/85">{destinationName} · {places.filter((p) => p.kind !== "lodging").length} tempat ditemukan</p>}
+                      {form.destinationId?.startsWith("osm-") && <p className="text-xs text-[#FBF5E9]/75">Data © kontributor OpenStreetMap (ODbL). Harga dan jam buka yang belum ada tetap tidak diketahui.</p>}
+                    </div>
 
                     {clarify.needDays && (
                       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -1612,14 +1631,20 @@ export default function CreateItineraryPage() {
                           Menginap di hotel mana?
                         </p>
                         <p className="text-xs text-[#FBF5E9]/75">Hotel menjadi titik awal dan akhir rute, bukan destinasi wisata.</p>
+                        <input type="search" value={hotelQuery} onChange={(e) => setHotelQuery(e.target.value)}
+                          placeholder="Cari nama hotel" aria-label="Cari nama hotel"
+                          className="w-full rounded-xl bg-[#FBF5E9] text-[#0A1A1C] px-3 py-2 text-sm" />
                         <div className="flex flex-wrap gap-2">
-                          {lodgingPlaces.map((p) => (
+                          {lodgingPlaces.filter((p) => p.name.toLowerCase().includes(hotelQuery.toLowerCase()) || p.id === form.lodging).slice(0, 8).map((p) => (
                             <button
                               key={p.id}
                               type="button"
-                              onClick={() => setForm((f) => ({ ...f, lodging: p.id,
-                                lat: p.coordinates.lat, lng: p.coordinates.lng,
-                                endLat: p.coordinates.lat, endLng: p.coordinates.lng }))}
+                              onClick={() => {
+                                setHotelQuery(p.name);
+                                setForm((f) => ({ ...f, lodging: p.id,
+                                  lat: p.coordinates.lat, lng: p.coordinates.lng,
+                                  endLat: p.coordinates.lat, endLng: p.coordinates.lng }));
+                              }}
                               className={`px-3.5 py-2 rounded-full text-xs font-bold min-h-[40px] ${
                                 form.lodging === p.id
                                   ? "bg-[#F4A261] text-[#0B3B45]"
@@ -1630,7 +1655,8 @@ export default function CreateItineraryPage() {
                             </button>
                           ))}
                         </div>
-                        {!lodgingPlaces.length && <p className="text-xs text-[#FBF5E9]/75">Belum ada hotel dengan lokasi terverifikasi untuk daerah ini.</p>}
+                        {!lodgingPlaces.length && <p className="text-xs text-[#FBF5E9]/75">Belum ada hotel dengan lokasi tercatat untuk daerah ini.</p>}
+                        {lodgingPlaces.length > 0 && !lodgingPlaces.some((p) => p.name.toLowerCase().includes(hotelQuery.toLowerCase())) && <p className="text-xs text-[#FBF5E9]/75">Hotel tidak ditemukan di katalog area ini.</p>}
                       </div>
                     )}
 

@@ -24,6 +24,10 @@ Dependencies did not change from foundation. Full tested dependency snapshot is 
 - GET `/api/v1/places?destinationId=yogyakarta&q=...&kind=food&routable=true`:
   `{places,datasetVersion,warnings}`; query/kind/routable optional.
 - GET `/api/v1/places/{id}`: canonical Place or 404.
+- GET `/api/v1/destinations/lookup?q=Bandung`: resolves a user-entered Indonesian
+  area and returns its destination ID, center and route candidates. Eleven area
+  snapshots are bundled for offline use. Other areas use Nominatim and Overpass
+  on demand; provider failure returns 503 rather than substituting another city.
 - GET `/api/v1/demo/places?area=Depok&kind=attraction&q=Situ`: separate
   Jabodetabek discovery sample from `tripin_demo_places` in Supabase. Requires
   `TRPIN_SUPABASE_URL` and a publishable/anon read key even when the planner
@@ -71,8 +75,10 @@ Use `--check` to check build presence only. UI acceptance is tracked separately 
 ## Domain rules
 
 - IDs stable; integer IDR, strict coordinates (zero allowed), extra fields forbidden.
-- Yogyakarta bounding rectangle: lat -8.3..-7.3, lng 110.0..110.9. Curated records define
-  the actual supported destinations; rectangle is only a safety bound, not coverage promise.
+- Yogyakarta uses its pilot bounding rectangle. Other Indonesian destination IDs
+  encode an area center; route candidates and anchors are limited to 30 km from it.
+  Search is local to the chosen area and does not imply nationwide route coverage
+  between cities.
 - Dates consecutive, timezone Asia/Jakarta, 1–3 days, 1–6 adults, driving.
 - Group budget normalized in totalIdr; originalBasis records original user input.
 - 2–3 days require one chosen hotel with days-1 nights; no room availability/booking.
@@ -104,6 +110,16 @@ Client snapshots are structurally validated and canonical place data is loaded s
 Revision matching is snapshot consistency only; no server-side concurrency/persistence exists.
 Guest itineraries are never stored server-side. Parser is free rule-based extraction and is
 limited to explicit Indonesian patterns; no LLM, network fetching or unbounded scraping.
+
+National discovery is triggered by explicit user search. Snapshot records come from
+OpenStreetMap contributors under ODbL and are marked estimated/unverified as appropriate.
+Live lookup uses a distinct User-Agent, serial calls and in-memory caching; the public
+Nominatim service has a 1 request/second maximum and the public Overpass service may be
+unavailable. Run one backend worker for this small demo. For sustained public traffic,
+use a self-hosted or contracted data service and enforce a deployment-wide request quota.
+`python -m scripts.smoke_national` verifies ten representative bundled areas, including overnight
+hotel routing. `scripts.collect_national_snapshot` refreshes explicitly named areas
+sequentially; refresh requires review of attribution, quality and service policy.
 
 ## Reproducible competition demo (one origin)
 
