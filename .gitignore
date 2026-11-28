@@ -28,3 +28,8 @@ __pycache__/
 *.py[cod]
 
 .ruff_cache/
+backend-serve.err
+backend-serve.out
+frontend-dev.err
+frontend-dev.log
+qa/release/*-failure.png

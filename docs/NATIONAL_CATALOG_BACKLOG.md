@@ -12,7 +12,7 @@ Skill [verification-before-completion](https://github.com/obra/superpowers/blob/
 
 **Tindak lanjut data:** Tianisa meninjau jam buka, tarif, dan alamat POI yang paling sering muncul; Shakira menguji dashboard dan panel alasan pada Safari HP; Fajri memeriksa hasil mode prioritas pada kota dengan data harga yang cukup. Ketersediaan hotel, jam, tarif, serta waktu lalu lintas langsung belum boleh dianggap pasti dari snapshot OSM.
 
-Verifikasi kode pembaruan ini: 163 tes backend, 27 tes frontend, lint backend, dan build produksi lulus. Pemeriksaan browser HP otomatis perlu diulang pada server yang dapat diakses dari proses browser; koneksi localhost pada lingkungan ini mengalami timeout.
+Verifikasi kode pembaruan ini: 163 tes backend, 27 tes frontend, lint backend, dan build produksi lulus. Browser 390×844 lulus melalui URL Cloudflare untuk brief lengkap, brief kurang, dan alternatif (`qa/release/dashboard-brief-browser.json`). Alur Surabaya dari kota hingga pilih hotel, hasil, simpan, dan muat ulang lulus pada server lokal (`qa/release/national-browser.json`). URL tunnel dan API kesehatan sama-sama merespons HTTP 200. Safari pada HP fisik dan audit sumber harga/jam masih diperlukan sebelum rilis final.
 
 ## Status implementasi
 
