@@ -84,6 +84,7 @@ test('city, category, companion and exact budget reach review without a free-tex
   expect(container.textContent).toContain('Rancang perjalanan di Bali');
   expect(container.textContent).toContain('Mau diprioritaskan yang mana?');
   expect(container.textContent).toContain('Rp\u00a02.000.000');
+  await act(async () => Simulate.click(container.querySelector('[aria-label="Kurangi durasi"]')));
   expect(button('Susun sekarang').disabled).toBe(false);
   expect(global.fetch.mock.calls.some(([url])=>url.includes('/requests/parse'))).toBe(false);
 });
@@ -120,6 +121,44 @@ test('unmatched hotel text still offers area hotels', async () => {
   expect(container.textContent).toContain('Nama itu belum cocok');
   await act(async () => Simulate.click(button('Hotel Tunjungan')));
   expect(button('Susun sekarang').disabled).toBe(false);
+});
+
+test('dashboard brief asks only for budget when other fields are present', async () => {
+  global.fetch = jest.fn(async (url) => url.includes('/requests/parse')
+    ? response({draft:{destinationName:'Bali', days:1, interests:['culture'],
+      companionId:'couple', adults:2, periodPreferences:[]}, missingFields:['budgetAmountIdr'],
+      ambiguities:[], parserSource:'deterministic-id-v2'})
+    : url.includes('/destinations/lookup') ? response(cityCatalog('Bali'))
+    : url.includes('/itineraries/plan') ? response({itinerary:fixture(), conflicts:[]})
+    : response({places:fixture().places}));
+  await render(<Create />, {pathname:'/create', state:{promptText:'Ke Bali 1 hari bersama pasangan, wisata budaya'}});
+  await act(async () => { await Promise.resolve(); });
+  expect(container.querySelector('#wizard-budget')).not.toBeNull();
+  expect(container.textContent).not.toContain('Liburan ini bersama siapa?');
+  await act(async () => Simulate.change(container.querySelector('#wizard-budget'), {target:{value:'800000'}}));
+  await act(async () => Simulate.click(button('Lanjut')));
+  const request = JSON.parse(global.fetch.mock.calls.find(([url])=>url.includes('/itineraries/plan'))[1].body).request;
+  expect(request.destinationName).toBe('Bali');
+  expect(request.interests).toEqual(['culture']);
+  expect(request.travelers.adults).toBe(2);
+  expect(request.budget.totalIdr).toBe(800000);
+});
+
+test('Banyuwangi brief routes through only its missing category, companion and budget', async () => {
+  global.fetch = jest.fn(async (url) => url.includes('/requests/parse')
+    ? response({draft:{destinationName:'Banyuwangi', days:3, interests:[], periodPreferences:[]},
+      missingFields:['interests','companionId','budgetAmountIdr'], ambiguities:[], parserSource:'deterministic-id-v2'})
+    : url.includes('/destinations/lookup') ? response(cityCatalog('Banyuwangi'))
+    : response({places:fixture().places}));
+  await render(<Create />, {pathname:'/create', state:{promptText:'Saya mau ke Banyuwangi 3 hari'}});
+  await act(async () => { await Promise.resolve(); });
+  expect(container.textContent).toContain('Tempat seperti apa yang mau kamu kunjungi di Banyuwangi?');
+  await act(async () => Simulate.click(button('Budaya & Sejarah')));
+  await act(async () => Simulate.click(button('Lanjut')));
+  expect(container.textContent).toContain('Liburan ini bersama siapa?');
+  await act(async () => Simulate.click(button('Pasangan')));
+  await act(async () => Simulate.click(button('Lanjut')));
+  expect(container.querySelector('#wizard-budget')).not.toBeNull();
 });
 
 test('result uses latest stored revision over stale navigation state', async () => {

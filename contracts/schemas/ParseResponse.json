@@ -17,6 +17,18 @@
           "default": null,
           "title": "Destinationid"
         },
+        "destinationName": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Destinationname"
+        },
         "unsupportedDestination": {
           "default": false,
           "title": "Unsupporteddestination",
@@ -49,6 +61,25 @@
           ],
           "default": null,
           "title": "Adults"
+        },
+        "companionId": {
+          "anyOf": [
+            {
+              "enum": [
+                "solo",
+                "couple",
+                "family",
+                "friends",
+                "group"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Companionid"
         },
         "budgetBasis": {
           "anyOf": [
@@ -110,6 +141,23 @@
           },
           "title": "Interests",
           "type": "array"
+        },
+        "objective": {
+          "anyOf": [
+            {
+              "enum": [
+                "balanced",
+                "budget",
+                "travel_time"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Objective"
         },
         "periodPreferences": {
           "items": {
@@ -177,7 +225,7 @@
       "type": "array"
     },
     "parserSource": {
-      "const": "deterministic-id-v1",
+      "const": "deterministic-id-v2",
       "title": "Parsersource",
       "type": "string"
     }

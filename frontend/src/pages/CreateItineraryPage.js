@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Bookmark, Check, Minus, Plus, RotateCcw, X } from "lucide-react";
 import { api, listPlaces } from "../services/plannerApi";
@@ -10,6 +10,26 @@ import TripView from "../components/TripView";
 import { extractDestinationFromQuery } from "../services/regionService";
 
 const SESSION_DRAFT_KEY = "tripin_create_session_v1";
+const RECENT_RECOMMENDATIONS_KEY = "tripin_recent_recommendations_v1";
+
+function recommendationHistory(destinationId) {
+  try {
+    const all = JSON.parse(localStorage.getItem(RECENT_RECOMMENDATIONS_KEY) || "{}");
+    return Array.isArray(all[destinationId]) ? all[destinationId].slice(0, 24) : [];
+  } catch {
+    return [];
+  }
+}
+
+function rememberRecommendations(destinationId, ids, reset = false) {
+  try {
+    const all = JSON.parse(localStorage.getItem(RECENT_RECOMMENDATIONS_KEY) || "{}");
+    all[destinationId] = Array.from(new Set([...ids, ...(reset ? [] : all[destinationId] || [])])).slice(0, 24);
+    localStorage.setItem(RECENT_RECOMMENDATIONS_KEY, JSON.stringify(all));
+  } catch {
+    // Storage is optional; itinerary generation still works.
+  }
+}
 
 function jakartaDate(offsetDays = 0) {
   const local = new Date(Date.now() + 7 * 60 * 60 * 1000);
@@ -662,20 +682,24 @@ function buildResultSummary(trip) {
 
 export default function CreateItineraryPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const reduced = useReducedMotion();
+  const incomingBrief = location.state?.promptText?.trim() ||
+    (location.state?.destination ? `ke ${location.state.destination}` : "");
 
   const savedSession = useMemo(() => {
+    if (incomingBrief) return null;
     try {
       const raw = sessionStorage.getItem(SESSION_DRAFT_KEY);
       return raw ? JSON.parse(raw) : null;
     } catch {
       return null;
     }
-  }, []);
+  }, [incomingBrief]);
 
-  // Phase: 0 = tujuan, 1 = kategori/rombongan/budget, 2 = review/hasil.
+  // Phase: -1 = analisis dashboard, 0 = tujuan, 1 = data kurang, 2 = review/hasil.
   const [phase, setPhase] = useState(
-    location.state?.resumePhase === 2 || savedSession?.viewMode === "result"
+    incomingBrief ? -1 : location.state?.resumePhase === 2 || savedSession?.viewMode === "result"
       ? 2
       : 0,
   );
@@ -688,12 +712,13 @@ export default function CreateItineraryPage() {
   );
   const [tasteStep, setTasteStep] = useState(0);
   const [companionId, setCompanionId] = useState(savedSession?.companionId || "");
+  const [daysProvided, setDaysProvided] = useState(Boolean(savedSession?.daysProvided));
   const [budgetTierId, setBudgetTierId] = useState(savedSession?.budgetTierId || "");
   const [form, setForm] = useState(() => savedSession?.form || {
-    ...initialForm(), date: suggestedTripDate(), destinationId: "", destinationName: "", interests: [],
+    ...initialForm(), date: suggestedTripDate(), destinationId: "", destinationName: "", interests: [], basis: "group",
   });
   const [text, setText] = useState(
-    location.state?.promptText ||
+    incomingBrief ||
       savedSession?.text || "",
   );
   const [places, setPlaces] = useState([]);
@@ -705,12 +730,7 @@ export default function CreateItineraryPage() {
   const [resultTrip, setResultTrip] = useState(savedSession?.resultTrip || null);
   const [savedResult, setSavedResult] = useState(Boolean(savedSession?.savedResult));
   const [typedSummary, setTypedSummary] = useState("");
-  const [unsupported, setUnsupported] = useState(
-    Boolean(
-      location.state?.destination &&
-        !/^(yogyakarta|jogja|yogya)$/i.test(location.state.destination),
-    ),
-  );
+  const [unsupported, setUnsupported] = useState(false);
   const [destinationName, setDestinationName] = useState(location.state?.destination || savedSession?.form?.destinationName || "");
   const [destinationResolved, setDestinationResolved] = useState(Boolean(savedSession?.form?.destinationId && savedSession?.form?.destinationName));
   const [lookupBusy, setLookupBusy] = useState(false);
@@ -725,6 +745,7 @@ export default function CreateItineraryPage() {
   const textareaRef = useRef(null);
   const headingRef = useRef(null);
   const resultHeadingRef = useRef(null);
+  const incomingHandledRef = useRef(false);
 
   const catalogRegions = useMemo(() => {
     const ids = Array.from(
@@ -791,6 +812,7 @@ export default function CreateItineraryPage() {
             text,
             form,
             companionId,
+            daysProvided,
             budgetTierId,
           }),
         );
@@ -798,7 +820,7 @@ export default function CreateItineraryPage() {
     } catch {
       // Ignore sessionStorage quota issues
     }
-  }, [phase, viewMode, resultTrip, savedResult, text, form, companionId, budgetTierId]);
+  }, [phase, viewMode, resultTrip, savedResult, text, form, companionId, daysProvided, budgetTierId]);
 
   // Focus heading cleanly on phase/viewMode change
   useEffect(() => {
@@ -875,24 +897,49 @@ export default function CreateItineraryPage() {
     });
   };
 
+  function withDestination(draft, result) {
+    return { ...draft, destinationId: result.destinationId, destinationName: result.name, lodging: "",
+      lat: result.center.lat, lng: result.center.lng,
+      endLat: result.center.lat, endLng: result.center.lng };
+  }
+
+  function showNextMissing(draft, who, hasDays) {
+    const missingStep = !draft.interests.length ? 0 : !who ? 1 : !(Number(draft.budget) > 0) ? 2 : -1;
+    if (missingStep >= 0) {
+      setTasteStep(missingStep);
+      setPhase(1);
+      return;
+    }
+    const departureReady = Date.parse(`${draft.date}T${draft.start}:00+07:00`) > Date.now() + 30 * 60000;
+    setClarify({ needDestination: false, needDays: !hasDays, needBudget: false,
+      needLodging: Number(draft.days) > 1 && !draft.lodging });
+    setPhase(2);
+    if (hasDays && Number(draft.days) === 1 && departureReady) executePlan(draft);
+  }
+
+  async function lookupDestination(query, draft) {
+    const result = await api(`/destinations/lookup?q=${encodeURIComponent(query.trim())}`);
+    if (!result.places?.length) throw new Error("Belum ada tempat untuk daerah ini.");
+    const nextForm = withDestination(draft, result);
+    setPlaces(result.places);
+    setCatalogReady(true);
+    setDestinationName(result.name);
+    setHotelQuery("");
+    setHotelResults([]);
+    setForm(nextForm);
+    setUnsupported(false);
+    setDestinationResolved(true);
+    return nextForm;
+  }
+
   async function resolveDestination() {
     if (lookupBusy || !destinationName.trim()) return null;
     setLookupBusy(true);
     setError("");
     try {
-      const result = await api(`/destinations/lookup?q=${encodeURIComponent(destinationName.trim())}`);
-      if (!result.places?.length) throw new Error("Belum ada tempat untuk daerah ini.");
-      setPlaces(result.places);
-      setCatalogReady(true);
-      setDestinationName(result.name);
-      setHotelQuery("");
-      setHotelResults([]);
-      setForm((f) => ({ ...f, destinationId: result.destinationId, destinationName: result.name, lodging: "",
-        lat: result.center.lat, lng: result.center.lng,
-        endLat: result.center.lat, endLng: result.center.lng }));
-      setUnsupported(false);
-      setDestinationResolved(true);
-      return result;
+      const nextForm = await lookupDestination(destinationName, form);
+      if (phase === 0) showNextMissing(nextForm, companionId, daysProvided);
+      return nextForm;
     } catch (err) {
       setDestinationResolved(false);
       setError(err.message || "Daerah belum dapat dimuat.");
@@ -912,6 +959,7 @@ export default function CreateItineraryPage() {
     setForm({ ...initialForm(), date: suggestedTripDate(), destinationId: "", destinationName: "", interests: [] });
     setText("");
     setCompanionId("");
+    setDaysProvided(false);
     setBudgetTierId("");
     setResultTrip(null);
     setSavedResult(false);
@@ -922,6 +970,7 @@ export default function CreateItineraryPage() {
     } catch {
       // Ignore
     }
+    navigate("/");
   };
 
   const handleSaveResult = () => {
@@ -946,18 +995,31 @@ export default function CreateItineraryPage() {
       const minDelay = new Promise((resolve) =>
         setTimeout(resolve, reduced ? 0 : 2500),
       );
-      const [result] = await Promise.all([
-        api("/itineraries/plan", { request: toRequest(nextForm) }),
+      const request = toRequest(nextForm);
+      const recent = recommendationHistory(request.destinationId)
+        .filter((id) => !request.mustVisitPlaceIds.includes(id));
+      const [first] = await Promise.all([
+        api("/itineraries/plan", { request: { ...request, excludedPlaceIds: recent } }),
         minDelay,
       ]);
-      const stopsCount = (result.itinerary?.days || []).reduce(
+      const countStops = (answer) => (answer.itinerary?.days || []).reduce(
         (sum, d) => sum + (d.stops?.length || 0),
         0,
       );
+      let result = first;
+      let resetHistory = false;
+      if (recent.length && countStops(first) < Math.min(2, Number(nextForm.days))) {
+        result = await api("/itineraries/plan", { request });
+        resetHistory = true;
+      }
+      const stopsCount = countStops(result);
       if (!result.itinerary || stopsCount === 0) {
         setEmptyResult(true);
         return;
       }
+      rememberRecommendations(request.destinationId,
+        result.itinerary.days.flatMap((day) => day.stops.map((stop) => stop.placeId)),
+        resetHistory);
       setResultTrip(result.itinerary);
       if (reduced) {
         setViewMode("result");
@@ -971,6 +1033,52 @@ export default function CreateItineraryPage() {
     }
   }
 
+  async function intakePrompt(brief) {
+    setBusy(true);
+    setError("");
+    try {
+      const parsed = await api("/requests/parse", { text: brief });
+      const d = parsed.draft;
+      const query = d.destinationName || extractDestinationFromQuery(brief)?.name || "";
+      const hasDays = Boolean(d.days);
+      const who = d.companionId || "";
+      const draft = {
+        ...initialForm(), date: d.startDate || suggestedTripDate(),
+        destinationId: "", destinationName: "", lodging: "",
+        days: d.days || 1, adults: d.adults || 2,
+        budget: d.budgetAmountIdr || "", basis: d.budgetBasis || "group",
+        interests: d.interests || [], periodPreferences: d.periodPreferences || [],
+        objective: d.objective || "balanced",
+      };
+      setText(brief);
+      setForm(draft);
+      setCompanionId(who);
+      setDaysProvided(hasDays);
+      setDestinationName(query);
+      setDestinationResolved(false);
+      if (!query) {
+        setPhase(0);
+        setBusy(false);
+        return;
+      }
+      const nextForm = await lookupDestination(query, draft);
+      setBusy(false);
+      showNextMissing(nextForm, who, hasDays);
+    } catch (err) {
+      setPhase(0);
+      setDestinationResolved(false);
+      setError(err.message || "Rencana belum dapat dianalisis. Coba lagi.");
+      setBusy(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!incomingBrief || incomingHandledRef.current) return;
+    incomingHandledRef.current = true;
+    intakePrompt(incomingBrief);
+    // Run once for the brief passed from the dashboard.
+  }, [incomingBrief]);
+
   async function submitPrompt() {
     if (busy || !text.trim()) return;
     if ((!catalogReady || !places.length) && /\b(yogyakarta|jogja|yogya)\b/i.test(text)) {
@@ -982,10 +1090,9 @@ export default function CreateItineraryPage() {
     try {
       const parsed = await api("/requests/parse", { text });
       const d = parsed.draft;
-      const mentionedDestination = extractDestinationFromQuery(text);
-      const areaPhrase = text.match(/\b(?:di|ke)\s+([a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\s-]{1,50}?)(?=,|\.|\s+\d+\s*hari|\s+budget|\s+untuk|\s+bersama|$)/i);
-      if (!destinationResolved) {
-        setDestinationName(location.state?.destination || mentionedDestination?.name || areaPhrase?.[1]?.trim() || "");
+      const mentionedDestination = d.destinationName || extractDestinationFromQuery(text)?.name;
+      if (!destinationResolved && mentionedDestination) {
+        setDestinationName(mentionedDestination);
         setDestinationResolved(false);
       }
       const merged = {
@@ -993,6 +1100,7 @@ export default function CreateItineraryPage() {
         destinationId: destinationResolved ? form.destinationId : d.destinationId || form.destinationId,
         days: d.days ?? form.days,
         adults: d.adults ?? form.adults,
+        objective: d.objective || form.objective,
         budget: d.budgetAmountIdr ?? form.budget ?? "",
         basis: d.budgetBasis ?? form.basis,
         date: d.startDate ?? form.date,
@@ -1002,11 +1110,13 @@ export default function CreateItineraryPage() {
         periodPreferences: d.periodPreferences || form.periodPreferences,
       };
       setForm(merged);
+      if (d.companionId) setCompanionId(d.companionId);
+      if (d.days) setDaysProvided(true);
 
       const needDestination = !destinationResolved;
-      const needDays = true;
+      const needDays = !(d.days || daysProvided);
       const needBudget = !merged.budget || Number(merged.budget) <= 0;
-      const needLodging = Number(d.days || 1) > 1 && !merged.lodging;
+      const needLodging = Number(merged.days || 1) > 1 && !merged.lodging;
 
       setUnsupported(needDestination);
 
@@ -1023,6 +1133,7 @@ export default function CreateItineraryPage() {
   const clarifyReady =
     !unsupported && destinationResolved &&
     departureIsFuture &&
+    daysProvided && form.interests.length > 0 && Boolean(companionId) &&
     Number(form.days) >= 1 &&
     Number(form.budget) > 0 &&
     (Number(form.days) <= 1 || Boolean(form.lodging)) &&
@@ -1140,6 +1251,14 @@ export default function CreateItineraryPage() {
 
       {/* Konten Utama */}
       <AnimatePresence mode="popLayout" initial={false}>
+        {phase === -1 && (
+          <main className="relative z-10 flex-1 flex items-center justify-center px-5 py-12" role="status">
+            <div className="w-full max-w-xl rounded-3xl bg-[#0B4F5C]/90 border border-[#2EC4B6]/45 p-8 text-center space-y-3">
+              <h1 className="text-2xl font-extrabold">Membaca rencana perjalananmu</h1>
+              <p className="text-sm text-[#FBF5E9]/85">Tripin memeriksa tujuan, durasi, kategori, teman perjalanan, dan budget.</p>
+            </div>
+          </main>
+        )}
         {phase === 0 && (
           <motion.main key="destination-first"
             initial={reduced ? { opacity: 0 } : { opacity: 0, y: 16 }}
@@ -1152,11 +1271,11 @@ export default function CreateItineraryPage() {
               <label htmlFor="first-destination" className="block text-sm font-bold">Kota atau daerah tujuan di Indonesia</label>
               <input id="first-destination" type="search" value={destinationName}
                 onChange={(e) => { setDestinationName(e.target.value); setDestinationResolved(false); setError(""); }}
-                onKeyDown={async (e) => { if (e.key === "Enter" && destinationName.trim()) { e.preventDefault(); if (await resolveDestination()) setPhase(1); } }}
+                onKeyDown={async (e) => { if (e.key === "Enter" && destinationName.trim()) { e.preventDefault(); await resolveDestination(); } }}
                 placeholder="Contoh: Surabaya" autoComplete="address-level2"
                 className="w-full rounded-xl bg-[#FBF5E9] text-[#0A1A1C] px-4 py-3 text-base" />
               <button type="button" disabled={lookupBusy || destinationName.trim().length < 2}
-                onClick={async () => { if (await resolveDestination()) setPhase(1); }}
+                onClick={resolveDestination}
                 className="w-full rounded-xl bg-[#F4A261] text-[#0B3B45] px-5 py-3 font-bold disabled:opacity-50">
                 {lookupBusy ? "Mencari tempat..." : "Lanjut pilih kategori"}
               </button>
@@ -1418,7 +1537,11 @@ export default function CreateItineraryPage() {
                   savedSuccess={savedResult}
                 />
 
-                <div className="sticky bottom-3 sm:static z-20 flex justify-center pt-2">
+                <div className="sticky bottom-3 sm:static z-20 flex flex-wrap gap-3 justify-center pt-2">
+                  <button type="button" onClick={() => executePlan(form)}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm bg-[#F4A261] text-[#0B3B45] shadow-lg min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#2EC4B6]">
+                    <RotateCcw size={15} /> Susun alternatif
+                  </button>
                   <button
                     type="button"
                     onClick={performReset}
@@ -1552,12 +1675,13 @@ export default function CreateItineraryPage() {
                           <button
                             type="button"
                             aria-label="Kurangi durasi"
-                            onClick={() =>
+                            onClick={() => {
+                              setDaysProvided(true);
                               setForm((f) => ({
                                 ...f,
                                 days: Math.max(1, Number(f.days || 1) - 1),
-                              }))
-                            }
+                              }));
+                            }}
                             className="w-10 h-10 rounded-full bg-white/10 text-[#FBF5E9] flex items-center justify-center"
                           >
                             <Minus size={14} />
@@ -1568,12 +1692,13 @@ export default function CreateItineraryPage() {
                           <button
                             type="button"
                             aria-label="Tambah durasi"
-                            onClick={() =>
+                            onClick={() => {
+                              setDaysProvided(true);
                               setForm((f) => ({
                                 ...f,
                                 days: Math.min(3, Number(f.days || 1) + 1),
-                              }))
-                            }
+                              }));
+                            }}
                             className="w-10 h-10 rounded-full bg-white/10 text-[#FBF5E9] flex items-center justify-center"
                           >
                             <Plus size={14} />
@@ -1827,11 +1952,10 @@ export default function CreateItineraryPage() {
               type="button"
               disabled={tasteStep === 0 ? !form.interests.length : tasteStep === 1 ? !companionId : !(Number(form.budget) > 0)}
               onClick={() => {
-                if (tasteStep < 2) setTasteStep((s) => Math.min(2, s + 1));
-                else {
-                  setClarify({ needDestination: false, needDays: true, needBudget: false, needLodging: false });
-                  setPhase(2);
-                }
+                const missingAfter = [!form.interests.length, !companionId, !(Number(form.budget) > 0)]
+                  .findIndex((missing, index) => index > tasteStep && missing);
+                if (missingAfter >= 0) setTasteStep(missingAfter);
+                else showNextMissing(form, companionId, daysProvided);
               }}
               className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full font-bold text-base bg-[#F4A261] text-[#0B3B45] min-h-[48px] hover:brightness-95 transition-all focus:outline-none focus:ring-2 focus:ring-[#2EC4B6] shadow-md disabled:opacity-50"
             >

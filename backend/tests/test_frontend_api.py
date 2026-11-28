@@ -42,14 +42,14 @@ def test_destination_must_be_a_whole_word(client):
         "/api/v1/requests/parse", json={"text": "Majogja 2 hari"}
     ).json()
     assert result["draft"]["unsupportedDestination"]
-    assert "destinationId" in result["missingFields"]
+    assert "destinationName" in result["missingFields"]
 
 
 def test_supported_brief_preserves_review_fields(client):
     result = client.post(
         "/api/v1/requests/parse",
         json={
-            "text": "Jogja 3 hari 6 orang 2028-02-29 budget Rp1,5 juta per orang mobil "
+            "text": "Jogja 3 hari bersama teman 6 orang 2028-02-29 budget Rp1,5 juta per orang mobil "
             "pagi kuliner, siang budaya museum"
         },
     ).json()

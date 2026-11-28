@@ -1,0 +1,19 @@
+{
+  "base": "http://127.0.0.1:8020",
+  "viewport": "390x844",
+  "steps": [
+    {
+      "name": "complete dashboard brief generates directly",
+      "status": "passed"
+    },
+    {
+      "name": "alternative changes places while preserving preferences",
+      "status": "passed"
+    },
+    {
+      "name": "incomplete brief opens only missing questions",
+      "status": "passed"
+    }
+  ],
+  "pageErrors": []
+}

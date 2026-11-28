@@ -1091,7 +1091,7 @@ export default function LandingPage() {
   const handleStart = (dest) => {
     const target = dest || destination;
     if (target && target.trim()) {
-      navigate('/create', { state: { destination: target.trim() } });
+      navigate('/create', { state: { promptText: target.trim() } });
     } else {
       navigate('/create');
     }
@@ -1462,16 +1462,16 @@ export default function LandingPage() {
                 >
                   <div className="w-full sm:flex-1 flex items-center gap-3 px-3.5 py-2 sm:py-0">
                     <Search size={19} className="text-[#2EC4B6] flex-shrink-0" />
-                    <input
-                      type="text"
+                    <textarea
                       aria-label="Ceritakan perjalananmu"
                       placeholder={typedPlaceholder}
                       value={destination}
                       onChange={(e) => setDestination(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && handleStart()}
+                      onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleStart(); } }}
                       onFocus={() => setInputFocused(true)}
                       onBlur={() => setInputFocused(false)}
-                      className="w-full bg-transparent text-[#FBF5E9] placeholder:text-[#FBF5E9]/55 text-sm sm:text-base font-medium outline-none"
+                      rows={2}
+                      className="w-full bg-transparent text-[#FBF5E9] placeholder:text-[#FBF5E9]/55 text-sm sm:text-base font-medium outline-none resize-none"
                     />
                   </div>
 
@@ -1483,6 +1483,7 @@ export default function LandingPage() {
                     <ArrowRight size={17} />
                   </button>
                 </div>
+                <p className="mt-3 text-sm text-[#FBF5E9]/75">Tulis tujuan, lama perjalanan, kategori wisata, bersama siapa, dan budget. Tripin hanya menanyakan yang belum ada.</p>
               </div>
             </div>
 

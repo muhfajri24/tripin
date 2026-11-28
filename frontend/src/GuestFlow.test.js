@@ -59,7 +59,7 @@ test("destination, category, companions and exact budget lead to trip review", a
   await act(async () => Simulate.click([...container.querySelectorAll('button')].find((x)=>x.textContent === 'Lanjut')));
   await act(async () => Simulate.click(container.querySelector('[aria-label="Tambah durasi"]')));
   expect(container.textContent).toContain("Menginap di hotel mana?");
-  expect(container.textContent).toContain("Rp\u00a0500.000 per orang");
+  expect(container.textContent).toContain("Rp\u00a0500.000 untuk rombongan");
   expect(container.textContent).toContain("Mau diprioritaskan yang mana?");
   expect(
     [...container.querySelectorAll("button")].find((x) =>

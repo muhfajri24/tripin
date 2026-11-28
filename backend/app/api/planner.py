@@ -26,14 +26,17 @@ class ParseBody(Contract):
 
 class ParseDraft(Contract):
     destinationId: Literal["yogyakarta"] | None = None
+    destinationName: str | None = None
     unsupportedDestination: bool = False
     days: int | None = Field(default=None, ge=1, le=3)
     adults: int | None = Field(default=None, ge=1, le=6)
+    companionId: Literal["solo", "couple", "family", "friends", "group"] | None = None
     budgetBasis: Literal["person", "group"] | None = None
     budgetAmountIdr: int | None = Field(default=None, gt=0)
     transportMode: Literal["driving"] | None = None
     startDate: str | None = None
     interests: list[str]
+    objective: Literal["balanced", "budget", "travel_time"] | None = None
     periodPreferences: list[PeriodPreference]
 
 
@@ -41,7 +44,7 @@ class ParseResponse(Contract):
     draft: ParseDraft
     missingFields: list[str]
     ambiguities: list[str]
-    parserSource: Literal["deterministic-id-v1"]
+    parserSource: Literal["deterministic-id-v2"]
 
 
 class PlanBody(Contract):

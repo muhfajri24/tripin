@@ -38,9 +38,15 @@ Do not stop unrelated processes.
 
 ## Supported workflow
 
-Brief -> deterministic Indonesian parser -> editable review -> backend candidate repository
+Home brief -> Indonesian rule-based parser -> only missing destination/category/companion/budget/duration questions
+-> hotel selection for overnight trips -> backend candidate repository
 -> bounded constraint-aware planning -> schedule/ledger/map -> edit or delay/closure replan
 -> local save/delete -> Google Maps sequential route segments.
+
+A complete one-day brief plans directly. The result has a "Susun alternatif" action;
+recently shown places are excluded from the next request when the catalog can still
+produce a plan. A sparse catalog falls back to feasible candidates. Category matching
+is required for automatic candidates, and prices with no evidence remain unknown.
 
 Navigation: Home, Plan a Trip, My Trips, Explore Indonesia. Legacy dashboard/settings/saved
 URLs redirect to guest pages. Prototype data files are retained for reference but are not

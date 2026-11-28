@@ -602,6 +602,7 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
         if p.kind != "lodging"
         and scope(p.coordinates, req.destinationId)
         and p.id not in req.excludedPlaceIds
+        and bool(set(p.categories) & set(req.interests))
     ]
 
     def score(p):

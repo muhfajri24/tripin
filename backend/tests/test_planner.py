@@ -88,7 +88,49 @@ def test_budget_parsing(amount, result):
 
 
 def test_unsupported():
-    assert parse_brief("2 hari Bali")["draft"]["unsupportedDestination"]
+    parsed = parse_brief("2 hari Bali")
+    assert parsed["draft"]["destinationName"] == "Bali"
+    assert not parsed["draft"]["unsupportedDestination"]
+
+
+def test_dashboard_brief_only_requests_missing_trip_fields():
+    parsed = parse_brief("Saya mau ke Banyuwangi 3 hari")
+    assert parsed["draft"]["destinationName"] == "Banyuwangi"
+    assert parsed["draft"]["days"] == 3
+    assert parsed["draft"]["interests"] == []
+    assert {"interests", "companionId", "budgetAmountIdr"}.issubset(
+        parsed["missingFields"]
+    )
+
+
+def test_dashboard_brief_keeps_all_supplied_preferences():
+    parsed = parse_brief(
+        "Ke Semarang 2 hari bersama pasangan, kuliner dan budaya, "
+        "budget Rp2 juta total, pilih yang terdekat"
+    )
+    draft = parsed["draft"]
+    assert draft["destinationName"] == "Semarang"
+    assert draft["days"] == 2 and draft["adults"] == 2
+    assert draft["companionId"] == "couple"
+    assert draft["interests"] == ["food", "culture"]
+    assert draft["budgetAmountIdr"] == 2_000_000
+    assert draft["budgetBasis"] == "group"
+    assert draft["objective"] == "travel_time"
+
+
+def test_alternative_plan_respects_recent_exclusions_and_requested_category():
+    repo = Repo()
+    req = request().model_copy(update={"interests": ["culture"]})
+    first, errors = generate(req, repo)
+    assert first and not errors
+    previous_ids = [stop.placeId for day in first.days for stop in day.stops]
+    alternative, errors = generate(
+        req.model_copy(update={"excludedPlaceIds": previous_ids}), repo
+    )
+    assert alternative and not errors
+    alternative_ids = [stop.placeId for day in alternative.days for stop in day.stops]
+    assert not set(previous_ids) & set(alternative_ids)
+    assert all("culture" in repo.get_place(pid).categories for pid in alternative_ids)
 
 
 @pytest.mark.parametrize("days", [1, 2, 3])

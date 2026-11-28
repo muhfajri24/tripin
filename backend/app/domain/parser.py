@@ -8,24 +8,30 @@ def parse_brief(text: str):
     q = text.casefold()
     fields = {}
     ambiguities = []
-    cities = [
-        x
-        for x in ["bali", "bandung", "jakarta", "surabaya", "lombok", "toba", "bajo"]
-        if re.search(r"\b" + x + r"\b", q)
-    ]
-    if re.search(r"\b(?:yogyakarta|jogja|yogya)\b", q):
-        fields["destinationId"] = "yogyakarta"
-    if cities:
-        ambiguities.append(
-            "Tujuan di luar Yogyakarta belum didukung: " + ", ".join(cities)
+    destination = re.search(
+        r"\b(?:ke|di|menuju)\s+([a-zà-ÿ][a-zà-ÿ\s-]{1,60}?)"
+        r"(?=\s+(?:selama|untuk|bersama|dengan|sama|budget|anggaran|biaya|"
+        r"kuliner|wisata|alam|budaya|pantai|museum|sendiri|berdua|keluarga|"
+        r"pasangan|teman|\d+\s*hari)|[,.;]|$)",
+        q,
+    )
+    if destination:
+        fields["destinationName"] = destination[1].strip().title()
+    else:
+        known = re.search(
+            r"\b(yogyakarta|jogja|yogya|banyuwangi|bali|bandung|jakarta|"
+            r"surabaya|semarang|medan|denpasar|padang|makassar|jayapura|"
+            r"banjarmasin|labuan bajo|lombok|raja ampat)\b",
+            q,
         )
-        fields["unsupportedDestination"] = True
-    if "destinationId" not in fields:
-        fields["unsupportedDestination"] = True
-        if not cities:
-            ambiguities.append(
-                "Tujuan belum dikenali; pilih Yogyakarta secara eksplisit pada form."
-            )
+        if known:
+            fields["destinationName"] = known[1].title()
+    if fields.get("destinationName", "").casefold() in {"yogyakarta", "jogja", "yogya"}:
+        fields["destinationId"] = "yogyakarta"
+        fields["destinationName"] = "Yogyakarta"
+    fields["unsupportedDestination"] = "destinationName" not in fields
+    if fields["unsupportedDestination"]:
+        ambiguities.append("Tujuan belum dikenali; isi kota atau daerah di Indonesia.")
     d = re.search(r"(?<![\w-])(-?\d+)\s*hari\b", q)
     if d:
         if 1 <= int(d[1]) <= 3:
@@ -40,12 +46,23 @@ def parse_brief(text: str):
             ambiguities.append(
                 "Jumlah wisatawan yang didukung 1–6 dewasa; koreksi pada form."
             )
+    for pattern, companion, default_count in [
+        (r"\b(?:sendiri|sendirian|solo)\b", "solo", 1),
+        (r"\b(?:pasangan|pacar|istri|suami|berdua)\b", "couple", 2),
+        (r"\b(?:keluarga|anak-anak)\b", "family", 4),
+        (r"\b(?:teman|sahabat|bestie)\b", "friends", 4),
+        (r"\b(?:rombongan|grup|group)\b", "group", 6),
+    ]:
+        if re.search(pattern, q):
+            fields["companionId"] = companion
+            fields.setdefault("adults", default_count)
+            break
     if "per orang" in q or "per-orang" in q:
         fields["budgetBasis"] = "person"
-    elif re.search(r"total|rombongan|grup", q):
+    elif re.search(r"\b(?:total|rombongan|grup|group)\b", q):
         fields["budgetBasis"] = "group"
     money = re.search(
-        r"(?:rp\.?\s*|budget\s*(?:rp\.?\s*)?|anggaran\s*(?:rp\.?\s*)?)([\d.,]{1,18})(?![\d.,])\s*(ribu|rb|juta|jt)?",
+        r"(?:rp\.?\s*|budget\s*(?:rp\.?\s*)?|anggaran\s*(?:rp\.?\s*)?|biaya\s*(?:rp\.?\s*)?|habis\s*(?:rp\.?\s*)?)([\d.,]{1,18})(?![\d.,])\s*(ribu|rb|juta|jt)?",
         q,
     )
     if money:
@@ -82,14 +99,33 @@ def parse_brief(text: str):
             cat
             for word, cat in [
                 ("kuliner", "food"),
+                ("makan", "food"),
+                ("cafe", "food"),
+                ("nongkrong", "food"),
                 ("budaya", "culture"),
                 ("museum", "culture"),
+                ("sejarah", "culture"),
                 ("alam", "nature"),
+                ("gunung", "nature"),
+                ("air terjun", "nature"),
                 ("kerajinan", "craft"),
+                ("oleh-oleh", "craft"),
+                ("pantai", "beach"),
+                ("pulau", "beach"),
+                ("petualangan", "attraction"),
+                ("city light", "attraction"),
             ]
             if word in q
         )
     )
+    for pattern, objective in [
+        (r"\b(?:terdekat|dekat|jarak|efisien)\b", "travel_time"),
+        (r"\b(?:hemat|murah|terjangkau|affordable)\b", "budget"),
+        (r"\b(?:seimbang|balance)\b", "balanced"),
+    ]:
+        if re.search(pattern, q):
+            fields["objective"] = objective
+            break
     fields["periodPreferences"] = []
     for token, period in [
         ("pagi", "morning"),
@@ -122,15 +158,17 @@ def parse_brief(text: str):
     missing = [
         k
         for k in [
-            "destinationId",
+            "destinationName",
             "days",
             "adults",
+            "companionId",
+            "interests",
             "budgetAmountIdr",
             "budgetBasis",
             "startDate",
             "transportMode",
         ]
-        if k not in fields
+        if k not in fields or k == "interests" and not fields["interests"]
     ]
     if fields.get("days", 1) > 1:
         missing.append("lodging")
@@ -138,5 +176,5 @@ def parse_brief(text: str):
         "draft": fields,
         "missingFields": missing,
         "ambiguities": ambiguities,
-        "parserSource": "deterministic-id-v1",
+        "parserSource": "deterministic-id-v2",
     }
