@@ -8,6 +8,8 @@ def test_spa_fallback_never_hides_api_or_asset_errors(tmp_path, monkeypatch):
     monkeypatch.setattr("app.static.FRONTEND_BUILD", tmp_path)
     client = TestClient(create_app(Settings(_env_file=None, serve_frontend=True)))
     assert "guest build" in client.get("/itinerary/demo/edit").text
+    assert client.get("/itinerary/demo/edit").headers["cache-control"] == "no-store"
+    assert client.get("/").headers["cache-control"] == "no-store"
     assert client.get("/static/missing.js").status_code == 404
     assert client.get("/api/v1/missing").status_code == 404
     assert client.get("/api/v1/health").status_code == 200

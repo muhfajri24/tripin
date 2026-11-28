@@ -20,6 +20,7 @@ NOMINATIM = "https://nominatim.openstreetmap.org/search"
 OVERPASS = (
     "https://overpass-api.de/api/interpreter",
     "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+    "https://overpass.private.coffee/api/interpreter",
 )
 DESTINATION = re.compile(r"^osm-(-?\d+)_(-?\d+)$")
 OSM_PLACE = re.compile(r"^osm-(node|way|relation)-(\d{1,15})$")

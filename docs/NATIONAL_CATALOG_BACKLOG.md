@@ -2,7 +2,7 @@
 
 ## Status implementasi
 
-Planner kini menerima daerah Indonesia yang dicari pengguna. Snapshot OpenStreetMap untuk Medan, Bandung, Denpasar, Banjarmasin, Makassar, Jayapura, Jakarta, Padang, Labuan Bajo, Bali, dan area terbatas Raja Ampat tersedia lokal. Sepuluh area lintas pulau lulus smoke test perjalanan satu serta dua hari. Daerah lain dicari melalui Nominatim dan Overpass saat diminta; kegagalan sumber dinyatakan secara eksplisit. Katalog Yogyakarta tetap terpisah dan dikurasi. Data contoh di `frontend/src/data/mockData.js` tidak dipakai sebagai tarif, jam buka, popularitas, atau hasil rute faktual. Harga dan jam buka dari snapshot nasional tetap `null` kecuali pengguna mengisi estimasinya.
+Planner kini menerima daerah Indonesia yang dicari pengguna. Snapshot OpenStreetMap untuk Medan, Bandung, Denpasar, Banjarmasin, Makassar, Jayapura, Jakarta, Padang, Labuan Bajo, Bali, Surabaya, dan area terbatas Raja Ampat tersedia lokal. Sebelas area lintas pulau lulus smoke test perjalanan satu serta dua hari. Daerah lain dicari melalui Nominatim dan Overpass saat diminta; kegagalan sumber dinyatakan secara eksplisit. Katalog Yogyakarta tetap terpisah dan dikurasi. Data contoh di `frontend/src/data/mockData.js` tidak dipakai sebagai tarif, jam buka, popularitas, atau hasil rute faktual. Harga dan jam buka dari snapshot nasional tetap `null` kecuali pengguna mengisi estimasinya.
 
 ## Pekerjaan FE, data, dan BE berikutnya
 

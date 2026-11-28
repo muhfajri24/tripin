@@ -24,6 +24,7 @@ AREAS = [
     "Padang",
     "Labuan Bajo",
     "Bali",
+    "Surabaya",
 ]
 
 

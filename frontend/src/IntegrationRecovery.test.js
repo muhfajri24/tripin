@@ -100,6 +100,30 @@ test('hotel search result can be selected to unlock a two day trip', async () =>
   expect(container.textContent).toContain('Hotel dipilih: Hotel Baru Bandung');
   expect(button('Susun sekarang').disabled).toBe(false);
 });
+test('unmatched hotel text still offers area hotels to continue', async () => {
+  const basePlaces = fixture().places;
+  const destinationId = 'osm--726000_11275000';
+  const hotel = {...basePlaces[0], id:'osm-node-88', name:'Hotel Tunjungan',
+    destinationId, kind:'lodging', categories:['lodging'],
+    coordinates:{lat:-7.26,lng:112.75}};
+  const attraction = {...basePlaces[0], id:'surabaya-museum', destinationId,
+    coordinates:{lat:-7.265,lng:112.75}};
+  global.fetch = jest.fn()
+    .mockResolvedValueOnce({ok:true,json:async()=>({places:basePlaces})})
+    .mockResolvedValueOnce({ok:true,json:async()=>({draft:{unsupportedDestination:true,days:2,budgetAmountIdr:2000000,budgetBasis:'person',interests:[],periodPreferences:[]},missingFields:[],ambiguities:[],parserSource:'deterministic-id-v1'})})
+    .mockResolvedValueOnce({ok:true,json:async()=>({destinationId,name:'Surabaya',center:{lat:-7.26,lng:112.75},places:[attraction,hotel]})});
+  await render(<Create />, {pathname:'/create',state:{destination:'Surabaya'}});
+  for (let i = 0; i < 3; i += 1) {
+    const nextBtn = [...container.querySelectorAll('button')].filter((b) => b.textContent.includes('Lanjut')).pop();
+    await act(async () => Simulate.click(nextBtn));
+  }
+  await act(async () => Simulate.click(container.querySelector('button[aria-label="Kirim permintaan"]')));
+  await act(async () => Simulate.click(button('Cari daerah')));
+  await act(async () => Simulate.change(container.querySelector('[aria-label="Cari nama hotel"]'), {target:{value:'hotel surabaya jaya'}}));
+  expect(container.textContent).toContain('Nama itu belum cocok');
+  await act(async () => Simulate.click(button('Hotel Tunjungan')));
+  expect(button('Susun sekarang').disabled).toBe(false);
+});
 test('result uses latest stored revision over stale navigation state', async () => {
   const old = fixture();
   saveTrip({...old,revision:7});

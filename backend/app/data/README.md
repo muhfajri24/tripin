@@ -67,7 +67,7 @@ Kelengkapan: identity/category 9/9, alamat 5/9, koordinat 7/9, jam 3/9, harga 1/
 
 `national-osm-snapshot.json` contains a small, one-time extract for Medan,
 Bandung, Denpasar, Banjarmasin, Makassar, Jayapura, Jakarta, Padang,
-Labuan Bajo, Bali and a limited Raja Ampat area, collected on 2026-11-27.
+Labuan Bajo, Bali, Surabaya and a limited Raja Ampat area, collected on 2026-11-27.
 Source: © OpenStreetMap contributors, [Open Database License (ODbL)](https://www.openstreetmap.org/copyright).
 Place names and coordinates are approximate and may change. This extract does
 not assert current opening hours, ticket prices, room rates or popularity.

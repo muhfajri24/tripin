@@ -744,6 +744,8 @@ export default function CreateItineraryPage() {
   const matchingHotels = lodgingPlaces.filter((p) =>
     p.name.toLowerCase().includes(hotelQuery.trim().toLowerCase()) || p.id === form.lodging,
   );
+  const suggestedHotels = matchingHotels.length || hotelResults.length
+    ? [] : lodgingPlaces.slice(0, 12);
 
   useEffect(() => {
     const query = hotelQuery.trim();
@@ -1677,8 +1679,10 @@ export default function CreateItineraryPage() {
                           placeholder="Cari nama hotel" aria-label="Cari nama hotel"
                           className="w-full rounded-xl bg-[#FBF5E9] text-[#0A1A1C] px-3 py-2 text-sm" />
                         <p className="text-xs text-[#FBF5E9]/75">Ketik nama, lalu pilih hotel dari hasil di bawah. Pencarian mencakup area hingga 30 km.</p>
+                        {suggestedHotels.length > 0 && hotelQuery.trim() &&
+                          <p className="text-xs text-[#FBF5E9]/85">Nama itu belum cocok. Pilih salah satu hotel yang tersedia di {destinationName}:</p>}
                         <div className="max-h-56 overflow-y-auto flex flex-wrap gap-2" aria-label="Pilihan hotel">
-                          {Array.from(new Map([...matchingHotels, ...hotelResults].map((p) => [p.id, p])).values()).slice(0, 20).map((p) => (
+                          {Array.from(new Map([...matchingHotels, ...hotelResults, ...suggestedHotels].map((p) => [p.id, p])).values()).slice(0, 20).map((p) => (
                             <button
                               key={p.id}
                               type="button"
@@ -1704,7 +1708,7 @@ export default function CreateItineraryPage() {
                         {selectedHotel && <p className="text-xs font-bold text-[#F4A261]" role="status">Hotel dipilih: {selectedHotel.name}. Kamu bisa melanjutkan.</p>}
                         {hotelSearching && <p className="text-xs text-[#FBF5E9]/75" role="status">Mencari hotel di area tujuan...</p>}
                         {hotelSearchError && <p className="text-xs text-[#FBF5E9]/75" role="alert">{hotelSearchError}</p>}
-                        {!hotelSearching && hotelQuery.trim().length >= 3 && !matchingHotels.length && !hotelResults.length && !hotelSearchError && <p className="text-xs text-[#FBF5E9]/75">Belum ada hotel yang cocok. Coba nama lain atau daerah terdekat.</p>}
+                        {!hotelSearching && hotelQuery.trim().length >= 3 && !matchingHotels.length && !hotelResults.length && !suggestedHotels.length && !hotelSearchError && <p className="text-xs text-[#FBF5E9]/75">Belum ada hotel yang cocok. Coba nama lain atau daerah terdekat.</p>}
                       </div>
                     )}
 

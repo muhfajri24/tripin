@@ -42,6 +42,8 @@ def main():
         except NationalCatalogError as exc:
             failures.append(area)
             print(f"{area}: {exc}", flush=True)
+    if len(failures) == len(args.areas):
+        return 1
     TARGET.write_text(
         json.dumps(
             {

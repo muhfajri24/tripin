@@ -2,7 +2,8 @@ const { chromium } = require('./browser/node_modules/playwright-core');
 const fs = require('fs');
 const assert = require('assert');
 
-const base = process.env.TRIPIN_QA_BASE_URL || 'http://127.0.0.1:8020';
+const base = process.env.TRIPIN_QA_BASE_URL || 'http://127.0.0.1:8015';
+const area = process.env.TRIPIN_QA_AREA || 'Surabaya';
 const output = 'qa/release/national-browser.json';
 
 (async () => {
@@ -12,7 +13,7 @@ const output = 'qa/release/national-browser.json';
   });
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const page = await context.newPage();
-  const report = { base, viewport: '390x844', steps: [], pageErrors: [] };
+  const report = { base, area, viewport: '390x844', steps: [], pageErrors: [] };
   page.on('pageerror', (error) => report.pageErrors.push(String(error)));
   async function step(name, action) {
     try {
@@ -29,14 +30,19 @@ const output = 'qa/release/national-browser.json';
       for (let i = 0; i < 3; i += 1) await page.getByRole('button', { name: 'Lanjut' }).click();
       await page.getByRole('heading', { name: 'Halo, mau liburan ke mana?' }).waitFor();
     });
-    await step('resolve Bandung and choose hotel', async () => {
-      await page.getByRole('textbox', { name: 'Ceritakan rencana perjalananmu' }).fill('2 hari di Bandung, 2 orang, wisata budaya dan kuliner, budget Rp500.000 per orang');
+    await step(`resolve ${area} and choose hotel`, async () => {
+      await page.getByRole('textbox', { name: 'Ceritakan rencana perjalananmu' }).fill(`2 hari di ${area}, 2 orang, wisata budaya dan kuliner, budget Rp2.000.000 per orang`);
       await page.getByRole('button', { name: 'Kirim permintaan' }).click();
       await page.getByLabel('Mau ke daerah mana?').waitFor();
       await page.getByRole('button', { name: 'Cari daerah' }).click();
-      await page.getByText(/Bandung · \d+ tempat ditemukan/).waitFor();
-      const hotel = page.locator('input[aria-label="Cari nama hotel"]').locator('xpath=following-sibling::div').locator('button').first();
+      await page.getByText(new RegExp(`${area} · \\d+ tempat ditemukan`)).waitFor();
+      if (area === 'Surabaya') {
+        await page.getByRole('searchbox', { name: 'Cari nama hotel' }).fill('hotel surabaya jaya');
+        await page.getByText(/Nama itu belum cocok/).waitFor();
+      }
+      const hotel = page.locator('[aria-label="Pilihan hotel"] button').first();
       await hotel.click();
+      await page.getByText(/Hotel dipilih:/).waitFor();
       await page.getByText('Lengkapi perkiraan harga lainnya').click();
       await page.getByLabel('Kamar per malam (Rp)').fill('200000');
       assert.strictEqual(await page.getByRole('button', { name: 'Susun sekarang' }).isEnabled(), true);
@@ -48,10 +54,10 @@ const output = 'qa/release/national-browser.json';
       trip = (await (await response).json()).itinerary;
       assert(trip);
       assert(trip.request.destinationId.startsWith('osm-'));
-      assert.strictEqual(trip.request.destinationName, 'Bandung');
+      assert.strictEqual(trip.request.destinationName, area);
       assert.strictEqual(trip.request.lodging.placeId.startsWith('osm-'), true);
       assert.strictEqual(trip.days[0].startAnchor.lat, trip.days[0].endAnchor.lat);
-      await page.getByText(/Perjalanan 2 hari di Bandung/).waitFor();
+      await page.getByText(new RegExp(`Perjalanan 2 hari di ${area}`)).waitFor();
     });
     await step('save and reload', async () => {
       await page.getByRole('button', { name: 'Simpan itinerary' }).click();

@@ -1,5 +1,6 @@
 {
-  "base": "http://127.0.0.1:8020",
+  "base": "http://127.0.0.1:8015",
+  "area": "Surabaya",
   "viewport": "390x844",
   "steps": [
     {
@@ -7,7 +8,7 @@
       "status": "passed"
     },
     {
-      "name": "resolve Bandung and choose hotel",
+      "name": "resolve Surabaya and choose hotel",
       "status": "passed"
     },
     {

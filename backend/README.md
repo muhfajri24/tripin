@@ -25,7 +25,7 @@ Dependencies did not change from foundation. Full tested dependency snapshot is 
   `{places,datasetVersion,warnings}`; query/kind/routable optional.
 - GET `/api/v1/places/{id}`: canonical Place or 404.
 - GET `/api/v1/destinations/lookup?q=Bandung`: resolves a user-entered Indonesian
-  area and returns its destination ID, center and route candidates. Eleven area
+  area and returns its destination ID, center and route candidates. Twelve area
   snapshots are bundled for offline use. Other areas use Nominatim and Overpass
   on demand; provider failure returns 503 rather than substituting another city.
 - GET `/api/v1/demo/places?area=Depok&kind=attraction&q=Situ`: separate

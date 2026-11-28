@@ -100,6 +100,16 @@
       "conflicts": [],
       "overnightPlanFound": true,
       "overnightConflicts": []
+    },
+    {
+      "area": "Surabaya",
+      "destinationId": "osm--724628_11273777",
+      "places": 208,
+      "hotels": 40,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
     }
   ]
 }

@@ -1,6 +1,6 @@
 ﻿# TRIPIN — Guest adaptive travel planner
 
-Guest-access planner for Indonesian cities and regions, 1–3 days, driving. Eleven areas
+Guest-access planner for Indonesian cities and regions, 1–3 days, driving. Twelve areas
 across the archipelago have offline OpenStreetMap snapshots; other Indonesian areas
 are queried on demand. No account, booking, paid AI, Google Places or Google Routes key
 is required. Estimates and unknown metadata are explicit.
@@ -65,7 +65,7 @@ cd backend
 
 The curated Yogyakarta catalog remains available. National snapshots cover Medan,
 Bandung, Denpasar, Banjarmasin, Makassar, Jayapura, Jakarta, Padang, Labuan Bajo,
-Bali, and a limited Raja Ampat area. Other areas need a reachable
+Bali, Surabaya, and a limited Raja Ampat area. Other areas need a reachable
 Nominatim and Overpass service; errors are explicit and no fictional fallback is used.
 OpenStreetMap names/coordinates are approximate and the national catalog has unknown
 hours, entry prices and room rates. Hotel choice is a route anchor, not a visit stop.
