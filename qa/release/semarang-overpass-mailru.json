@@ -1,0 +1,3426 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.4 2390de5a",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-28T04:23:30Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 3916309676,
+  "lat": -7.0563009,
+  "lon": 110.4872579,
+  "tags": {
+    "name": "Brown Canyon Semarang",
+    "tourism": "viewpoint"
+  }
+},
+{
+  "type": "node",
+  "id": 4269894993,
+  "lat": -6.9789793,
+  "lon": 110.4720671,
+  "tags": {
+    "name": "Lek ulin",
+    "tourism": "artwork"
+  }
+},
+{
+  "type": "node",
+  "id": 4712878890,
+  "lat": -6.9790847,
+  "lon": 110.3686640,
+  "tags": {
+    "name": "Graha Fatma",
+    "name:ar": "منزل عبدالرزاق",
+    "tourism": "artwork"
+  }
+},
+{
+  "type": "node",
+  "id": 5025494121,
+  "lat": -6.9877873,
+  "lon": 110.4084912,
+  "tags": {
+    "name": "Kampung Pelangi (rainbow village)",
+    "tourism": "artwork"
+  }
+},
+{
+  "type": "node",
+  "id": 5287015521,
+  "lat": -7.0092891,
+  "lon": 110.4357346,
+  "tags": {
+    "artwork_type": "statue",
+    "name": "ganesha Statue",
+    "tourism": "artwork"
+  }
+},
+{
+  "type": "node",
+  "id": 5291233168,
+  "lat": -7.0112154,
+  "lon": 110.4397290,
+  "tags": {
+    "artwork_type": "fountain",
+    "name": "Kolam ikan fountain",
+    "tourism": "artwork"
+  }
+},
+{
+  "type": "node",
+  "id": 9005360227,
+  "lat": -6.9837922,
+  "lon": 110.4101967,
+  "tags": {
+    "description": "Sächsische Maschinenfabrik vormals Richard Hartmann, Chemnitz",
+    "historic": "locomotive",
+    "locomotive:type": "steam",
+    "name": "C 2301",
+    "operator": "EVP Conservation and Heritage",
+    "start_date": "1907",
+    "tourism": "attraction",
+    "wikimedia_commons": "File:Locomotive and Teak Table in front of Lawang Sewu building, Semarang.jpg"
+  }
+},
+{
+  "type": "node",
+  "id": 9503036840,
+  "lat": -6.9813679,
+  "lon": 110.3612477,
+  "tags": {
+    "access": "yes",
+    "addr:city": "Semarang",
+    "addr:postcode": "50151",
+    "addr:street": "Jalan Stasiun Jerakah",
+    "capacity": "100",
+    "name": "Pemancingan Merah Putih",
+    "operator": "Rendra Gunawan",
+    "tourism": "picnic_site"
+  }
+},
+{
+  "type": "node",
+  "id": 11353464818,
+  "lat": -7.1329798,
+  "lon": 110.4092671,
+  "tags": {
+    "name": "Studio Patung Ungaran",
+    "name:id": "Studio Patung Ungaran",
+    "tourism": "gallery"
+  }
+},
+{
+  "type": "node",
+  "id": 11353464819,
+  "lat": -7.1328763,
+  "lon": 110.4092683,
+  "tags": {
+    "name": "Sanggar Seni Gedong Songo",
+    "name:id": "Sanggar Tosan Aji",
+    "tourism": "gallery"
+  }
+},
+{
+  "type": "node",
+  "id": 11353467712,
+  "lat": -7.0068523,
+  "lon": 110.4544489,
+  "tags": {
+    "name": "Studio Patung & Taman",
+    "name:id": "Studio Patung & Taman",
+    "tourism": "gallery"
+  }
+},
+{
+  "type": "node",
+  "id": 11693871729,
+  "lat": -6.8543125,
+  "lon": 110.5186432,
+  "tags": {
+    "bicycle": "yes",
+    "foot": "yes",
+    "horse": "no",
+    "material": "wood",
+    "motor_vehicle": "no",
+    "name": "Glagah Wangi Beach",
+    "tourism": "attraction",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 12078800734,
+  "lat": -6.9691129,
+  "lon": 110.4266000,
+  "tags": {
+    "name": "Rumah Akar Kota Lama Semarang",
+    "tourism": "attraction"
+  }
+},
+{
+  "type": "node",
+  "id": 13297073197,
+  "lat": -7.0487806,
+  "lon": 110.3897832,
+  "tags": {
+    "artwork_type": "statue",
+    "material": "bronze",
+    "name": "Garuda",
+    "tourism": "artwork"
+  }
+},
+{
+  "type": "node",
+  "id": 13297073198,
+  "lat": -7.0496726,
+  "lon": 110.3910465,
+  "tags": {
+    "artwork_type": "statue",
+    "name": "Tugu Konservasi",
+    "tourism": "artwork"
+  }
+},
+{
+  "type": "node",
+  "id": 13297073199,
+  "lat": -7.0505536,
+  "lon": 110.3981726,
+  "tags": {
+    "artwork_type": "statue",
+    "name": "Themis",
+    "tourism": "artwork"
+  }
+},
+{
+  "type": "node",
+  "id": 13410386660,
+  "lat": -7.1274474,
+  "lon": 110.4032719,
+  "tags": {
+    "artwork_type": "statue",
+    "name": "Ungaran Public Square",
+    "tourism": "artwork"
+  }
+},
+{
+  "type": "way",
+  "id": 112968785,
+  "center": {
+    "lat": -6.9847963,
+    "lon": 110.4087995
+  },
+  "nodes": [
+    1282668225,
+    1282668404,
+    1282668295,
+    1282668380,
+    1282668588,
+    1282668579,
+    1282668395,
+    1282668393,
+    1282668682,
+    1282668689,
+    1282668303,
+    1282668565,
+    1282668659,
+    1282668655,
+    1282668124,
+    1282668535,
+    1282668674,
+    1282668471,
+    1282668459,
+    1282668650,
+    1282668225
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:street": "Jalan MGR. Sugiopranoto",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "Museum Mandala Bhakti",
+    "tourism": "museum",
+    "website": "http://semarang.yogyes.com/id/places/129/",
+    "wikipedia": "en:Museum Mandala Bhakti"
+  }
+},
+{
+  "type": "way",
+  "id": 299823770,
+  "center": {
+    "lat": -7.0022030,
+    "lon": 110.4237762
+  },
+  "nodes": [
+    3039097549,
+    3488019562,
+    3488019922,
+    3039097550,
+    5460816660,
+    5460816661,
+    5460816662,
+    5460816663,
+    5460816664,
+    5460816665,
+    5460816666,
+    5460816667,
+    3039097549
+  ],
+  "tags": {
+    "name": "Wonderia",
+    "tourism": "theme_park"
+  }
+},
+{
+  "type": "way",
+  "id": 302600688,
+  "center": {
+    "lat": -6.9858903,
+    "lon": 110.3840845
+  },
+  "nodes": [
+    3068495266,
+    5512865909,
+    5512865910,
+    3068495267,
+    3068495268,
+    5512865908,
+    3068495266
+  ],
+  "tags": {
+    "name": "Ronggo Warsito Museum",
+    "tourism": "museum"
+  }
+},
+{
+  "type": "way",
+  "id": 340551460,
+  "center": {
+    "lat": -6.9674667,
+    "lon": 110.4281951
+  },
+  "nodes": [
+    3477889485,
+    3477902992,
+    3477902991,
+    3477902990,
+    3477902989,
+    3477889492,
+    3477889490,
+    3477889480,
+    5058594607,
+    3477889477,
+    11849799722,
+    3477889485
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Galeri Seni Kontemporer Semarang",
+    "tourism": "gallery"
+  }
+},
+{
+  "type": "way",
+  "id": 343507725,
+  "center": {
+    "lat": -6.9684223,
+    "lon": 110.4262290
+  },
+  "nodes": [
+    5488034433,
+    3503429764,
+    3503429780,
+    5488034432,
+    5488034433
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "3D Trick Art Museum",
+    "tourism": "gallery"
+  }
+},
+{
+  "type": "way",
+  "id": 439246632,
+  "center": {
+    "lat": -6.9838724,
+    "lon": 110.4109110
+  },
+  "nodes": [
+    4368789177,
+    4368789178,
+    4368789179,
+    4368789180,
+    5071538276,
+    12452582545,
+    4368789181,
+    5071538273,
+    4368789182,
+    4368789183,
+    4368789184,
+    4368789177
+  ],
+  "tags": {
+    "name": "Lawang Sewu",
+    "name:zh": "千重门",
+    "tourism": "museum",
+    "wikidata": "Q1704755",
+    "wikipedia": "id:Lawang Sewu"
+  }
+},
+{
+  "type": "way",
+  "id": 567225501,
+  "center": {
+    "lat": -7.0036375,
+    "lon": 110.4244584
+  },
+  "nodes": [
+    5460827980,
+    5460827979,
+    5460827978,
+    5460827977,
+    5460827976,
+    5460827975,
+    5460827974,
+    5460827973,
+    5460827972,
+    5460827971,
+    5460827970,
+    5460827969,
+    5460827968,
+    5460827980
+  ],
+  "tags": {
+    "name": "Taman Budaya Raden Saleh",
+    "tourism": "artwork"
+  }
+},
+{
+  "type": "way",
+  "id": 570887792,
+  "center": {
+    "lat": -7.0067610,
+    "lon": 110.4544932
+  },
+  "nodes": [
+    5488056006,
+    5488056002,
+    5488056001,
+    5488056005,
+    5488056006
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Studio Patung dan Taman",
+    "name:id": "Studio Patung & Taman",
+    "tourism": "gallery"
+  }
+},
+{
+  "type": "way",
+  "id": 572968702,
+  "center": {
+    "lat": -6.9959261,
+    "lon": 110.3983028
+  },
+  "nodes": [
+    5504330469,
+    5504330468,
+    5504330467,
+    5504330466,
+    12051888583,
+    5504330465,
+    5504330464,
+    5504330463,
+    5504330462,
+    5504330461,
+    5504330460,
+    5504330459,
+    5504330458,
+    5504330457,
+    5504330456,
+    5504330455,
+    5504330454,
+    5504330453,
+    5504330452,
+    5504330451,
+    5504330450,
+    5504330449,
+    5504330448,
+    5504330447,
+    5504330446,
+    5504330445,
+    5504330444,
+    5504330443,
+    5504330442,
+    5504330441,
+    5504330440,
+    5504330439,
+    5504330438,
+    5504330437,
+    5504330436,
+    5504330435,
+    5504330434,
+    5504330433,
+    5504330432,
+    5504330431,
+    5504330469
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Pamularsih",
+    "alt_name": "Sam Poo Kong Vihara Buddhagaya",
+    "alt_name:zh": "三宝洞;三保宫",
+    "amenity": "place_of_worship",
+    "instagram": "https://www.instagram.com/wisata.sampookong/",
+    "landuse": "religious",
+    "name": "Kelenteng Sam Poo Kong",
+    "name:id": "Kelenteng Sam Poo Kong",
+    "name:zh": "三保洞",
+    "religion": "buddhist;muslim",
+    "source": "HOT_InAWARESurvey_2018",
+    "tourism": "attraction",
+    "website": "https://linktr.ee/sampookong",
+    "wikidata": "Q2128689",
+    "wikipedia": "id:Kelenteng Sam Poo Kong"
+  }
+},
+{
+  "type": "way",
+  "id": 595284149,
+  "center": {
+    "lat": -6.9703676,
+    "lon": 110.2884093
+  },
+  "nodes": [
+    5674028581,
+    5674028580,
+    5674028579,
+    5674028578,
+    5674028577,
+    5674028576,
+    5674028575,
+    5674028574,
+    9284242391,
+    5674028573,
+    9284242390,
+    5674028572,
+    5674028571,
+    5674028570,
+    5674028569,
+    5674028568,
+    5674028567,
+    5674028566,
+    5674028565,
+    5674028564,
+    5714944999,
+    5674028560,
+    5674028559,
+    5674028558,
+    5674028557,
+    5674028581
+  ],
+  "tags": {
+    "addr:full": "Jalan Jend. Urip Sumoharjo",
+    "name": "Taman Margasatwa Semarang",
+    "tourism": "zoo"
+  }
+},
+{
+  "type": "way",
+  "id": 1123856977,
+  "center": {
+    "lat": -6.9694441,
+    "lon": 110.4308266
+  },
+  "nodes": [
+    10277772314,
+    10277772315,
+    10277772316,
+    10277772317,
+    10277772319,
+    10277772321,
+    10277772322,
+    10277772323,
+    10277772324,
+    10277772314
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:street": "Jalan MT. Haryono",
+    "building": "museum",
+    "building:levels": "1",
+    "name": "Museum Kota Lama",
+    "operator": "Dinas Pendidikan dan Kebudayaan Kota Semarang",
+    "operator:type": "government_facility-public",
+    "tactile_paving": "yes",
+    "tourism": "museum",
+    "wheelchair": "yes",
+    "wikidata": "Q115784017"
+  }
+},
+{
+  "type": "way",
+  "id": 1123856978,
+  "center": {
+    "lat": -6.9847396,
+    "lon": 110.4466383
+  },
+  "nodes": [
+    10277772328,
+    10277772329,
+    10277772330,
+    10277772331,
+    10277772328
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:street": "Jalan Gajah Raya",
+    "building": "yes",
+    "building:levels": "1",
+    "museum": "history",
+    "name": "Museum Pusat Perkembangan Islam Jawa Tengah",
+    "opening_hours": "Mo-Su 08:30-14:30",
+    "operator": "Takmir Masjid Agung Jawa Tengah",
+    "operator:type": "religious",
+    "tactile_paving": "yes",
+    "tourism": "museum",
+    "wheelchair": "yes",
+    "wikidata": "Q19746480"
+  }
+},
+{
+  "type": "way",
+  "id": 1224012784,
+  "center": {
+    "lat": -7.1329391,
+    "lon": 110.4091911
+  },
+  "nodes": [
+    11353415277,
+    11353415278,
+    11353415279,
+    11353415280,
+    11353415277
+  ],
+  "tags": {
+    "building": "yes",
+    "name": "Studio Patung Ungaran",
+    "tourism": "gallery"
+  }
+},
+{
+  "type": "way",
+  "id": 1224012785,
+  "center": {
+    "lat": -7.1328161,
+    "lon": 110.4091876
+  },
+  "nodes": [
+    11353415281,
+    11353415282,
+    11353415283,
+    11353415284,
+    11353415281
+  ],
+  "tags": {
+    "addr:city": "Ungaran Timur",
+    "addr:street": "Jl A Yani No 36 Ungaran",
+    "building": "yes",
+    "name": "Sanggar Seni Gedong Songo",
+    "tourism": "gallery"
+  }
+},
+{
+  "type": "way",
+  "id": 1304303525,
+  "center": {
+    "lat": -6.9747414,
+    "lon": 110.4266970
+  },
+  "nodes": [
+    12078824217,
+    12078824218,
+    12078824219,
+    5745430321,
+    12078824220,
+    12078824221,
+    12078824222,
+    12078824223,
+    12078824224,
+    12078824225,
+    12078824226,
+    12078824227,
+    12078824228,
+    12078824229,
+    12078824230,
+    12078824217
+  ],
+  "tags": {
+    "landuse": "retail",
+    "name": "Pasar Malam Semawis",
+    "name:en": "Night Market Semawis",
+    "opening_hours": "Fr-Su 17:00-00:00",
+    "tourism": "attraction",
+    "wikidata": "Q12503477",
+    "wikipedia": "id:Pasar Semawis"
+  }
+},
+{
+  "type": "way",
+  "id": 1355198057,
+  "center": {
+    "lat": -7.0287873,
+    "lon": 110.3774832
+  },
+  "nodes": [
+    12542106391,
+    12542106390,
+    12542106389,
+    12542106388,
+    12542106387,
+    12542106386,
+    12542106385,
+    12542106384,
+    12542106383,
+    12542106382,
+    12542106381,
+    12542106380,
+    12542106379,
+    12542106391
+  ],
+  "tags": {
+    "name": "Kampung Jawi",
+    "tourism": "theme_park"
+  }
+},
+{
+  "type": "node",
+  "id": 1070159002,
+  "lat": -7.0102780,
+  "lon": 110.3650000,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Bonggol",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070159086,
+  "lat": -7.1200053,
+  "lon": 110.3545376,
+  "tags": {
+    "gns:dsg": "MT",
+    "name": "Gunung Sangku",
+    "natural": "peak",
+    "note": "Modify date: 2008-09-08",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070160071,
+  "lat": -7.1247220,
+  "lon": 110.4988890,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Ngranggok",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070160150,
+  "lat": -7.0408330,
+  "lon": 110.4269440,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Gombal",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070160593,
+  "lat": -7.0740988,
+  "lon": 110.3581245,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Siwakul",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070162999,
+  "lat": -7.1497220,
+  "lon": 110.4777780,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Sikepel",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070163268,
+  "lat": -7.1168868,
+  "lon": 110.3644030,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Jodi",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070163469,
+  "lat": -7.1164031,
+  "lon": 110.3467197,
+  "tags": {
+    "gns:dsg": "MT",
+    "name": "Gunung Suringgono",
+    "natural": "peak",
+    "note": "Modify date: 2008-09-08",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070163845,
+  "lat": -7.1119440,
+  "lon": 110.4794440,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Kepak",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070165156,
+  "lat": -7.1118943,
+  "lon": 110.3457141,
+  "tags": {
+    "gns:dsg": "MT",
+    "name": "Gunung Londoh",
+    "natural": "peak",
+    "note": "Modify date: 2008-09-08",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070166159,
+  "lat": -7.1427780,
+  "lon": 110.4830560,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Lemahrata",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070167831,
+  "lat": -7.0334578,
+  "lon": 110.4069950,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Sigombyar",
+    "natural": "peak",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070169323,
+  "lat": -7.1005560,
+  "lon": 110.4844440,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Magerjenu",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070170861,
+  "lat": -7.0566670,
+  "lon": 110.2750000,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Cerme",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070172832,
+  "lat": -7.0324521,
+  "lon": 110.3868225,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Trankil",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070172848,
+  "lat": -7.0016670,
+  "lon": 110.2638890,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Wagirblimbing",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070172979,
+  "lat": -7.1300000,
+  "lon": 110.5133330,
+  "tags": {
+    "gns:dsg": "MT",
+    "name": "Gunung Penawangan",
+    "natural": "peak",
+    "note": "Modify date: 2007-02-24",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070173163,
+  "lat": -7.1455560,
+  "lon": 110.4891670,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Magersirapan",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070174125,
+  "lat": -7.1050000,
+  "lon": 110.4005560,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Centong",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070175604,
+  "lat": -7.0258330,
+  "lon": 110.3616670,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Persapen",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070175957,
+  "lat": -7.1027780,
+  "lon": 110.5094440,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Giriksuma",
+    "natural": "peak",
+    "note": "Modify date: 2003-11-04",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070176464,
+  "lat": -7.1297220,
+  "lon": 110.4988890,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Ngampok",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070176535,
+  "lat": -7.0876000,
+  "lon": 110.4512000,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Jabungan",
+    "natural": "peak",
+    "note": "Modify date: 2008-09-08",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070179707,
+  "lat": -7.0517043,
+  "lon": 110.3752954,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Bubak",
+    "natural": "peak",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070181447,
+  "lat": -7.0979000,
+  "lon": 110.4554000,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Sewakul",
+    "natural": "peak",
+    "note": "Modify date: 2008-09-08",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070181722,
+  "lat": -7.0944000,
+  "lon": 110.4558000,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Watuulo",
+    "natural": "peak",
+    "note": "Modify date: 2008-09-08",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070185222,
+  "lat": -7.1147354,
+  "lon": 110.3336326,
+  "tags": {
+    "gns:dsg": "MT",
+    "name": "Gunung Munding",
+    "natural": "peak",
+    "note": "Modify date: 2008-09-08",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070186135,
+  "lat": -7.1430294,
+  "lon": 110.4301653,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Pabongan",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070186646,
+  "lat": -7.0788890,
+  "lon": 110.4030560,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Watugajah",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070186923,
+  "lat": -7.0831000,
+  "lon": 110.3801000,
+  "tags": {
+    "gns:dsg": "MT",
+    "name": "Gunung Turun",
+    "natural": "peak",
+    "note": "Modify date: 2008-09-08",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070187187,
+  "lat": -7.0231693,
+  "lon": 110.4328627,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Sureng",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070187530,
+  "lat": -7.0833330,
+  "lon": 110.4794440,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Guwagogor",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070187589,
+  "lat": -7.1522220,
+  "lon": 110.4877780,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Lemahbutak",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070190886,
+  "lat": -7.0975000,
+  "lon": 110.3908330,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Kudunglumbu",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070193210,
+  "lat": -7.0872220,
+  "lon": 110.3452780,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Cino",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070194064,
+  "lat": -7.0958330,
+  "lon": 110.4030560,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Delik",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070196384,
+  "lat": -7.1159000,
+  "lon": 110.4065000,
+  "tags": {
+    "gns:dsg": "MT",
+    "name": "Gunung Siwakul",
+    "natural": "peak",
+    "note": "Modify date: 2008-09-08",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070196415,
+  "lat": -7.0333330,
+  "lon": 110.3577780,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Krincing",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 1070196785,
+  "lat": -7.0594440,
+  "lon": 110.4030560,
+  "tags": {
+    "gns:dsg": "HLL",
+    "name": "Gunung Selekor",
+    "natural": "peak",
+    "note": "Modify date: 2002-09-18",
+    "source": "NGA-GNS"
+  }
+},
+{
+  "type": "node",
+  "id": 5614906732,
+  "lat": -7.0372063,
+  "lon": 110.3475140,
+  "tags": {
+    "access": "customers",
+    "fee": "yes",
+    "name": "Gua Kreo",
+    "natural": "cave_entrance"
+  }
+},
+{
+  "type": "node",
+  "id": 257882831,
+  "lat": -6.9843233,
+  "lon": 110.4093328,
+  "tags": {
+    "historic": "monument",
+    "name": "Tugu Muda"
+  }
+},
+{
+  "type": "node",
+  "id": 3409833893,
+  "lat": -7.1291979,
+  "lon": 110.4047267,
+  "tags": {
+    "access": "yes",
+    "historic": "fort",
+    "name": "Benteng Fort Willem II Ungaran"
+  }
+},
+{
+  "type": "node",
+  "id": 5409435143,
+  "lat": -6.9811641,
+  "lon": 110.4027949,
+  "tags": {
+    "historic": "memorial",
+    "name": "Tugu Adipura"
+  }
+},
+{
+  "type": "node",
+  "id": 12198069474,
+  "lat": -7.1398387,
+  "lon": 110.4139629,
+  "tags": {
+    "historic": "archaeological_site",
+    "name": "Candi Kedung Jumbleng"
+  }
+},
+{
+  "type": "node",
+  "id": 12551630301,
+  "lat": -6.9802289,
+  "lon": 110.3492707,
+  "tags": {
+    "historic": "archaeological_site",
+    "name": "Candi Tugu"
+  }
+},
+{
+  "type": "node",
+  "id": 13954882584,
+  "lat": -6.9693098,
+  "lon": 110.4243806,
+  "tags": {
+    "historic": "memorial",
+    "name": "Tugu Nol Jawa Tengah"
+  }
+},
+{
+  "type": "way",
+  "id": 112669877,
+  "center": {
+    "lat": -6.9969220,
+    "lon": 110.4208076
+  },
+  "nodes": [
+    5359968908,
+    1280172782,
+    1280172786,
+    1280172788,
+    5359968908
+  ],
+  "tags": {
+    "historic": "memorial",
+    "landuse": "cemetery",
+    "name": "Taman Makam Pahlawan Giri Tunggal"
+  }
+},
+{
+  "type": "way",
+  "id": 568079452,
+  "center": {
+    "lat": -6.9691966,
+    "lon": 110.4270274
+  },
+  "nodes": [
+    5466271717,
+    5466271714,
+    12346053489,
+    5466271715,
+    5466271716,
+    5466271717
+  ],
+  "tags": {
+    "building": "ruin",
+    "building:levels": "1",
+    "historic": "ruins",
+    "name": "Rumah Akar"
+  }
+},
+{
+  "type": "way",
+  "id": 1092032925,
+  "center": {
+    "lat": -7.0171648,
+    "lon": 110.3878615
+  },
+  "nodes": [
+    10001347333,
+    10001347334,
+    10001347335,
+    10001347336,
+    10001347337,
+    10001347338,
+    10001347333
+  ],
+  "tags": {
+    "historic": "memorial",
+    "memorial": "statue",
+    "name": "tugu suharto"
+  }
+},
+{
+  "type": "way",
+  "id": 1224012430,
+  "center": {
+    "lat": -7.0268331,
+    "lon": 110.4086232
+  },
+  "nodes": [
+    11353408912,
+    13282301911,
+    13282301914,
+    13282301912,
+    11353408913,
+    13282301913,
+    11353408911
+  ],
+  "tags": {
+    "access": "yes",
+    "historic": "monument",
+    "inscription": "Monument Semangat Identitas Jawa Tengah. Plasa Kepodang Membara.",
+    "name": "Plasa Kepodang Membara"
+  }
+},
+{
+  "type": "way",
+  "id": 1224018619,
+  "center": {
+    "lat": -7.1344339,
+    "lon": 110.4200772
+  },
+  "nodes": [
+    11353460054,
+    11353460055,
+    11353460056,
+    11353460057,
+    11353460058,
+    11353460059,
+    11353460060,
+    11353460061,
+    11353460062,
+    11353460063,
+    11353460064,
+    11353460065,
+    11353460066,
+    11353460067,
+    11353460068,
+    11353473569,
+    11353473570,
+    11353473571,
+    11353473572,
+    11353473573,
+    11353473574,
+    11353473575,
+    11353473576,
+    11353473577,
+    11353473578,
+    11353473579,
+    11353473580,
+    11353460054
+  ],
+  "tags": {
+    "historic": "monument",
+    "name": "Alun Alun Bung Karno",
+    "name:etymology:wikidata": "Q76127",
+    "name:etymology:wikipedia": "id:Sukarno",
+    "name:id": "Patung Bung Karno Ungaran"
+  }
+},
+{
+  "type": "way",
+  "id": 1331410324,
+  "center": {
+    "lat": -6.9692007,
+    "lon": 110.4268952
+  },
+  "nodes": [
+    12318915047,
+    5466271717,
+    5466271716,
+    12318915048,
+    12318915047
+  ],
+  "tags": {
+    "building": "ruin",
+    "building:levels": "1",
+    "historic": "ruins",
+    "name": "Rumah Akar"
+  }
+},
+{
+  "type": "way",
+  "id": 1331410325,
+  "center": {
+    "lat": -6.9692066,
+    "lon": 110.4266733
+  },
+  "nodes": [
+    12318915049,
+    12318915050,
+    12318915051,
+    12078800738,
+    12318915049
+  ],
+  "tags": {
+    "building": "ruin",
+    "building:levels": "1",
+    "historic": "ruins",
+    "name": "Rumah Akar"
+  }
+},
+{
+  "type": "way",
+  "id": 1331410326,
+  "center": {
+    "lat": -6.9692036,
+    "lon": 110.4267780
+  },
+  "nodes": [
+    12318915050,
+    12318915047,
+    12318915048,
+    12318915051,
+    12318915050
+  ],
+  "tags": {
+    "building": "ruin",
+    "building:levels": "1",
+    "historic": "ruins",
+    "name": "Rumah Akar"
+  }
+},
+{
+  "type": "way",
+  "id": 1447611046,
+  "center": {
+    "lat": -7.0267782,
+    "lon": 110.4085806
+  },
+  "nodes": [
+    11353408911,
+    13282301909,
+    13282301908,
+    13282301907,
+    13282301910,
+    13282301906,
+    13282301905,
+    13282301904,
+    11353408912
+  ],
+  "tags": {
+    "access": "yes",
+    "historic": "monument",
+    "inscription": "Monument Semangat Identitas Jawa Tengah. Plasa Kepodang Membara.",
+    "name": "Plasa Kepodang Membara"
+  }
+},
+{
+  "type": "node",
+  "id": 4985256992,
+  "lat": -6.9859276,
+  "lon": 110.4028049,
+  "tags": {
+    "leisure": "garden",
+    "name": "Taman"
+  }
+},
+{
+  "type": "node",
+  "id": 4986154270,
+  "lat": -6.9867343,
+  "lon": 110.4033253,
+  "tags": {
+    "leisure": "garden",
+    "name": "Taman"
+  }
+},
+{
+  "type": "node",
+  "id": 4986166634,
+  "lat": -6.9894818,
+  "lon": 110.4032126,
+  "tags": {
+    "leisure": "garden",
+    "name": "Taman"
+  }
+},
+{
+  "type": "node",
+  "id": 11028095979,
+  "lat": -6.9620228,
+  "lon": 110.2530597,
+  "tags": {
+    "addr:city": "kendal",
+    "addr:postcode": "51372",
+    "addr:street": "Jalan Pungkuran",
+    "leisure": "park",
+    "name": "Taman Kawedanan Kaliwungu",
+    "operator": "pemerintah",
+    "operator:type": "public"
+  }
+},
+{
+  "type": "node",
+  "id": 11944942073,
+  "lat": -6.9768769,
+  "lon": 110.3631156,
+  "tags": {
+    "leisure": "park",
+    "name": "bundaran air mancur"
+  }
+},
+{
+  "type": "node",
+  "id": 11964365801,
+  "lat": -7.0508766,
+  "lon": 110.4408029,
+  "tags": {
+    "leisure": "park",
+    "name": "Taman Teknik",
+    "opening_hours": "Mo-Su 09:00-18:00"
+  }
+},
+{
+  "type": "node",
+  "id": 11964398865,
+  "lat": -7.0508294,
+  "lon": 110.4408181,
+  "tags": {
+    "leisure": "park",
+    "name": "Taman Teknik",
+    "opening_hours": "Mo-Fr 08:00-17:00"
+  }
+},
+{
+  "type": "node",
+  "id": 13022532026,
+  "lat": -6.9589296,
+  "lon": 110.3346900,
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:housename": "Kawasan Industri Wijayakusuma",
+    "addr:province": "central java",
+    "addr:street": "jalan tugu wijaya VII",
+    "addr:unit": "PT",
+    "leisure": "park",
+    "name": "KIW EDGE",
+    "operator": "PT Kawasan Industri Wijayakusuma",
+    "operator:type": "business"
+  }
+},
+{
+  "type": "node",
+  "id": 13354603101,
+  "lat": -7.1032468,
+  "lon": 110.2870242,
+  "tags": {
+    "leisure": "park",
+    "name": "Tampingan Park"
+  }
+},
+{
+  "type": "node",
+  "id": 13413869228,
+  "lat": -7.1090203,
+  "lon": 110.3950844,
+  "tags": {
+    "garden:type": "botanical",
+    "leisure": "garden",
+    "name": "EK-VIEW Agroedupark"
+  }
+},
+{
+  "type": "node",
+  "id": 13622128768,
+  "lat": -6.9965052,
+  "lon": 110.4078513,
+  "tags": {
+    "leisure": "park",
+    "name": "Patung Dinosaurus"
+  }
+},
+{
+  "type": "node",
+  "id": 13700891718,
+  "lat": -7.0432421,
+  "lon": 110.4435385,
+  "tags": {
+    "leisure": "park",
+    "name": "Bukit Diponegoro",
+    "name:en": "Diponegoro Hillside Park"
+  }
+},
+{
+  "type": "way",
+  "id": 112660784,
+  "center": {
+    "lat": -7.0052411,
+    "lon": 110.4421627
+  },
+  "nodes": [
+    1280100461,
+    1280100388,
+    1280100405,
+    5285421448,
+    5285421449,
+    1280100461
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Taman Kedondong",
+    "addr:street": "Kedondong Dalam",
+    "description": "Taman Kedondong (Formerly : Lapangan Kedondong)",
+    "leisure": "park",
+    "name": "Taman Kedondong",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 112660790,
+  "center": {
+    "lat": -7.0065967,
+    "lon": 110.4355418
+  },
+  "nodes": [
+    1280100263,
+    1280100418,
+    1280100356,
+    1280100200,
+    1280100263
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Taman Mangga",
+    "leisure": "park",
+    "name": "Taman Mangga",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 112663066,
+  "center": {
+    "lat": -6.9938589,
+    "lon": 110.4276066
+  },
+  "nodes": [
+    1280115420,
+    1280115408,
+    1280115417,
+    1280115413,
+    1280115420
+  ],
+  "tags": {
+    "leisure": "park",
+    "name": "Taman Erlangga Tengah"
+  }
+},
+{
+  "type": "way",
+  "id": 112669190,
+  "center": {
+    "lat": -7.0011028,
+    "lon": 110.4241777
+  },
+  "nodes": [
+    1280164868,
+    1280164836,
+    1280164958,
+    1280164927,
+    1280165004,
+    1280164868
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Sriwijaya",
+    "leisure": "park",
+    "name": "Taman Singosari",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 112669203,
+  "center": {
+    "lat": -6.9923516,
+    "lon": 110.4199972
+  },
+  "nodes": [
+    1280164856,
+    1280165002,
+    5442134908,
+    5442134907,
+    5442134906,
+    1280164826,
+    1280164984,
+    5442134909,
+    5442134910,
+    5442134911,
+    1280164964,
+    1280164856
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Menteri Supeno",
+    "leisure": "park",
+    "name": "Taman Indonesia Kaya",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 177176409,
+  "center": {
+    "lat": -7.1349803,
+    "lon": 110.4090518
+  },
+  "nodes": [
+    1876253770,
+    1876253766,
+    6868515227,
+    6868515228,
+    6868515229,
+    6991361233,
+    6991361232,
+    1876253765,
+    1876253770
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "leisure": "park",
+    "name": "Alun-alun mini",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 313693577,
+  "center": {
+    "lat": -7.0495691,
+    "lon": 110.4385479
+  },
+  "nodes": [
+    5510776917,
+    3197125654,
+    3197125805,
+    5527526788,
+    3197125801,
+    5356057083,
+    3197125632,
+    3197125625,
+    8682798502,
+    5510776914,
+    5510776915,
+    5510776916,
+    3197125629,
+    5319925889,
+    5510776917
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "leisure": "park",
+    "name": "Taman Widya Puraya",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 313721966,
+  "center": {
+    "lat": -7.0540351,
+    "lon": 110.4400610
+  },
+  "nodes": [
+    5527526810,
+    5527526811,
+    3197416482,
+    3197416488,
+    3197416499,
+    3197416509,
+    3197416522,
+    3197416536,
+    3197416519,
+    3197416504,
+    3197416494,
+    3197416491,
+    3197416487,
+    5527526808,
+    5527526809,
+    5527526810
+  ],
+  "tags": {
+    "leisure": "garden",
+    "name": "Taman Rusa UNDIP"
+  }
+},
+{
+  "type": "way",
+  "id": 333174192,
+  "center": {
+    "lat": -6.9878488,
+    "lon": 110.4171950
+  },
+  "nodes": [
+    3402841202,
+    13742823793,
+    13742823792,
+    13742823794,
+    13742823795,
+    3402841203,
+    13742823791,
+    13742823790,
+    3402841204,
+    13742823786,
+    13742823785,
+    13742823784,
+    13742823787,
+    13742823788,
+    13742823789,
+    3402841205,
+    3402841202
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Tri Lomba Juang",
+    "leisure": "park",
+    "name": "Taman Pandanaran",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 334129263,
+  "center": {
+    "lat": -7.0053512,
+    "lon": 110.4086892
+  },
+  "nodes": [
+    3412201555,
+    3412203225,
+    5481912793,
+    3412203241,
+    5481912794,
+    3412203226,
+    3412201556,
+    3412201555
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Taman Sudirman",
+    "leisure": "park",
+    "name": "Taman Sudirman",
+    "name:etymology:wikidata": "Q2367329",
+    "name:etymology:wikipedia": "id:Soedirman",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 335059228,
+  "center": {
+    "lat": -6.9894586,
+    "lon": 110.4414861
+  },
+  "nodes": [
+    3421873909,
+    3421874040,
+    3421874802,
+    3421874793,
+    3421873909
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Unta Raya",
+    "evacuation_center": "no",
+    "leisure": "park",
+    "name": "Taman Citra Satwa",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 337626356,
+  "center": {
+    "lat": -6.9644992,
+    "lon": 110.3885556
+  },
+  "nodes": [
+    3446957859,
+    3446957863,
+    3446957997,
+    3446957994,
+    3446957859
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Puri Mediterania",
+    "building": "public",
+    "leisure": "park",
+    "name": "Activity Center",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 389863866,
+  "center": {
+    "lat": -6.9673511,
+    "lon": 110.4268816
+  },
+  "nodes": [
+    3930255473,
+    3930255476,
+    3930255474,
+    3930255472,
+    3930255473
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Garuda",
+    "evacuation_center": "no",
+    "leisure": "park",
+    "name": "Taman Garuda",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 389863867,
+  "center": {
+    "lat": -6.9681557,
+    "lon": 110.4278379
+  },
+  "nodes": [
+    3930255497,
+    12078800717,
+    12078800718,
+    3930255498,
+    3930255511,
+    3930255509,
+    3930255497
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Letjen Suprapto",
+    "evacuation_center": "no",
+    "leisure": "park",
+    "name": "Taman Sri Gunting",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 392282937,
+  "center": {
+    "lat": -6.9563036,
+    "lon": 110.4400314
+  },
+  "nodes": [
+    3955240212,
+    3955240216,
+    3955240210,
+    3955240207,
+    3955240212
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "leisure": "park",
+    "name": "Taman Cilosari",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 401641700,
+  "center": {
+    "lat": -7.1274375,
+    "lon": 110.4032686
+  },
+  "nodes": [
+    4040534530,
+    4040534531,
+    13751774012,
+    13410386658,
+    13410386685,
+    13410386659,
+    13751774013,
+    4040534532,
+    4040534533,
+    13751774014,
+    13410386657,
+    13410386686,
+    13410386656,
+    13751774015,
+    4040534530
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "leisure": "park",
+    "name": "Ungaran Public Square",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 486630102,
+  "center": {
+    "lat": -7.0076741,
+    "lon": 110.4167125
+  },
+  "nodes": [
+    4792145871,
+    13742806081,
+    4792145872,
+    5428323874,
+    5428323870,
+    7048215726,
+    5428323873,
+    13742806086,
+    5428323875,
+    13742806085,
+    5428323877,
+    5428323882,
+    4792145876,
+    5428323894,
+    13742806084,
+    4792145877,
+    13742806083,
+    4792145878,
+    13742806082,
+    4792145871
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Taman Diponegoro",
+    "leisure": "park",
+    "name": "Taman Diponegoro",
+    "name:etymology:wikidata": "Q28899",
+    "name:etymology:wikipedia": "id:Diponegoro",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 486633721,
+  "center": {
+    "lat": -7.0083477,
+    "lon": 110.3958665
+  },
+  "nodes": [
+    4792176448,
+    5479883332,
+    4792176449,
+    4792176450,
+    3414096878,
+    5479883333,
+    4792176451,
+    5479883334,
+    3414097499,
+    4792176452,
+    4792176453,
+    4792176448
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Menoreh Raya",
+    "leisure": "park",
+    "name": "Taman Sampangan",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 486744163,
+  "center": {
+    "lat": -6.9809793,
+    "lon": 110.4005557
+  },
+  "nodes": [
+    4793082823,
+    4793082824,
+    4793082825,
+    5413555430,
+    5413555429,
+    4793082826,
+    5413555431,
+    4793082827,
+    5413555432,
+    4793082828,
+    5413555433,
+    4793082829,
+    5413555434,
+    4793082830,
+    5413555435,
+    4793082831,
+    4793082832,
+    5413555437,
+    5413555436,
+    4793082833,
+    4793082834,
+    5413555438,
+    4793082823
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Jendral Sudirman",
+    "leisure": "park",
+    "name": "Taman Madukoro",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 510334335,
+  "center": {
+    "lat": -6.9755676,
+    "lon": 110.3972218
+  },
+  "nodes": [
+    4993775926,
+    4993775927,
+    4993775928,
+    4993775929,
+    4993775926
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Kelurahan Krobokan",
+    "leisure": "park",
+    "name": "Hutan Kota Krobokan",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 510334336,
+  "center": {
+    "lat": -6.9719941,
+    "lon": 110.3967690
+  },
+  "nodes": [
+    4993775930,
+    4993775931,
+    4993775932,
+    4993775933,
+    4993775930
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Kelurahan Krobokan",
+    "leisure": "park",
+    "name": "Hutan Kota Krobokan",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 510839397,
+  "center": {
+    "lat": -7.0038000,
+    "lon": 110.3968628
+  },
+  "nodes": [
+    4998263200,
+    4998263199,
+    4998263198,
+    4998263197,
+    4998263196,
+    4998263195,
+    5719181743,
+    4998263194,
+    4998263193,
+    4998263192,
+    4998263191,
+    4998263190,
+    4998263189,
+    4998263188,
+    4998263187,
+    4998263186,
+    4998263185,
+    4998263184,
+    4998263183,
+    4998263200
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Taman Kelud Selatan",
+    "leisure": "park",
+    "name": "Taman Kampung Jamu",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 515061468,
+  "center": {
+    "lat": -6.9914050,
+    "lon": 110.4020802
+  },
+  "nodes": [
+    5030925862,
+    5030925863,
+    5030925876,
+    5030925875,
+    5030925862
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "leisure": "park",
+    "name": "Taman Banjir Kanal Barat",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 518943044,
+  "center": {
+    "lat": -6.9695436,
+    "lon": 110.4307682
+  },
+  "nodes": [
+    5061165515,
+    5061165516,
+    5061165517,
+    5061165518,
+    5061165519,
+    5061165520,
+    5061165521,
+    5061165522,
+    5061165523,
+    12346079499,
+    5061165524,
+    5061165525,
+    5061165526,
+    10913562211,
+    5061165527,
+    12346094610,
+    5061165528,
+    5474599218,
+    5061165529,
+    5474599219,
+    5061165515
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Bunderan Bubakan",
+    "highway": "footway",
+    "leisure": "park",
+    "name": "Taman Bubakan",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 555057810,
+  "center": {
+    "lat": -7.0387363,
+    "lon": 110.4211392
+  },
+  "nodes": [
+    5356057084,
+    5356057085,
+    5356057086,
+    5356057087,
+    5356057088,
+    5356057090,
+    5356057084
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "leisure": "park",
+    "name": "Taman Tabanas",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 558998843,
+  "center": {
+    "lat": -7.0002049,
+    "lon": 110.4436050
+  },
+  "nodes": [
+    5392147522,
+    5392124519,
+    5392124520,
+    5392147521,
+    5392147522
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Kimar III",
+    "leisure": "park",
+    "name": "Taman Komplek Kimar",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 559365659,
+  "center": {
+    "lat": -6.9924120,
+    "lon": 110.4174723
+  },
+  "nodes": [
+    5395205523,
+    5395205522,
+    5395205521,
+    5395204820,
+    5395204819,
+    5395204818,
+    5395204817,
+    5395204816,
+    5395204815,
+    5395204814,
+    5395204813,
+    5395204812,
+    5395204811,
+    5395205523
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "leisure": "park",
+    "name": "Taman Mugas Timur",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "way",
+  "id": 559621748,
+  "center": {
+    "lat": -6.9691142,
+    "lon": 110.2860966
+  },
+  "nodes": [
+    5397480696,
+    5397480695,
+    5710736606,
+    5397480693,
+    5397480692,
+    5397480691,
+    5397480690,
+    5397480689,
+    5397480688,
+    5397480696
+  ],
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:full": "Jalan Jend. Urip Sumoharjo",
+    "leisure": "park",
+    "name": "Taman Lalu Lintas Semarang",
+    "source": "HOT_InAWARESurvey_2018"
+  }
+},
+{
+  "type": "node",
+  "id": 1883553934,
+  "lat": -7.0154753,
+  "lon": 110.4179866,
+  "tags": {
+    "alt_name": "Kentucky Fried Chicken",
+    "amenity": "fast_food",
+    "brand": "KFC",
+    "brand:wikidata": "Q524757",
+    "brand:wikipedia": "en:KFC",
+    "cuisine": "chicken",
+    "name": "KFC",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1884164112,
+  "lat": -7.0661889,
+  "lon": 110.4116547,
+  "tags": {
+    "alt_name": "Kentucky Fried Chicken",
+    "amenity": "fast_food",
+    "brand": "KFC",
+    "brand:wikidata": "Q524757",
+    "brand:wikipedia": "en:KFC",
+    "cuisine": "chicken",
+    "name": "KFC",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1884164130,
+  "lat": -7.0641516,
+  "lon": 110.4127547,
+  "tags": {
+    "amenity": "fast_food",
+    "name": "Pizza Hut"
+  }
+},
+{
+  "type": "node",
+  "id": 2398142207,
+  "lat": -7.0001685,
+  "lon": 110.4265421,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "Cafe Pelangi"
+  }
+},
+{
+  "type": "node",
+  "id": 2398142219,
+  "lat": -6.9896719,
+  "lon": 110.4287780,
+  "tags": {
+    "amenity": "restaurant",
+    "cuisine": "indonesian;regional;local",
+    "name": "Gudeg Abimanyu"
+  }
+},
+{
+  "type": "node",
+  "id": 2398142220,
+  "lat": -7.0002430,
+  "lon": 110.4263383,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "Kedai Gula Jawa"
+  }
+},
+{
+  "type": "node",
+  "id": 2404990484,
+  "lat": -6.9850994,
+  "lon": 110.4225940,
+  "tags": {
+    "amenity": "restaurant",
+    "cuisine": "chicken",
+    "name": "Lombok Idjo"
+  }
+},
+{
+  "type": "node",
+  "id": 2404990534,
+  "lat": -6.9801209,
+  "lon": 110.4209042,
+  "tags": {
+    "amenity": "restaurant",
+    "cuisine": "chicken",
+    "name": "Super Penyet"
+  }
+},
+{
+  "type": "node",
+  "id": 3068579921,
+  "lat": -6.9848624,
+  "lon": 110.3667470,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "Food Court STIKES Widya Husada"
+  }
+},
+{
+  "type": "node",
+  "id": 3316178996,
+  "lat": -6.9807114,
+  "lon": 110.4216542,
+  "tags": {
+    "amenity": "restaurant",
+    "cuisine": "regional",
+    "name": "Nasi Kucing Pak Gik",
+    "opening_hours": "Sa-Su 00:00-24:00",
+    "smoking": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 3408310154,
+  "lat": -7.1337013,
+  "lon": 110.4042136,
+  "tags": {
+    "amenity": "restaurant",
+    "capacity": "200",
+    "cuisine": "steak",
+    "name": "Waroeng Steak",
+    "note": "Nice place to have steak.",
+    "opening_hours": "10:00 - 22:00",
+    "smoking": "separated",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 3410169028,
+  "lat": -7.0051537,
+  "lon": 110.4017670,
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:housenumber": "41",
+    "addr:place": "Oasis Cafe & Resto",
+    "addr:street": "Tumpang Raya",
+    "amenity": "restaurant",
+    "cuisine": "mexican",
+    "internet_access": "yes",
+    "name": "Oasis Cafe & Resto"
+  }
+},
+{
+  "type": "node",
+  "id": 3476354579,
+  "lat": -6.9692719,
+  "lon": 110.4277055,
+  "tags": {
+    "amenity": "restaurant",
+    "cuisine": "indonesian",
+    "name": "Pringsewu Kota Lama Semarang",
+    "opening_hours": "Mo-Su 08:00-22:00",
+    "operator": "Pringsewu"
+  }
+},
+{
+  "type": "node",
+  "id": 3478217303,
+  "lat": -6.9743863,
+  "lon": 110.4279291,
+  "tags": {
+    "addr:street": "Jl. Gang Lombok",
+    "amenity": "restaurant",
+    "name": "Rumah Makan Gang Lombok"
+  }
+},
+{
+  "type": "node",
+  "id": 3480522550,
+  "lat": -7.0033342,
+  "lon": 110.4264467,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Taiwan Tea House"
+  }
+},
+{
+  "type": "node",
+  "id": 3481111670,
+  "lat": -6.9701194,
+  "lon": 110.4306615,
+  "tags": {
+    "addr:housenumber": "Blok A. 16",
+    "addr:street": "Jl. K.H. Agus Salim Ruko Bubakan",
+    "amenity": "restaurant",
+    "internet_access": "no",
+    "name": "R.M. Padang Jaya 1977",
+    "smoking": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 3931578510,
+  "lat": -6.9726908,
+  "lon": 110.3448589,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "Warung Makan Bang Leo"
+  }
+},
+{
+  "type": "node",
+  "id": 3931578511,
+  "lat": -6.9727162,
+  "lon": 110.3446747,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "Warung Makan"
+  }
+},
+{
+  "type": "node",
+  "id": 3931583931,
+  "lat": -6.9669268,
+  "lon": 110.4270253,
+  "tags": {
+    "amenity": "cafe",
+    "name": "Nuri's"
+  }
+},
+{
+  "type": "node",
+  "id": 3931682803,
+  "lat": -7.0251111,
+  "lon": 110.4029197,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "Kucingan Pak Ndut"
+  }
+},
+{
+  "type": "node",
+  "id": 3931682804,
+  "lat": -7.0248024,
+  "lon": 110.4028054,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "Warung Mbak Ru"
+  }
+},
+{
+  "type": "node",
+  "id": 3931682805,
+  "lat": -7.0253993,
+  "lon": 110.4021878,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "Warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3931682806,
+  "lat": -7.0255834,
+  "lon": 110.4029519,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "Warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3933982342,
+  "lat": -7.0569841,
+  "lon": 110.4210089,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "BURJO MOTEKAR"
+  }
+},
+{
+  "type": "node",
+  "id": 3940717042,
+  "lat": -6.9769585,
+  "lon": 110.4279004,
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:housenumber": "77",
+    "addr:street": "Jalan Gang Pinggir",
+    "amenity": "restaurant",
+    "name": "Bakmi Topping"
+  }
+},
+{
+  "type": "node",
+  "id": 3940717050,
+  "lat": -6.9769255,
+  "lon": 110.4279230,
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:housenumber": "73",
+    "addr:street": "Jalan Gang Pinggir",
+    "amenity": "restaurant",
+    "name": "Nasi Ayam Bu Pini"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161175,
+  "lat": -6.9575500,
+  "lon": 110.4374397,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung mie jawa"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161176,
+  "lat": -6.9570666,
+  "lon": 110.4371165,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161177,
+  "lat": -6.9575230,
+  "lon": 110.4380791,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161178,
+  "lat": -6.9575818,
+  "lon": 110.4373491,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161179,
+  "lat": -6.9577378,
+  "lon": 110.4375047,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161180,
+  "lat": -6.9577796,
+  "lon": 110.4364181,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161181,
+  "lat": -6.9578068,
+  "lon": 110.4371364,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161182,
+  "lat": -6.9578885,
+  "lon": 110.4369749,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161183,
+  "lat": -6.9579671,
+  "lon": 110.4381962,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161184,
+  "lat": -6.9576616,
+  "lon": 110.4381524,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161186,
+  "lat": -6.9581609,
+  "lon": 110.4369040,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161187,
+  "lat": -6.9585781,
+  "lon": 110.4374498,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161188,
+  "lat": -6.9587737,
+  "lon": 110.4376130,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955161189,
+  "lat": -6.9588651,
+  "lon": 110.4379183,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "warung"
+  }
+},
+{
+  "type": "node",
+  "id": 3955240205,
+  "lat": -6.9586955,
+  "lon": 110.4404388,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "Warung Makan"
+  }
+},
+{
+  "type": "node",
+  "id": 4077616338,
+  "lat": -7.1464078,
+  "lon": 110.4076089,
+  "tags": {
+    "amenity": "fast_food",
+    "brand": "KFC",
+    "brand:wikidata": "Q524757",
+    "brand:wikipedia": "en:KFC",
+    "cuisine": "chicken",
+    "delivery": "yes",
+    "drive_through": "yes",
+    "name": "KFC",
+    "smoking": "no",
+    "takeaway": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 4077621626,
+  "lat": -7.1427189,
+  "lon": 110.4128845,
+  "tags": {
+    "amenity": "restaurant",
+    "cuisine": "gado-gado",
+    "name": "gado-gado"
+  }
+},
+{
+  "type": "node",
+  "id": 4077703194,
+  "lat": -7.1448452,
+  "lon": 110.4099533,
+  "tags": {
+    "addr:street": "S. Parman",
+    "amenity": "restaurant",
+    "cuisine": "gado-gado",
+    "name": "Gado-gado 74"
+  }
+},
+{
+  "type": "node",
+  "id": 4146171668,
+  "lat": -7.1416094,
+  "lon": 110.4055518,
+  "tags": {
+    "amenity": "restaurant",
+    "name": "Eco Raos"
+  }
+},
+{
+  "type": "node",
+  "id": 4383656391,
+  "lat": -6.9776946,
+  "lon": 110.4209269,
+  "tags": {
+    "amenity": "fast_food",
+    "name": "Gapura Cafetaria"
+  }
+},
+{
+  "type": "node",
+  "id": 4431964389,
+  "lat": -7.0012600,
+  "lon": 110.4175868,
+  "tags": {
+    "addr:housenumber": "24",
+    "addr:postcode": "50711",
+    "addr:street": "Jalan Diponegoro",
+    "amenity": "restaurant",
+    "cuisine": "burger",
+    "internet_access": "wlan",
+    "name": "Sakapatat beer garden & resto",
+    "opening_hours": "Mo-Su 11:00-01:00",
+    "phone": "+62 24-8312646",
+    "website": "https://www.sakapatat.com/"
+  }
+},
+{
+  "type": "node",
+  "id": 4476719289,
+  "lat": -6.9993748,
+  "lon": 110.4070699,
+  "tags": {
+    "amenity": "restaurant",
+    "internet_access": "wlan",
+    "name": "my story scoops"
+  }
+},
+{
+  "type": "node",
+  "id": 4481225291,
+  "lat": -6.9690802,
+  "lon": 110.4107570,
+  "tags": {
+    "addr:street": "Jalan Hasanudin",
+    "amenity": "fast_food",
+    "name": "Gudeg Kendil"
+  }
+},
+{
+  "type": "node",
+  "id": 4484949790,
+  "lat": -6.9744549,
+  "lon": 110.4056427,
+  "tags": {
+    "addr:street": "Banowati raya",
+    "amenity": "restaurant",
+    "cuisine": "noodle",
+    "name": "Bakmi jowo pak yit",
+    "opening_hours": "Mo-Su 17:00-22:00",
+    "operator": "pak yit"
+  }
+},
+{
+  "type": "node",
+  "id": 259665172,
+  "lat": -7.0122130,
+  "lon": 110.4202369,
+  "tags": {
+    "created_by": "Potlatch 0.8b",
+    "name": "Patra Jasa",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 719165565,
+  "lat": -6.9712300,
+  "lon": 110.4206060,
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:province": "Jawa Tengah",
+    "addr:street": "Jalan Imam Bonjol",
+    "name": "Surya Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1811401963,
+  "lat": -6.9867335,
+  "lon": 110.4155527,
+  "tags": {
+    "name": "Hotel Pandanaran",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1883562573,
+  "lat": -7.0162253,
+  "lon": 110.4227638,
+  "tags": {
+    "name": "Grand Candi",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 1919962962,
+  "lat": -6.9888143,
+  "lon": 110.4196233,
+  "tags": {
+    "name": "@Hom",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 2636314428,
+  "lat": -6.9659354,
+  "lon": 110.4107194,
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:housenumber": "1",
+    "addr:postcode": "50178",
+    "addr:street": "Jalan Brotojoyo Timur 2",
+    "check_date:currency:XBT": "2023-02-03",
+    "currency:XBT": "yes",
+    "email": "susenoaditya@gmail.com",
+    "name": "Brotojoyo Guest House",
+    "operator": "Aditya Suseno",
+    "payment:lightning": "yes",
+    "payment:lightning_contactless": "no",
+    "payment:onchain": "yes",
+    "phone": "+628170575557",
+    "tourism": "guest_house",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 2962593922,
+  "lat": -6.9842214,
+  "lon": 110.4119710,
+  "tags": {
+    "name": "Hotel Horizon",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 3327421259,
+  "lat": -7.1493324,
+  "lon": 110.4088616,
+  "tags": {
+    "name": "Ungaran Cantik Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 3412201497,
+  "lat": -7.0050169,
+  "lon": 110.4097487,
+  "tags": {
+    "name": "Hotel Gracia",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 3476409343,
+  "lat": -6.9677331,
+  "lon": 110.4305228,
+  "tags": {
+    "name": "Aston",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4114658090,
+  "lat": -7.0062966,
+  "lon": 110.3783366,
+  "tags": {
+    "addr:street": "Jalan Rorojonggrang",
+    "name": "rumah hidayat",
+    "tourism": "guest_house"
+  }
+},
+{
+  "type": "node",
+  "id": 4150306887,
+  "lat": -6.9890103,
+  "lon": 110.4209436,
+  "tags": {
+    "addr:city": "Slipi, West Jakarta",
+    "addr:housenumber": "No. 7",
+    "addr:postcode": "11410",
+    "addr:street": "Jalan Aipda K. S. Tubun",
+    "name": "Hotel Santika Premiere Slipi Jakarta",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4160587667,
+  "lat": -7.1446318,
+  "lon": 110.4067840,
+  "tags": {
+    "name": "Hotel C3",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4331053192,
+  "lat": -7.0286142,
+  "lon": 110.4072061,
+  "tags": {
+    "name": "Victory",
+    "tourism": "hostel"
+  }
+},
+{
+  "type": "node",
+  "id": 4357175318,
+  "lat": -6.9985573,
+  "lon": 110.4193861,
+  "tags": {
+    "addr:housenumber": "Raya 05",
+    "addr:street": "Jalan Diponegoro",
+    "email": "mohdalexa@qq.com",
+    "internet_access": "wlan",
+    "name": "Siranda Residence",
+    "opening_hours": "Mo-Su 08:00-22:00",
+    "phone": "+622450278668",
+    "tourism": "guest_house",
+    "website": "https://facebook.com/alexa.thok"
+  }
+},
+{
+  "type": "node",
+  "id": 4371037391,
+  "lat": -6.9796804,
+  "lon": 110.4107284,
+  "tags": {
+    "internet_access": "wlan",
+    "name": "Imam Bonjol Hostel",
+    "name:pt": "Imam Bonjol Hostel",
+    "tourism": "hostel"
+  }
+},
+{
+  "type": "node",
+  "id": 4451069791,
+  "lat": -7.0069777,
+  "lon": 110.3980475,
+  "tags": {
+    "name": "Stonen",
+    "tourism": "motel"
+  }
+},
+{
+  "type": "node",
+  "id": 4553995691,
+  "lat": -6.9891859,
+  "lon": 110.4377020,
+  "tags": {
+    "addr:housenumber": "6A",
+    "addr:street": "Krakatau 7",
+    "name": "Kost Ana",
+    "tourism": "guest_house"
+  }
+},
+{
+  "type": "node",
+  "id": 4707998531,
+  "lat": -7.0369715,
+  "lon": 110.4218401,
+  "tags": {
+    "name": "Hotel Bukit Permai Gombel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 4875509730,
+  "lat": -7.0033174,
+  "lon": 110.3978348,
+  "tags": {
+    "name": "rumah kos",
+    "tourism": "hostel"
+  }
+},
+{
+  "type": "node",
+  "id": 4875646786,
+  "lat": -7.0038183,
+  "lon": 110.3981621,
+  "tags": {
+    "name": "Palupi Kost",
+    "tourism": "hostel"
+  }
+},
+{
+  "type": "node",
+  "id": 4875646791,
+  "lat": -7.0033613,
+  "lon": 110.3989962,
+  "tags": {
+    "name": "Kos Pojok",
+    "tourism": "hostel"
+  }
+},
+{
+  "type": "node",
+  "id": 5019223475,
+  "lat": -7.0056735,
+  "lon": 110.4044142,
+  "tags": {
+    "name": "Belle View",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5030100191,
+  "lat": -7.0169149,
+  "lon": 110.3893895,
+  "tags": {
+    "name": "Wisma Menoreh",
+    "tourism": "motel"
+  }
+},
+{
+  "type": "node",
+  "id": 5030851776,
+  "lat": -7.0078162,
+  "lon": 110.3901609,
+  "tags": {
+    "name": "Kos Brimob Menoreh",
+    "tourism": "hostel"
+  }
+},
+{
+  "type": "node",
+  "id": 5397990515,
+  "lat": -6.9785290,
+  "lon": 110.4160362,
+  "tags": {
+    "name": "Po Hotel",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5465530890,
+  "lat": -6.9301449,
+  "lon": 110.3000857,
+  "tags": {
+    "name": "Mushalla Al-Huda Ngebum",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5591770996,
+  "lat": -7.0713223,
+  "lon": 110.4386459,
+  "tags": {
+    "name": "Hotel Bukit Indah",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 5831471937,
+  "lat": -7.0564718,
+  "lon": 110.4278205,
+  "tags": {
+    "name": "Hotel Bajirut",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6221445717,
+  "lat": -6.9752634,
+  "lon": 110.4289490,
+  "tags": {
+    "name": "Roemah Pantes",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6221445718,
+  "lat": -6.9750474,
+  "lon": 110.4283683,
+  "tags": {
+    "addr:housenumber": "24",
+    "addr:street": "Jalan Gang Pinggir",
+    "name": "Tjiang Resindence",
+    "phone": "+62 24 3540330",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6221449738,
+  "lat": -6.9755911,
+  "lon": 110.4288396,
+  "tags": {
+    "addr:housenumber": "31",
+    "addr:street": "Japan Kalikuping",
+    "name": "Rhema House",
+    "phone": "+62 24 86402736",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 6486081777,
+  "lat": -6.9834376,
+  "lon": 110.3978208,
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:housenumber": "20",
+    "addr:postcode": "50141",
+    "addr:street": "Jalan Puspanjolo Barat Raya",
+    "brand": "Nomaden Urban Stay",
+    "email": "nomaden.urbanstay@gmail.com",
+    "internet_access": "wlan",
+    "name": "Nomaden Urban Stay",
+    "phone": "+6224 76437531",
+    "rooms": "12",
+    "smoking": "no",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 7030694985,
+  "lat": -6.9803677,
+  "lon": 110.4092010,
+  "tags": {
+    "internet_access": "wlan",
+    "name": "Arjuna Hostel",
+    "name:de": "Arjuna Hostel",
+    "tourism": "hostel"
+  }
+},
+{
+  "type": "node",
+  "id": 7254770585,
+  "lat": -7.0582340,
+  "lon": 110.4372796,
+  "tags": {
+    "addr:city": "Semarang",
+    "addr:housenumber": "26",
+    "addr:postcode": "50275",
+    "addr:street": "Gang Gayamsari",
+    "guest_house": "apartment",
+    "internet_access": "yes",
+    "internet_access:fee": "yes",
+    "name": "Wismagamsari",
+    "tourism": "hostel"
+  }
+},
+{
+  "type": "node",
+  "id": 8087477917,
+  "lat": -6.9846717,
+  "lon": 110.3848470,
+  "tags": {
+    "name": "The Azana Hotel Airport Semarang",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 8087486117,
+  "lat": -6.9846440,
+  "lon": 110.3848927,
+  "tags": {
+    "name": "The Azana Hotel Airport Semarang",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 8251056917,
+  "lat": -6.9805871,
+  "lon": 110.4202519,
+  "tags": {
+    "name": "MG Setos Hotel Semarang",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9813871378,
+  "lat": -6.9796058,
+  "lon": 110.4199250,
+  "tags": {
+    "name": "MG Suites",
+    "tourism": "hotel"
+  }
+},
+{
+  "type": "node",
+  "id": 9816320085,
+  "lat": -6.9723916,
+  "lon": 110.4211923,
+  "tags": {
+    "name": "Hotel Blambangan",
+    "tourism": "hotel"
+  }
+}
+
+  ]
+}

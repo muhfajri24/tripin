@@ -27,15 +27,19 @@ const output = 'qa/release/national-browser.json';
   try {
     await step('open planner', async () => {
       await page.goto(`${base}/create`);
-      for (let i = 0; i < 3; i += 1) await page.getByRole('button', { name: 'Lanjut' }).click();
-      await page.getByRole('heading', { name: 'Halo, mau liburan ke mana?' }).waitFor();
+      await page.getByRole('heading', { name: 'Mau liburan ke mana?' }).waitFor();
     });
     await step(`resolve ${area} and choose hotel`, async () => {
-      await page.getByRole('textbox', { name: 'Ceritakan rencana perjalananmu' }).fill(`2 hari di ${area}, 2 orang, wisata budaya dan kuliner, budget Rp2.000.000 per orang`);
-      await page.getByRole('button', { name: 'Kirim permintaan' }).click();
-      await page.getByLabel('Mau ke daerah mana?').waitFor();
-      await page.getByRole('button', { name: 'Cari daerah' }).click();
-      await page.getByText(new RegExp(`${area} · \\d+ tempat ditemukan`)).waitFor();
+      await page.getByLabel('Kota atau daerah tujuan di Indonesia').fill(area);
+      await page.getByRole('button', { name: 'Lanjut pilih kategori' }).click();
+      await page.getByRole('button', { name: /Budaya & Sejarah/ }).click();
+      await page.getByRole('button', { name: /Kuliner/ }).click();
+      await page.getByRole('button', { name: 'Lanjut', exact: true }).click();
+      await page.getByRole('button', { name: /Pasangan/ }).click();
+      await page.getByRole('button', { name: 'Lanjut', exact: true }).click();
+      await page.getByLabel('Biaya yang ingin dikeluarkan (Rp)').fill('2000000');
+      await page.getByRole('button', { name: 'Lanjut', exact: true }).click();
+      await page.getByRole('button', { name: 'Tambah durasi' }).click();
       if (area === 'Surabaya') {
         await page.getByRole('searchbox', { name: 'Cari nama hotel' }).fill('hotel surabaya jaya');
         await page.getByText(/Nama itu belum cocok/).waitFor();
@@ -58,6 +62,8 @@ const output = 'qa/release/national-browser.json';
       assert.strictEqual(trip.request.lodging.placeId.startsWith('osm-'), true);
       assert.strictEqual(trip.days[0].startAnchor.lat, trip.days[0].endAnchor.lat);
       await page.getByText(new RegExp(`Perjalanan 2 hari di ${area}`)).waitFor();
+      await page.getByText(/Berangkat \d{2}\.\d{2}/).first().waitFor();
+      await page.getByText(/Jeda makan siang|Waktu makan siang/).first().waitFor();
     });
     await step('save and reload', async () => {
       await page.getByRole('button', { name: 'Simpan itinerary' }).click();

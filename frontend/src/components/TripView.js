@@ -87,6 +87,10 @@ function formatKm(meters) {
   return `${km} km`;
 }
 
+function shiftStamp(stamp, minutes) {
+  return new Date(new Date(stamp).getTime() + minutes * 60000).toISOString();
+}
+
 function useCountUpOnce(target, reduced) {
   const mv = useMotionValue(0);
   const [val, setVal] = useState(reduced ? target : 0);
@@ -196,6 +200,21 @@ export default function TripView({
   const byId = useMemo(
     () => Object.fromEntries(trip.places.map((p) => [p.id, p])),
     [trip.places],
+  );
+  const hotelName = trip.request.lodging
+    ? byId[trip.request.lodging.placeId]?.name || "hotel pilihanmu"
+    : null;
+  const firstStop = day.stops[0];
+  const suggestedDeparture = firstStop
+    ? shiftStamp(firstStop.arrivalAt, -firstStop.incomingLeg.estimatedDurationMin - firstStop.incomingLeg.schedulingBufferMin)
+    : null;
+  const lastStop = day.stops[day.stops.length - 1];
+  const suggestedReturn = lastStop && day.finalLeg
+    ? shiftStamp(lastStop.departureAt, day.finalLeg.estimatedDurationMin + day.finalLeg.schedulingBufferMin)
+    : null;
+  const hasLunchStop = day.stops.some((stop) =>
+    byId[stop.placeId]?.kind === "food" &&
+    new Date(stop.arrivalAt).toLocaleTimeString("en-GB", { timeZone: "Asia/Jakarta", hour: "2-digit", minute: "2-digit" }) < "14:00"
   );
 
   let links = [];
@@ -524,7 +543,7 @@ export default function TripView({
         </div>
       )}
 
-      {/* 3. Split View: Peta di atas pada mobile, Timeline Kiri + Peta Sticky Kanan di desktop */}
+      {/* 3. Rundown lebih dulu, lalu peta pada layar kecil. */}
       <div className="grid lg:grid-cols-2 gap-6 items-start">
         {/* Kiri: Timeline */}
         <section className="bg-white rounded-3xl p-5 sm:p-6 shadow-soft border border-gray-100 space-y-4">
@@ -536,6 +555,16 @@ export default function TripView({
               Klik kartu untuk fokus peta
             </span>
           </div>
+
+          {suggestedDeparture && (
+            <div className="rounded-2xl border border-teal/25 bg-sky/40 p-4 space-y-1" role="note">
+              <p className="text-sm font-extrabold text-teal">Berangkat {formatJam24(suggestedDeparture)}</p>
+              <p className="text-sm text-charcoal">Dari {hotelName || "titik awal perjalanan"} menuju {byId[firstStop.placeId]?.name || "destinasi pertama"}.</p>
+              <p className="text-xs text-charcoal-lighter">Waktu jalan sekitar {firstStop.incomingLeg.estimatedDurationMin} menit, ditambah {firstStop.incomingLeg.schedulingBufferMin} menit jeda. Periksa kondisi jalan sebelum berangkat.</p>
+            </div>
+          )}
+
+          {!hasLunchStop && <p className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-charcoal">Jeda makan siang disarankan sekitar 12.00–13.00. Tempat makan belum dipilih dalam rundown ini.</p>}
 
           {!day.stops.length && (
             <p className="text-base text-charcoal-lighter">
@@ -638,6 +667,7 @@ export default function TripView({
                           />
                           <span>{place?.name || s.placeId}</span>
                         </h3>
+                        {place?.kind === "food" && <p className="text-xs font-bold text-teal">{formatJam24(s.arrivalAt) < "14.00" ? "Waktu makan siang" : "Waktu makan sore/malam"}</p>}
 
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <p className="text-sm text-charcoal-lighter">
@@ -676,10 +706,11 @@ export default function TripView({
               </motion.div>
             </div>
           )}
+          {suggestedReturn && <p className="rounded-2xl border border-teal/25 bg-sky/40 p-4 text-sm text-charcoal"><strong className="text-teal">Sekitar {formatJam24(suggestedReturn)}</strong> tiba di {hotelName || "titik akhir perjalanan"}. Ini perkiraan, bukan waktu lalu lintas langsung.</p>}
         </section>
 
         {/* Kanan: Peta Sticky (tampil di atas timeline pada mobile) */}
-        <section className="space-y-3 order-first lg:order-last lg:sticky lg:top-6">
+        <section className="space-y-3 lg:sticky lg:top-6">
           <MapView
             key={`map-${selected}`}
             activities={mapActivities}

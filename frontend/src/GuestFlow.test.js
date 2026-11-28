@@ -33,36 +33,13 @@ test("My Trips does not display fictional user history", async () => {
   expect(container.textContent).toContain("Belum ada perjalanan");
   expect(container.textContent).not.toContain("Ari Santoso");
 });
-test("brief parse is editable and generation requires review", async () => {
-  global.fetch = jest.fn().mockImplementation(async (url) => ({
-    ok: true,
-    json: async () =>
-      url.includes("/places")
-        ? {
-            places: [
-              {
-                id: "p1",
-                name: "Candi Prambanan",
-                kind: "attraction",
-                destinationId: "yogyakarta",
-                coordinates: { lat: -7.752, lng: 110.491 },
-              },
-            ],
-          }
-        : {
-            draft: {
-              days: 2,
-              adults: 3,
-              budgetAmountIdr: 500000,
-              budgetBasis: "person",
-              interests: ["food"],
-              periodPreferences: [],
-            },
-            missingFields: ["lodging"],
-            ambiguities: [],
-            parserSource: "deterministic-id-v1",
-          },
-  }));
+test("destination, category, companions and exact budget lead to trip review", async () => {
+  const places = [{id:"p1",name:"Candi Prambanan",kind:"attraction",
+    destinationId:"yogyakarta",coordinates:{lat:-7.752,lng:110.491}}];
+  global.fetch = jest.fn().mockImplementation(async (url) => ({ok:true,json:async()=>
+    url.includes("/destinations/lookup")
+      ? {destinationId:"yogyakarta",name:"Yogyakarta",center:{lat:-7.7956,lng:110.3695},places}
+      : {places}}));
   await act(async () =>
     root.render(
       <MemoryRouter
@@ -72,24 +49,15 @@ test("brief parse is editable and generation requires review", async () => {
       </MemoryRouter>,
     ),
   );
-  for (let i = 0; i < 3; i += 1) {
-    const nextBtn = [...container.querySelectorAll("button")]
-      .filter((x) => x.textContent.includes("Lanjut"))
-      .pop();
-    await act(async () => {
-      Simulate.click(nextBtn);
-    });
-  }
-  const textarea = container.querySelector("textarea");
-  await act(async () => {
-    Simulate.change(textarea, {
-      target: { value: "Yogyakarta 2 hari budget Rp500.000 per orang" },
-    });
-  });
-  const sendBtn = container.querySelector('button[aria-label="Kirim permintaan"]');
-  await act(async () => {
-    Simulate.click(sendBtn);
-  });
+  await act(async () => Simulate.change(container.querySelector('#first-destination'), {target:{value:'Yogyakarta'}}));
+  await act(async () => Simulate.click([...container.querySelectorAll('button')].find((x)=>x.textContent.includes('Lanjut pilih kategori'))));
+  await act(async () => Simulate.click([...container.querySelectorAll('button')].find((x)=>x.textContent.includes('Budaya & Sejarah'))));
+  await act(async () => Simulate.click([...container.querySelectorAll('button')].find((x)=>x.textContent === 'Lanjut')));
+  await act(async () => Simulate.click([...container.querySelectorAll('button')].find((x)=>x.textContent.includes('Pasangan'))));
+  await act(async () => Simulate.click([...container.querySelectorAll('button')].find((x)=>x.textContent === 'Lanjut')));
+  await act(async () => Simulate.change(container.querySelector('#wizard-budget'), {target:{value:'500000'}}));
+  await act(async () => Simulate.click([...container.querySelectorAll('button')].find((x)=>x.textContent === 'Lanjut')));
+  await act(async () => Simulate.click(container.querySelector('[aria-label="Tambah durasi"]')));
   expect(container.textContent).toContain("Menginap di hotel mana?");
   expect(container.textContent).toContain("Rp\u00a0500.000 per orang");
   expect(container.textContent).toContain("Mau diprioritaskan yang mana?");

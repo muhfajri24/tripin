@@ -5,6 +5,12 @@ across the archipelago have offline OpenStreetMap snapshots; other Indonesian ar
 are queried on demand. No account, booking, paid AI, Google Places or Google Routes key
 is required. Estimates and unknown metadata are explicit.
 
+The creation flow asks for destination first, then visit categories, companions, and
+an exact trip budget. Review adds dates, duration, hotel for overnight trips, and
+route priority. The result shows a hotel departure suggestion, visit timeline,
+meal timing or a lunch-break reminder, and an estimated return time. These are
+planning heuristics, not live traffic, restaurant availability, or booking data.
+
 ## Run locally
 
 Two terminals from repository root:
@@ -65,7 +71,7 @@ cd backend
 
 The curated Yogyakarta catalog remains available. National snapshots cover Medan,
 Bandung, Denpasar, Banjarmasin, Makassar, Jayapura, Jakarta, Padang, Labuan Bajo,
-Bali, Surabaya, and a limited Raja Ampat area. Other areas need a reachable
+Bali, Surabaya, Semarang, and a limited Raja Ampat area. Other areas need a reachable
 Nominatim and Overpass service; errors are explicit and no fictional fallback is used.
 OpenStreetMap names/coordinates are approximate and the national catalog has unknown
 hours, entry prices and room rates. Hotel choice is a route anchor, not a visit stop.

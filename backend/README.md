@@ -26,7 +26,7 @@ Dependencies did not change from foundation. Full tested dependency snapshot is 
 - GET `/api/v1/places/{id}`: canonical Place or 404.
 - GET `/api/v1/destinations/lookup?q=Bandung`: resolves a user-entered Indonesian
   area and returns its destination ID, center and route candidates. Twelve area
-  snapshots are bundled for offline use. Other areas use Nominatim and Overpass
+  snapshots are bundled for offline use, including Semarang. Other areas use Nominatim and Overpass
   on demand; provider failure returns 503 rather than substituting another city.
 - GET `/api/v1/demo/places?area=Depok&kind=attraction&q=Situ`: separate
   Jabodetabek discovery sample from `tripin_demo_places` in Supabase. Requires
@@ -85,6 +85,9 @@ Use `--check` to check build presence only. UI acceptance is tracked separately 
 - Arrival/departure anchors each day; intermediate days start/end at lodging.
 - First-day checkInAt is a user deadline to arrive at the hotel, not verified hotel policy.
 - Four activities/day by automatic insertion; manually edited plans support up to six/day.
+- Food stops are placed from 11:30 for lunch or 17:30 for dinner when feasible;
+  sightseeing that would cross 12:00–13:00 is moved after a lunch break. These
+  times are planning suggestions, not restaurant hours or reservations.
 - Mandatory stops inserted first, optional candidates ranked/insertion-tested. Locks preserve
   place/day or place/time. Local search is bounded; no global optimum is claimed.
 - Independent final validator checks overlap/travel/opening windows/day end/mandatory/budget.

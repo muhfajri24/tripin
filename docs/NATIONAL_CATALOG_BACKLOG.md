@@ -2,7 +2,9 @@
 
 ## Status implementasi
 
-Planner kini menerima daerah Indonesia yang dicari pengguna. Snapshot OpenStreetMap untuk Medan, Bandung, Denpasar, Banjarmasin, Makassar, Jayapura, Jakarta, Padang, Labuan Bajo, Bali, Surabaya, dan area terbatas Raja Ampat tersedia lokal. Sebelas area lintas pulau lulus smoke test perjalanan satu serta dua hari. Daerah lain dicari melalui Nominatim dan Overpass saat diminta; kegagalan sumber dinyatakan secara eksplisit. Katalog Yogyakarta tetap terpisah dan dikurasi. Data contoh di `frontend/src/data/mockData.js` tidak dipakai sebagai tarif, jam buka, popularitas, atau hasil rute faktual. Harga dan jam buka dari snapshot nasional tetap `null` kecuali pengguna mengisi estimasinya.
+Planner kini menerima daerah Indonesia yang dicari pengguna. Snapshot OpenStreetMap untuk Medan, Bandung, Denpasar, Banjarmasin, Makassar, Jayapura, Jakarta, Padang, Labuan Bajo, Bali, Surabaya, Semarang, dan area terbatas Raja Ampat tersedia lokal. Dua belas area lintas pulau lulus smoke test perjalanan satu serta dua hari. Daerah lain dicari melalui Nominatim dan Overpass saat diminta; kegagalan sumber dinyatakan secara eksplisit. Katalog Yogyakarta tetap terpisah dan dikurasi. Data contoh di `frontend/src/data/mockData.js` tidak dipakai sebagai tarif, jam buka, popularitas, atau hasil rute faktual. Harga dan jam buka dari snapshot nasional tetap `null` kecuali pengguna mengisi estimasinya.
+
+Snapshot Semarang berasal dari respons Overpass pada `qa/release/semarang-overpass-mailru.json` dengan query `qa/release/semarang-overpass.query`; pusat kota diperoleh dari Nominatim. `scripts.import_national_snapshot` memvalidasi dan mengubah respons mentah menjadi katalog yang dipakai planner.
 
 ## Pekerjaan FE, data, dan BE berikutnya
 
@@ -15,5 +17,7 @@ Planner kini menerima daerah Indonesia yang dicari pengguna. Snapshot OpenStreet
 ## Perbaikan lokal saat ini
 
 Form review memperlihatkan daerah, budget dan basisnya, pilihan prioritas, hotel untuk trip menginap, serta estimasi makan/kamar/kendaraan. Daerah yang dipilih dikirim melalui kontrak planner dan nama kota bertahan setelah trip disimpan. Harga kunjungan yang masuk ledger tampil pada kartu aktivitas; rincian biaya menyimpan sumber dan status data. Semua biaya yang tidak diketahui tetap terbuka sebagai ketidakpastian.
+
+Alur pembuatan terbaru meminta tujuan terlebih dahulu, kemudian kategori kunjungan, rombongan, dan nominal anggaran perjalanan (per orang atau total). Review menanyakan tanggal, waktu paling awal berangkat, durasi, prioritas, serta hotel untuk perjalanan menginap. Pemeringkatan kandidat memakai relevansi kategori dan jarak dari titik awal/hotel; kunjungan makan ditempatkan pada waktu siang atau malam dan rundown menampilkan saran jam berangkat, jeda makan, serta perkiraan kembali. Semua jam perjalanan tetap perkiraan berbasis jarak garis lurus, bukan lalu lintas langsung. Agent bahasa alami belum diperlukan untuk constraint ini; kualitas rekomendasi lebih bergantung pada kelengkapan identitas, jam, harga, dan lokasi tempat yang dapat diverifikasi.
 
 Pencarian hotel tambahan memakai nama yang diketik pengguna dalam radius 30 km dari pusat daerah, lalu menambahkan hotel yang dipilih ke katalog proses planner. Daerah tanpa snapshot mengambil wisata, pantai/alam, sejarah, taman, dan kuliner dari radius 20 km; hasil mengikuti kelengkapan OpenStreetMap dan ketersediaan layanan. Input teks hotel harus dipilih dari hasil agar koordinatnya pasti, dan UI menampilkan status hotel terpilih. Saat perencanaan pindah worker atau backend baru dimulai, planner memuat ulang ID hotel terpilih dari OpenStreetMap dan memvalidasi jenis serta koordinatnya.

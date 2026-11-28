@@ -11,6 +11,17 @@ import { extractDestinationFromQuery } from "../services/regionService";
 
 const SESSION_DRAFT_KEY = "tripin_create_session_v1";
 
+function jakartaDate(offsetDays = 0) {
+  const local = new Date(Date.now() + 7 * 60 * 60 * 1000);
+  local.setUTCDate(local.getUTCDate() + offsetDays);
+  return local.toISOString().slice(0, 10);
+}
+
+function suggestedTripDate() {
+  const hour = new Date(Date.now() + 7 * 60 * 60 * 1000).getUTCHours();
+  return jakartaDate(hour >= 7 ? 1 : 0);
+}
+
 const EASE = [0.22, 1, 0.36, 1];
 
 const TASTE_OPTIONS = [
@@ -65,12 +76,6 @@ const PLAN_PRIORITIES = [
   { id: "travel_time", label: "Terdekat", detail: "Kurangi perkiraan waktu tempuh antar tempat." },
   { id: "budget", label: "Hemat", detail: "Utamakan tempat dengan biaya yang diketahui lebih rendah." },
   { id: "balanced", label: "Seimbang", detail: "Padukan kategori pilihan dan waktu perjalanan." },
-];
-
-const PLACEHOLDER_EXAMPLES = [
-  "2 hari di Yogyakarta bersama keluarga, budget Rp500.000 per orang, wisata budaya",
-  "1 hari di Yogyakarta untuk 2 orang, kuliner khas dan sejarah, budget Rp400.000 per orang",
-  "3 hari di Yogyakarta, 2 orang, santai menikmati budaya dan kuliner, budget Rp1.500.000",
 ];
 
 const CREATION_STATUSES = [
@@ -668,11 +673,11 @@ export default function CreateItineraryPage() {
     }
   }, []);
 
-  // Phase: 1 = SELERA (3 sub-pages), 2 = PROMPT + MENYUSUN + HASIL (1 transforming page)
+  // Phase: 0 = tujuan, 1 = kategori/rombongan/budget, 2 = review/hasil.
   const [phase, setPhase] = useState(
     location.state?.resumePhase === 2 || savedSession?.viewMode === "result"
       ? 2
-      : 1,
+      : 0,
   );
   const [viewMode, setViewMode] = useState(
     location.state?.resumePhase === 2
@@ -684,11 +689,12 @@ export default function CreateItineraryPage() {
   const [tasteStep, setTasteStep] = useState(0);
   const [companionId, setCompanionId] = useState(savedSession?.companionId || "");
   const [budgetTierId, setBudgetTierId] = useState(savedSession?.budgetTierId || "");
-  const [form, setForm] = useState(() => savedSession?.form || initialForm());
+  const [form, setForm] = useState(() => savedSession?.form || {
+    ...initialForm(), date: suggestedTripDate(), destinationId: "", destinationName: "", interests: [],
+  });
   const [text, setText] = useState(
     location.state?.promptText ||
-      savedSession?.text ||
-      (location.state?.destination ? `Perjalanan ke ${location.state.destination}` : ""),
+      savedSession?.text || "",
   );
   const [places, setPlaces] = useState([]);
   const [catalogReady, setCatalogReady] = useState(false);
@@ -705,8 +711,8 @@ export default function CreateItineraryPage() {
         !/^(yogyakarta|jogja|yogya)$/i.test(location.state.destination),
     ),
   );
-  const [destinationName, setDestinationName] = useState(location.state?.destination || savedSession?.form?.destinationName || "Yogyakarta");
-  const [destinationResolved, setDestinationResolved] = useState(!location.state?.destination || /^(yogyakarta|jogja|yogya)$/i.test(location.state.destination));
+  const [destinationName, setDestinationName] = useState(location.state?.destination || savedSession?.form?.destinationName || "");
+  const [destinationResolved, setDestinationResolved] = useState(Boolean(savedSession?.form?.destinationId && savedSession?.form?.destinationName));
   const [lookupBusy, setLookupBusy] = useState(false);
   const [hotelQuery, setHotelQuery] = useState("");
   const [hotelResults, setHotelResults] = useState([]);
@@ -715,10 +721,7 @@ export default function CreateItineraryPage() {
 
   // Chat-style clarification bubble state when required fields are missing after prompt parse
   const [clarify, setClarify] = useState(null);
-  const [typedPlaceholder, setTypedPlaceholder] = useState("");
-  const [placeholderIdx, setPlaceholderIdx] = useState(0);
 
-  const typingTimerRef = useRef(null);
   const textareaRef = useRef(null);
   const headingRef = useRef(null);
   const resultHeadingRef = useRef(null);
@@ -838,38 +841,6 @@ export default function CreateItineraryPage() {
     el.style.height = `${Math.max(96, Math.min(el.scrollHeight, 240))}px`;
   }, [text, phase, viewMode]);
 
-  // Auto-typing placeholder rotation in Fase 2 prompt mode
-  useEffect(() => {
-    if (phase !== 2 || viewMode !== "prompt" || text) return;
-    const full = PLACEHOLDER_EXAMPLES[placeholderIdx];
-    if (reduced) {
-      setTypedPlaceholder(full);
-      return;
-    }
-    let idx = 0;
-    setTypedPlaceholder("");
-    const charTimer = setInterval(() => {
-      idx += 1;
-      setTypedPlaceholder(full.slice(0, idx));
-      if (idx >= full.length) {
-        clearInterval(charTimer);
-      }
-    }, 28);
-    const switchTimer = setTimeout(() => {
-      setPlaceholderIdx((i) => (i + 1) % PLACEHOLDER_EXAMPLES.length);
-    }, 5200);
-    return () => {
-      clearInterval(charTimer);
-      clearTimeout(switchTimer);
-    };
-  }, [phase, viewMode, placeholderIdx, text, reduced]);
-
-  useEffect(() => {
-    return () => {
-      if (typingTimerRef.current) clearInterval(typingTimerRef.current);
-    };
-  }, []);
-
   // Load places catalog
   useEffect(() => {
     const controller = new AbortController();
@@ -905,7 +876,7 @@ export default function CreateItineraryPage() {
   };
 
   async function resolveDestination() {
-    if (lookupBusy || !destinationName.trim()) return;
+    if (lookupBusy || !destinationName.trim()) return null;
     setLookupBusy(true);
     setError("");
     try {
@@ -921,16 +892,27 @@ export default function CreateItineraryPage() {
         endLat: result.center.lat, endLng: result.center.lng }));
       setUnsupported(false);
       setDestinationResolved(true);
+      return result;
     } catch (err) {
       setDestinationResolved(false);
       setError(err.message || "Daerah belum dapat dimuat.");
+      return null;
     } finally {
       setLookupBusy(false);
     }
   }
 
   const performReset = () => {
+    setPhase(0);
+    setTasteStep(0);
     setViewMode("prompt");
+    setClarify(null);
+    setDestinationName("");
+    setDestinationResolved(false);
+    setForm({ ...initialForm(), date: suggestedTripDate(), destinationId: "", destinationName: "", interests: [] });
+    setText("");
+    setCompanionId("");
+    setBudgetTierId("");
     setResultTrip(null);
     setSavedResult(false);
     setEmptyResult(false);
@@ -1002,14 +984,14 @@ export default function CreateItineraryPage() {
       const d = parsed.draft;
       const mentionedDestination = extractDestinationFromQuery(text);
       const areaPhrase = text.match(/\b(?:di|ke)\s+([a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\s-]{1,50}?)(?=,|\.|\s+\d+\s*hari|\s+budget|\s+untuk|\s+bersama|$)/i);
-      if (d.unsupportedDestination || !d.destinationId) {
+      if (!destinationResolved) {
         setDestinationName(location.state?.destination || mentionedDestination?.name || areaPhrase?.[1]?.trim() || "");
         setDestinationResolved(false);
       }
       const merged = {
         ...form,
-        destinationId: d.destinationId || form.destinationId || "yogyakarta",
-        days: d.days ?? "",
+        destinationId: destinationResolved ? form.destinationId : d.destinationId || form.destinationId,
+        days: d.days ?? form.days,
         adults: d.adults ?? form.adults,
         budget: d.budgetAmountIdr ?? form.budget ?? "",
         basis: d.budgetBasis ?? form.basis,
@@ -1021,8 +1003,8 @@ export default function CreateItineraryPage() {
       };
       setForm(merged);
 
-      const needDestination = Boolean(d.unsupportedDestination || !destinationResolved);
-      const needDays = !d.days;
+      const needDestination = !destinationResolved;
+      const needDays = true;
       const needBudget = !merged.budget || Number(merged.budget) <= 0;
       const needLodging = Number(d.days || 1) > 1 && !merged.lodging;
 
@@ -1036,8 +1018,11 @@ export default function CreateItineraryPage() {
     }
   }
 
+  const departureIsFuture = Number.isFinite(Date.parse(`${form.date}T${form.start}:00+07:00`)) &&
+    Date.parse(`${form.date}T${form.start}:00+07:00`) > Date.now() + 30 * 60000;
   const clarifyReady =
     !unsupported && destinationResolved &&
+    departureIsFuture &&
     Number(form.days) >= 1 &&
     Number(form.budget) > 0 &&
     (Number(form.days) <= 1 || Boolean(form.lodging)) &&
@@ -1046,9 +1031,9 @@ export default function CreateItineraryPage() {
   const activeCompanion = COMPANION_OPTIONS.find((c) => c.id === companionId);
   const activeBudgetTier = BUDGET_TIERS.find((b) => b.id === budgetTierId);
   const tasteTitles = [
-    "Liburan seperti apa yang bikin kamu bahagia?",
-    "Biasanya kamu liburan sama siapa?",
-    "Budget liburanmu biasanya seperti apa?",
+    `Tempat seperti apa yang mau kamu kunjungi di ${destinationName}?`,
+    "Liburan ini bersama siapa?",
+    "Berapa biaya yang ingin kamu keluarkan untuk liburan ini?",
   ];
   const currentTitle = tasteTitles[tasteStep] || tasteTitles[0];
   const currentTitleWords = currentTitle.split(" ");
@@ -1057,8 +1042,10 @@ export default function CreateItineraryPage() {
     [resultTrip],
   );
   const progressScale =
-    phase === 1
-      ? (tasteStep + 1) * 0.18
+    phase === 0
+      ? 0.12
+      : phase === 1
+      ? (tasteStep + 2) * 0.17
       : viewMode === "prompt"
       ? 0.72
       : viewMode === "composing"
@@ -1104,11 +1091,11 @@ export default function CreateItineraryPage() {
         <div className="grid grid-cols-3 items-center px-5 sm:px-8 pt-4">
           <div />
           <div className="flex items-center justify-center gap-2.5">
-            {[0, 1, 2, 3].map((dot) => {
-              const currentIdx = phase === 1 ? tasteStep : 3;
+            {[0, 1, 2, 3, 4].map((dot) => {
+              const currentIdx = phase === 0 ? 0 : phase === 1 ? tasteStep + 1 : 4;
               const active = currentIdx === dot;
               const done = currentIdx > dot;
-              const clickable = dot < 3 && (phase === 2 || dot < tasteStep) && !busy;
+              const clickable = dot < 4 && dot < currentIdx && !busy;
               return (
                 <button
                   key={dot}
@@ -1116,8 +1103,8 @@ export default function CreateItineraryPage() {
                   disabled={!clickable}
                   onClick={() => {
                     if (!clickable) return;
-                    setPhase(1);
-                    setTasteStep(dot);
+                    if (dot === 0) setPhase(0);
+                    else { setPhase(1); setTasteStep(dot - 1); }
                   }}
                   aria-label={`Tahap ${dot + 1}`}
                   className={`h-2 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-[#2EC4B6] ${
@@ -1132,24 +1119,6 @@ export default function CreateItineraryPage() {
             })}
           </div>
           <div className="flex justify-end">
-            {phase === 1 && (
-              <button
-                type="button"
-                onClick={() => {
-                  if (tasteStep === 0) setForm((f) => ({ ...f, interests: [] }));
-                  if (tasteStep === 1) setCompanionId("");
-                  if (tasteStep === 2) {
-                    setBudgetTierId("");
-                    setForm((f) => ({ ...f, budget: "" }));
-                  }
-                  if (tasteStep < 2) setTasteStep((s) => s + 1);
-                  else setPhase(2);
-                }}
-                className="text-sm font-semibold text-[#FBF5E9]/75 hover:text-[#FBF5E9] min-h-[48px] px-3 focus:outline-none focus:underline"
-              >
-                Lewati
-              </button>
-            )}
             {phase === 2 && viewMode === "result" && (
               <button
                 type="button"
@@ -1171,6 +1140,31 @@ export default function CreateItineraryPage() {
 
       {/* Konten Utama */}
       <AnimatePresence mode="popLayout" initial={false}>
+        {phase === 0 && (
+          <motion.main key="destination-first"
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -16 }}
+            className="relative z-10 flex-1 flex items-center justify-center px-5 py-12">
+            <div className="w-full max-w-xl rounded-3xl bg-[#0B4F5C]/90 border border-[#2EC4B6]/45 p-6 sm:p-8 space-y-5 shadow-xl">
+              <p className="text-sm font-semibold text-[#2EC4B6]">Mulai dari tujuan perjalananmu</p>
+              <h1 ref={headingRef} tabIndex={-1} className="text-3xl sm:text-4xl font-extrabold leading-tight">Mau liburan ke mana?</h1>
+              <label htmlFor="first-destination" className="block text-sm font-bold">Kota atau daerah tujuan di Indonesia</label>
+              <input id="first-destination" type="search" value={destinationName}
+                onChange={(e) => { setDestinationName(e.target.value); setDestinationResolved(false); setError(""); }}
+                onKeyDown={async (e) => { if (e.key === "Enter" && destinationName.trim()) { e.preventDefault(); if (await resolveDestination()) setPhase(1); } }}
+                placeholder="Contoh: Surabaya" autoComplete="address-level2"
+                className="w-full rounded-xl bg-[#FBF5E9] text-[#0A1A1C] px-4 py-3 text-base" />
+              <button type="button" disabled={lookupBusy || destinationName.trim().length < 2}
+                onClick={async () => { if (await resolveDestination()) setPhase(1); }}
+                className="w-full rounded-xl bg-[#F4A261] text-[#0B3B45] px-5 py-3 font-bold disabled:opacity-50">
+                {lookupBusy ? "Mencari tempat..." : "Lanjut pilih kategori"}
+              </button>
+              {error && <p role="alert" className="text-sm text-[#FBF5E9]">{error}</p>}
+              <p className="text-xs text-[#FBF5E9]/75">Setelah tujuan dipilih, Tripin menyesuaikan tempat wisata dan hotel di area itu.</p>
+            </div>
+          </motion.main>
+        )}
         {phase === 1 && (
           <motion.main
             key={`phase-1-step-${tasteStep}`}
@@ -1184,10 +1178,10 @@ export default function CreateItineraryPage() {
               <div className="space-y-3">
                 <p className="text-sm sm:text-base font-semibold tracking-wide text-[#2EC4B6]">
                   {tasteStep === 0
-                    ? "Hai, kita kenalan dulu ya."
+                    ? `Pilih kategori untuk ${destinationName}.`
                     : tasteStep === 1
                     ? "Biar rutenya pas dengan rombonganmu."
-                    : "Biar rekomendasinya sesuai kenyamananmu."}
+                    : "Tetapkan batas biaya untuk perjalanan ini."}
                 </p>
                 <h1
                   ref={headingRef}
@@ -1297,49 +1291,22 @@ export default function CreateItineraryPage() {
               )}
 
               {tasteStep === 2 && (
-                <div className="grid sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
-                  {BUDGET_TIERS.map((opt) => {
-                    const active = budgetTierId === opt.id;
-                    return (
-                      <motion.button
-                        key={opt.id}
-                        type="button"
-                        aria-pressed={active}
-                        onClick={() => {
-                          setBudgetTierId(opt.id);
-                          setForm((f) => ({
-                            ...f,
-                            budget: opt.amount,
-                            basis: "person",
-                          }));
-                        }}
-                        whileHover={reduced ? {} : { y: -3 }}
-                        whileTap={reduced ? {} : { scale: 0.97 }}
-                        animate={reduced ? {} : { scale: active ? 1.02 : 1 }}
-                        transition={{ type: "spring", stiffness: 360, damping: 24 }}
-                        className={`rounded-3xl p-6 text-center border-2 transition-colors min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#2EC4B6] space-y-1.5 ${
-                          active
-                            ? "bg-[#0B4F5C]/90 border-[#2EC4B6] shadow-[0_0_28px_rgba(46,196,182,0.25)]"
-                            : "bg-[#0A1A1C]/55 border-white/15 hover:border-white/35"
-                        }`}
-                      >
-                        <div className="flex items-center justify-center gap-2">
-                          <span className="text-xl font-extrabold text-[#FBF5E9]">
-                            {opt.label}
-                          </span>
-                          {active && (
-                            <span className="w-5 h-5 rounded-full bg-[#2EC4B6] text-[#0A1A1C] inline-flex items-center justify-center">
-                              <Check size={13} strokeWidth={3} />
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-sm text-[#FBF5E9]/75">{opt.subtitle}</p>
-                        <p className="text-xs font-semibold text-[#F4A261]">
-                          Sekitar {rupiah(opt.amount)}/orang
-                        </p>
-                      </motion.button>
-                    );
-                  })}
+                <div className="max-w-xl mx-auto rounded-3xl bg-[#0B4F5C]/90 border border-[#2EC4B6]/45 p-5 sm:p-7 space-y-4 text-left">
+                  <label htmlFor="wizard-budget" className="block text-sm font-bold">Biaya yang ingin dikeluarkan (Rp)</label>
+                  <input id="wizard-budget" type="number" min="1" inputMode="numeric"
+                    value={form.budget} onChange={(e) => { setBudgetTierId(""); setForm((f) => ({ ...f, budget: e.target.value })); }}
+                    placeholder="Contoh: 800000"
+                    className="w-full rounded-xl bg-[#FBF5E9] text-[#0A1A1C] px-4 py-3 text-lg font-bold" />
+                  <div className="flex flex-wrap gap-2" aria-label="Basis biaya">
+                    {[{ id: "person", label: "Per orang" }, { id: "group", label: "Total rombongan" }].map((option) => (
+                      <button key={option.id} type="button" aria-pressed={form.basis === option.id}
+                        onClick={() => setForm((f) => ({ ...f, basis: option.id }))}
+                        className={`rounded-full px-4 py-2 text-sm font-bold ${form.basis === option.id ? "bg-[#F4A261] text-[#0B3B45]" : "bg-white/10 text-[#FBF5E9]"}`}>
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                  {Number(form.budget) > 0 && <p className="text-sm text-[#FBF5E9]/85">Batas biaya: {rupiah(Number(form.budget))} {form.basis === "person" ? `per orang · total ${rupiah(Number(form.budget) * Number(form.adults))}` : "untuk rombongan"}</p>}
                 </div>
               )}
 
@@ -1472,7 +1439,7 @@ export default function CreateItineraryPage() {
                 style={{ outline: "none" }}
                 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-center text-[#FBF5E9] outline-none"
               >
-                Halo, mau liburan ke mana?
+                Rancang perjalanan di {destinationName}
               </h1>
 
               {/* Deret chip profil selera */}
@@ -1560,6 +1527,22 @@ export default function CreateItineraryPage() {
                       {form.destinationId?.startsWith("osm-") && <p className="text-xs text-[#FBF5E9]/75">Data © kontributor OpenStreetMap (ODbL). Harga dan jam buka yang belum ada tetap tidak diketahui.</p>}
                     </div>
 
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <label className="text-sm font-bold text-[#FBF5E9] flex flex-col gap-2">
+                        Tanggal mulai perjalanan
+                        <input type="date" min={jakartaDate()} value={form.date}
+                          onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
+                          className="rounded-xl bg-[#FBF5E9] text-[#0A1A1C] px-3 py-2" />
+                      </label>
+                      <label className="text-sm font-bold text-[#FBF5E9] flex flex-col gap-2">
+                        Paling awal berangkat
+                        <input type="time" value={form.start}
+                          onChange={(e) => setForm((f) => ({ ...f, start: e.target.value }))}
+                          className="rounded-xl bg-[#FBF5E9] text-[#0A1A1C] px-3 py-2" />
+                      </label>
+                    </div>
+                    {!departureIsFuture && <p className="text-xs text-[#F4A261]">Pilih waktu berangkat setidaknya 30 menit dari sekarang.</p>}
+
                     {clarify.needDays && (
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <p className="text-sm font-bold text-[#FBF5E9]">
@@ -1601,7 +1584,7 @@ export default function CreateItineraryPage() {
 
                     <div className="space-y-3">
                         <label htmlFor="trip-budget" className="text-sm font-bold text-[#FBF5E9] block">
-                          Perkiraan budgetnya berapa?
+                          Berapa biaya yang ingin dikeluarkan untuk liburan ini?
                         </label>
                         <p className="text-xs text-[#FBF5E9]/75">Nominal ini dipakai sebagai batas anggaran saat menyusun trip.</p>
                         <div className="flex flex-wrap items-center gap-2">
@@ -1774,6 +1757,7 @@ export default function CreateItineraryPage() {
               )}
 
               {/* Kolom Ketik Besar */}
+              <p className="text-sm text-center text-[#FBF5E9]/85">Opsional: tambahkan durasi atau keinginan khusus, lalu tekan panah. Kamu bisa langsung memilih “Susun sekarang” di atas.</p>
               <div className="relative overflow-hidden rounded-[28px] bg-[#FBF5E9] text-[#0A1A1C] shadow-2xl ring-2 ring-transparent focus-within:ring-[#2EC4B6] transition-all">
                 <textarea
                   ref={textareaRef}
@@ -1781,20 +1765,14 @@ export default function CreateItineraryPage() {
                   rows={3}
                   disabled={busy}
                   value={text}
-                  onChange={(e) => {
-                    if (typingTimerRef.current) {
-                      clearInterval(typingTimerRef.current);
-                      typingTimerRef.current = null;
-                    }
-                    setText(e.target.value);
-                  }}
+                  onChange={(e) => setText(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
                       submitPrompt();
                     }
                   }}
-                  placeholder={typedPlaceholder}
+                  placeholder="Contoh: 2 hari, ingin museum dan makan siang khas daerah"
                   aria-label="Ceritakan rencana perjalananmu"
                   style={{ outline: "none", border: "none", boxShadow: "none" }}
                   className="w-full bg-transparent border-0 px-6 pt-5 pb-14 text-base sm:text-lg leading-relaxed text-[#0A1A1C] placeholder:text-[#0B3B45]/50 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none resize-none"
@@ -1822,7 +1800,7 @@ export default function CreateItineraryPage() {
       {/* Navigasi bawah: Kembali di kiri bawah, Lanjut di kanan bawah */}
       <div className="relative z-20 w-full px-5 sm:px-8 pb-6 pt-2 flex items-center justify-between">
         <div>
-          {((phase === 2 && viewMode === "prompt") || (phase === 1 && tasteStep > 0)) && (
+          {((phase === 2 && viewMode === "prompt") || phase === 1) && (
             <button
               type="button"
               disabled={busy}
@@ -1830,8 +1808,10 @@ export default function CreateItineraryPage() {
                 if (phase === 2) {
                   setPhase(1);
                   setTasteStep(2);
+                } else if (tasteStep === 0) {
+                  setPhase(0);
                 } else {
-                  setTasteStep((s) => Math.max(0, s - 1));
+                  setTasteStep((s) => s - 1);
                 }
               }}
               className="text-sm font-semibold text-[#FBF5E9]/85 hover:text-[#FBF5E9] min-h-[48px] px-3 focus:outline-none focus:underline"
@@ -1845,11 +1825,15 @@ export default function CreateItineraryPage() {
           {phase === 1 && (
             <button
               type="button"
+              disabled={tasteStep === 0 ? !form.interests.length : tasteStep === 1 ? !companionId : !(Number(form.budget) > 0)}
               onClick={() => {
                 if (tasteStep < 2) setTasteStep((s) => Math.min(2, s + 1));
-                else setPhase(2);
+                else {
+                  setClarify({ needDestination: false, needDays: true, needBudget: false, needLodging: false });
+                  setPhase(2);
+                }
               }}
-              className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full font-bold text-base bg-[#F4A261] text-[#0B3B45] min-h-[48px] hover:brightness-95 transition-all focus:outline-none focus:ring-2 focus:ring-[#2EC4B6] shadow-md"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full font-bold text-base bg-[#F4A261] text-[#0B3B45] min-h-[48px] hover:brightness-95 transition-all focus:outline-none focus:ring-2 focus:ring-[#2EC4B6] shadow-md disabled:opacity-50"
             >
               <span>Lanjut</span>
               <ArrowRight size={17} />

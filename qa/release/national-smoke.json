@@ -110,6 +110,16 @@
       "conflicts": [],
       "overnightPlanFound": true,
       "overnightConflicts": []
+    },
+    {
+      "area": "Semarang",
+      "destinationId": "osm--699040_11042291",
+      "places": 178,
+      "hotels": 40,
+      "planFound": true,
+      "conflicts": [],
+      "overnightPlanFound": true,
+      "overnightConflicts": []
     }
   ]
 }

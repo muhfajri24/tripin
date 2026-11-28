@@ -224,6 +224,7 @@ def schedule(
             last = "current-location"
         if len(orders[i]) + len(stops) > 6:
             raise Conflict("Maksimal enam aktivitas per hari")
+        food_stops = sum(places[s.placeId].kind == "food" for s in stops)
         for pid in orders[i]:
             p = places.get(pid)
             if (
@@ -236,6 +237,8 @@ def schedule(
                 raise Conflict("Tempat tutup pada tanggal ini: " + p.name)
             if any(c.placeId == pid and c.date == w.date for c in state.closures):
                 raise Conflict("Penutupan dilaporkan: " + p.name)
+            if p.kind == "food" and food_stops >= 2:
+                raise Conflict("Maksimal makan siang dan makan malam per hari")
             leg = travel(pos, p.coordinates, last, p.id)
             arrival = now + timedelta(
                 minutes=leg.estimatedDurationMin + leg.schedulingBufferMin
@@ -255,6 +258,28 @@ def schedule(
                         "Waktu aktivitas terkunci tidak terjangkau: " + p.name
                     )
                 arrival = lock.arrivalAt
+            lunch_start = at(w.date, "12:00")
+            lunch_end = at(w.date, "13:00")
+            if p.kind == "food" and lock.type != "place_time":
+                # A food stop is a meal, rather than an arbitrary morning attraction.
+                if food_stops and arrival < at(w.date, "17:30"):
+                    arrival = at(w.date, "17:30")
+                elif arrival < at(w.date, "11:30"):
+                    arrival = at(w.date, "11:30")
+                elif at(w.date, "14:00") < arrival < at(w.date, "17:30"):
+                    arrival = at(w.date, "17:30")
+            elif (
+                p.kind != "food"
+                and arrival < lunch_end
+                and arrival + timedelta(minutes=p.visitDurationMin) > lunch_start
+            ):
+                if lock.type == "place_time":
+                    raise Conflict(
+                        "Waktu aktivitas terkunci bertabrakan dengan jeda makan siang"
+                    )
+                arrival = lunch_end + timedelta(
+                    minutes=leg.estimatedDurationMin + leg.schedulingBufferMin
+                )
             if p.openingWindows is None:
                 if not req.allowUnverifiedData:
                     raise Conflict("Jam buka belum diketahui: " + p.name)
@@ -298,6 +323,8 @@ def schedule(
                 ],
             )
             stops.append(stop)
+            if p.kind == "food":
+                food_stops += 1
             now = stop.departureAt
             pos = p.coordinates
             last = pid
@@ -579,6 +606,9 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
 
     def score(p):
         relevance = 10 * len(set(p.categories) & set(req.interests))
+        if p.kind == "food" and "food" in req.interests:
+            relevance += 4
+        direct = travel(req.arrivalAnchor, p.coordinates, "start", p.id)
         price, _, _ = visit_price(p, req)
         if req.objective == "budget":
             # Unknown is uncertainty, not a free ticket.
@@ -589,12 +619,12 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
                     + (2 if p.isLocalBusiness is True else 0)
                     - (price or 0) / 10000
                 ),
+                direct.estimatedDurationMin,
                 p.id,
             )
         if req.objective == "travel_time":
-            direct = travel(req.arrivalAnchor, p.coordinates, "start", p.id)
             return (direct.estimatedDurationMin, -relevance, p.id)
-        return (-relevance, p.id)
+        return (-relevance, direct.estimatedDurationMin, p.id)
 
     invalid_prices = []
     valid_candidates = []

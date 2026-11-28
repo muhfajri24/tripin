@@ -1,0 +1,7 @@
+[out:json][timeout:18];
+nwr(around:20000,-6.99040,110.42291)[name][tourism~"^(attraction|museum|viewpoint|zoo|theme_park|gallery|artwork|picnic_site)$"];out center 70;
+nwr(around:20000,-6.99040,110.42291)[name][natural~"^(beach|waterfall|peak|cave_entrance)$"];out center 40;
+nwr(around:20000,-6.99040,110.42291)[name][historic~"^(monument|memorial|castle|ruins|archaeological_site|fort|temple)$"];out center 40;
+nwr(around:20000,-6.99040,110.42291)[name][leisure~"^(park|garden)$"];out center 40;
+nwr(around:20000,-6.99040,110.42291)[name][amenity~"^(restaurant|cafe|fast_food)$"];out center 50;
+nwr(around:20000,-6.99040,110.42291)[name][tourism~"^(hotel|guest_house|hostel|motel)$"];out center 40;
