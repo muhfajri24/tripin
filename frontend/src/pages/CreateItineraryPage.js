@@ -9,6 +9,15 @@ import { rupiah } from "../components/GuestUI";
 import TripView from "../components/TripView";
 import { extractDestinationFromQuery } from "../services/regionService";
 
+function destinationFromBrief(value) {
+  const text = String(value || "").trim();
+  const known = extractDestinationFromQuery(text)?.name;
+  if (known) return known;
+  const match = text.match(/\b(?:ke|menuju|di)\s+([a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\s-]{1,60}?)(?=\s+(?:selama|untuk|bersama|dengan|budget|anggaran|\d+\s*hari)|[,.;]|$)/i);
+  if (match) return match[1].trim();
+  return /\b(?:saya|mau|pergi|liburan|hari|budget|orang)\b/i.test(text) ? "" : text;
+}
+
 const SESSION_DRAFT_KEY = "tripin_create_session_v1";
 const RECENT_RECOMMENDATIONS_KEY = "tripin_recent_recommendations_v1";
 
@@ -731,7 +740,7 @@ export default function CreateItineraryPage() {
   const [savedResult, setSavedResult] = useState(Boolean(savedSession?.savedResult));
   const [typedSummary, setTypedSummary] = useState("");
   const [unsupported, setUnsupported] = useState(false);
-  const [destinationName, setDestinationName] = useState(location.state?.destination || savedSession?.form?.destinationName || "");
+  const [destinationName, setDestinationName] = useState(destinationFromBrief(location.state?.destination) || savedSession?.form?.destinationName || "");
   const [destinationResolved, setDestinationResolved] = useState(Boolean(savedSession?.form?.destinationId && savedSession?.form?.destinationName));
   const [lookupBusy, setLookupBusy] = useState(false);
   const [hotelQuery, setHotelQuery] = useState("");
@@ -937,7 +946,7 @@ export default function CreateItineraryPage() {
     setLookupBusy(true);
     setError("");
     try {
-      const nextForm = await lookupDestination(destinationName, form);
+      const nextForm = await lookupDestination(destinationFromBrief(destinationName), form);
       if (phase === 0) showNextMissing(nextForm, companionId, daysProvided);
       return nextForm;
     } catch (err) {
@@ -1039,7 +1048,7 @@ export default function CreateItineraryPage() {
     try {
       const parsed = await api("/requests/parse", { text: brief });
       const d = parsed.draft;
-      const query = d.destinationName || extractDestinationFromQuery(brief)?.name || "";
+      const query = destinationFromBrief(d.destinationName) || destinationFromBrief(brief);
       const hasDays = Boolean(d.days);
       const who = d.companionId || "";
       const draft = {
@@ -1090,7 +1099,7 @@ export default function CreateItineraryPage() {
     try {
       const parsed = await api("/requests/parse", { text });
       const d = parsed.draft;
-      const mentionedDestination = d.destinationName || extractDestinationFromQuery(text)?.name;
+      const mentionedDestination = destinationFromBrief(d.destinationName) || destinationFromBrief(text);
       if (!destinationResolved && mentionedDestination) {
         setDestinationName(mentionedDestination);
         setDestinationResolved(false);

@@ -103,6 +103,14 @@ def test_dashboard_brief_only_requests_missing_trip_fields():
     )
 
 
+@pytest.mark.parametrize("city", ["Purwakarta", "Surabaya", "Purwokerto"])
+def test_dashboard_brief_with_comma_keeps_city_and_days(city):
+    parsed = parse_brief(f"saya mau ke {city}, 2 hari")
+    assert parsed["draft"]["destinationName"] == city
+    assert parsed["draft"]["days"] == 2
+    assert {"interests", "companionId", "budgetAmountIdr"}.issubset(parsed["missingFields"])
+
+
 def test_dashboard_brief_keeps_all_supplied_preferences():
     parsed = parse_brief(
         "Ke Semarang 2 hari bersama pasangan, kuliner dan budaya, "
@@ -131,6 +139,19 @@ def test_alternative_plan_respects_recent_exclusions_and_requested_category():
     alternative_ids = [stop.placeId for day in alternative.days for stop in day.stops]
     assert not set(previous_ids) & set(alternative_ids)
     assert all("culture" in repo.get_place(pid).categories for pid in alternative_ids)
+
+
+def test_budget_mode_can_schedule_more_affordable_stops_than_nearest_mode():
+    repo = Repo()
+    nearby = request().model_copy(update={"interests": ["culture"], "objective": "travel_time"})
+    affordable = nearby.model_copy(update={"objective": "budget"})
+    near_trip, near_errors = generate(nearby, repo)
+    budget_trip, budget_errors = generate(affordable, repo)
+    assert near_trip and not near_errors
+    assert budget_trip and not budget_errors
+    assert len(near_trip.days[0].stops) <= 4
+    assert len(budget_trip.days[0].stops) > len(near_trip.days[0].stops)
+    assert budget_trip.totals.knownCostIdr <= affordable.budget.totalIdr
 
 
 @pytest.mark.parametrize("days", [1, 2, 3])

@@ -117,7 +117,9 @@ function useCountUpOnce(target, reduced) {
   return val;
 }
 
-function StopReasonAccordion({ place, reduced }) {
+const CATEGORY_NAMES = { food: "kuliner", nature: "alam", culture: "budaya & sejarah", craft: "kerajinan", beach: "pantai", attraction: "wisata" };
+
+function StopReasonAccordion({ place, stop, request, visitCost, unknownCosts, reduced }) {
   const [open, setOpen] = useState(false);
   if (!place) return null;
 
@@ -160,10 +162,13 @@ function StopReasonAccordion({ place, reduced }) {
             onClick={(e) => e.stopPropagation()}
             className="mt-2 text-sm text-charcoal-lighter space-y-1 bg-sky/50 rounded-xl p-3"
           >
-            <p>
-              {jamLabel} · {hargaLabel}
-            </p>
-            {place.address && <p>Lokasi: {place.address}</p>}
+            <p className="font-semibold text-charcoal">Dasar rekomendasi</p>
+            <p>Cocok dengan pilihanmu: {(place.categories || []).filter((item) => request?.interests?.includes(item)).map((item) => CATEGORY_NAMES[item] || item).join(", ") || "kategori wisata"}.</p>
+            {stop?.incomingLeg?.distanceMeters != null && <p>Jarak dari titik sebelumnya sekitar {formatKm(stop.incomingLeg.distanceMeters)}; waktu tempuh dihitung sebagai perkiraan.</p>}
+            {request?.objective === "budget" && <p>{visitCost?.totalIdr != null ? `Biaya yang dicatat ${rupiah(visitCost.totalIdr)} (${visitCost.evidence?.sourceType === "user" ? "perkiraanmu" : "data katalog"}); biaya yang diketahui masih dalam budget${unknownCosts ? ", tetapi total akhir belum pasti" : ""}.` : "Harga belum tersedia, jadi keterjangkauan tempat ini belum dapat dipastikan."}</p>}
+            {request?.objective === "travel_time" && <p>Mode terdekat mempertimbangkan waktu tempuh antar tempat dalam jadwal.</p>}
+            {request?.objective === "balanced" && <p>Mode seimbang mempertimbangkan kecocokan kategori, waktu tempuh, dan biaya yang tersedia.</p>}
+            <p className="pt-1 text-xs">Perlu dicek: {jamLabel.toLowerCase()} · {hargaLabel.toLowerCase()}{place.address ? ` · ${place.address}` : ""}</p>
             {place.identityEvidence?.sourceRef?.startsWith("https://") && (
               <a
                 href={place.identityEvidence.sourceRef}
@@ -256,27 +261,29 @@ export default function TripView({
     const seen = new Set();
     const unverifiedOpeningPlaces = [];
     const estimatedDurationPlaces = [];
+    const usedIds = new Set(trip.days.flatMap((d) => d.stops.map((s) => s.placeId)));
 
-    for (const p of trip.places) {
-      if (p.openingEvidence?.status !== "verified") {
+    for (const p of trip.places.filter((item) => usedIds.has(item.id))) {
+      if (p.openingEvidence?.status !== "checked") {
         unverifiedOpeningPlaces.push(p.name);
       }
-      if (p.durationEvidence?.status !== "verified") {
+      if (p.durationEvidence?.status !== "checked") {
         estimatedDurationPlaces.push(p.name);
       }
     }
 
     if (estimatedDurationPlaces.length > 0) {
-      items.push("Durasi kunjungan di setiap tempat adalah perkiraan.");
+      items.push(`Durasi kunjungan masih perkiraan di ${estimatedDurationPlaces.length} tempat.`);
     }
     if (unverifiedOpeningPlaces.length > 0) {
       items.push(
-        `Jam buka belum terverifikasi untuk: ${unverifiedOpeningPlaces.join(", ")}.`,
+        `Jam buka belum terverifikasi di ${unverifiedOpeningPlaces.length} tempat; cek sumber tiap kartu sebelum berangkat.`,
       );
     }
 
     for (const u of trip.uncertainties || []) {
       const clean = u.trim();
+      if (/^(Jam buka belum terverifikasi:|Durasi kunjungan merupakan estimasi:)/i.test(clean)) continue;
       if (clean && !seen.has(clean)) {
         seen.add(clean);
         items.push(clean);
@@ -290,7 +297,7 @@ export default function TripView({
       }
     }
     return items;
-  }, [trip.places, trip.uncertainties, trip.violations]);
+  }, [trip.places, trip.days, trip.uncertainties, trip.violations]);
 
   const mapActivities = useMemo(
     () =>
@@ -698,7 +705,7 @@ export default function TripView({
                             : `${visitCost.evidence?.sourceType === "user" ? "Estimasi dari kamu" : "Harga katalog"}: ${rupiah(visitCost.totalIdr)} untuk ${visitCost.quantity} unit`}
                         </p>
 
-                        <StopReasonAccordion place={place} reduced={reduced} />
+                        <StopReasonAccordion place={place} stop={s} request={trip.request} visitCost={visitCost} unknownCosts={trip.totals.unknownCostItems} reduced={reduced} />
                       </motion.article>
                     </React.Fragment>
                   );

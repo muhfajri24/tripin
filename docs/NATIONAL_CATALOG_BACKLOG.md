@@ -1,5 +1,19 @@
 # Katalog nasional untuk perencana TRIPIN
 
+## Evaluasi HP 28 November 2026
+
+Dashboard versi terbaru tetap menjadi satu titik masuk. Kolom brief HP diberi label dan bidang teks penuh agar tidak tampak seperti dua kolom pencarian. Brief yang berisi kalimat lengkap dipisahkan menjadi nama daerah sebelum lookup; kasus Purwakarta, Surabaya, dan Purwokerto dengan koma diuji. Parameter yang belum disebut tetap ditanyakan pada wizard.
+
+Mode terdekat sekarang menilai waktu tempuh rute saat menyisipkan tempat. Mode hemat memprioritaskan biaya yang diketahui dan dapat memuat sampai enam kunjungan per hari bila waktu serta budget cukup; mode seimbang menimbang kategori, waktu, dan biaya. Batas enam bukan target wajib. Bagian mode di Home diberi label ilustrasi karena angka contoh Yogyakarta bukan tarif atau rute yang dihitung untuk pengguna.
+
+Kartu hasil menjelaskan kategori yang cocok, jarak perkiraan dari titik sebelumnya, alasan sesuai mode, dan sumber identitas tempat bila ada. Hal yang belum terverifikasi dipisah dari dasar rekomendasi. Catatan perjalanan menggabungkan keterbatasan jam buka/durasi per kategori; kegagalan penyisipan kandidat lain tidak lagi membanjiri hasil. Kesalahan basis harga katalog yang perlu diperbaiki tetap dilaporkan.
+
+Skill [verification-before-completion](https://github.com/obra/superpowers/blob/main/skills/verification-before-completion/SKILL.md) disimpan di `skills/verification-before-completion/` bersama lisensi MIT dari upstream sebagai panduan QA pengembang. Skill tersebut bukan model AI runtime dan tidak menambah fakta harga, jam buka, popularitas, atau rute. Penyelesaian data nasional tetap bergantung pada sumber POI yang dapat diverifikasi.
+
+**Tindak lanjut data:** Tianisa meninjau jam buka, tarif, dan alamat POI yang paling sering muncul; Shakira menguji dashboard dan panel alasan pada Safari HP; Fajri memeriksa hasil mode prioritas pada kota dengan data harga yang cukup. Ketersediaan hotel, jam, tarif, serta waktu lalu lintas langsung belum boleh dianggap pasti dari snapshot OSM.
+
+Verifikasi kode pembaruan ini: 163 tes backend, 27 tes frontend, lint backend, dan build produksi lulus. Pemeriksaan browser HP otomatis perlu diulang pada server yang dapat diakses dari proses browser; koneksi localhost pada lingkungan ini mengalami timeout.
+
 ## Status implementasi
 
 **Pembaruan 28 November 2026 — `dev` `647570b`.** Dashboard/Home menjadi titik masuk brief perjalanan. Parser aturan bahasa Indonesia mengambil tujuan, durasi, kategori, teman perjalanan, budget, dan prioritas yang disebut pengguna. Pertanyaan lanjutan hanya dibuka untuk parameter inti yang belum terisi. Brief lengkap satu hari langsung direncanakan; perjalanan lebih dari satu hari meminta hotel sebagai titik rute. Hasil menyediakan **Susun alternatif**: tempat yang baru ditampilkan dikecualikan pada permintaan berikutnya bila katalog masih memungkinkan. Kandidat otomatis wajib cocok dengan kategori pilihan. Riwayat pengecualian tersimpan lokal di browser, bukan profil server.

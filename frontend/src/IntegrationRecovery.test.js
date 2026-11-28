@@ -161,6 +161,20 @@ test('Banyuwangi brief routes through only its missing category, companion and b
   expect(container.querySelector('#wizard-budget')).not.toBeNull();
 });
 
+test.each(['Purwakarta', 'Surabaya'])('dashboard sentence with comma resolves %s before missing questions', async (city) => {
+  const brief = `saya mau ke ${city.toLowerCase()}, 2 hari`;
+  global.fetch = jest.fn(async (url) => url.includes('/requests/parse')
+    ? response({draft:{destinationName:brief, days:2, interests:[], periodPreferences:[]},
+      missingFields:['interests','companionId','budgetAmountIdr'], ambiguities:[], parserSource:'deterministic-id-v2'})
+    : url.includes('/destinations/lookup') ? response(cityCatalog(city))
+    : response({places:fixture().places}));
+  await render(<Create />, {pathname:'/create', state:{promptText:brief}});
+  await act(async () => { await Promise.resolve(); });
+  const lookupUrl = global.fetch.mock.calls.find(([url])=>url.includes('/destinations/lookup'))?.[0];
+  expect(lookupUrl.toLowerCase()).toContain(`q=${city.toLowerCase()}`);
+  expect(container.textContent).toContain(`Tempat seperti apa yang mau kamu kunjungi di ${city}?`);
+});
+
 test('result uses latest stored revision over stale navigation state', async () => {
   const old = fixture();
   saveTrip({...old,revision:7});

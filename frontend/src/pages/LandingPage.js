@@ -1455,15 +1455,15 @@ export default function LandingPage() {
               {/* Single Input & Single Hero CTA */}
               <div className="pt-2 max-w-xl">
                 <div
-                  className={`p-2 rounded-2xl transition-all duration-300 flex flex-col sm:flex-row items-center gap-2 border ${inputFocused
+                  className={`p-3 rounded-2xl transition-all duration-300 flex flex-col gap-3 border ${inputFocused
                     ? 'bg-[#0d2221] border-[#2EC4B6] shadow-[0_0_0_3px_rgba(46,196,182,0.28)]'
                     : 'bg-[#0d2221]/90 border-white/15 shadow-2xl shadow-black/40'
                     }`}
                 >
-                  <div className="w-full sm:flex-1 flex items-center gap-3 px-3.5 py-2 sm:py-0">
-                    <Search size={19} className="text-[#2EC4B6] flex-shrink-0" />
+                  <div className="w-full">
+                    <label htmlFor="trip-brief" className="block text-sm font-semibold text-[#FBF5E9] mb-2">Mau liburan ke mana?</label>
                     <textarea
-                      aria-label="Ceritakan perjalananmu"
+                      id="trip-brief"
                       placeholder={typedPlaceholder}
                       value={destination}
                       onChange={(e) => setDestination(e.target.value)}
@@ -1471,7 +1471,7 @@ export default function LandingPage() {
                       onFocus={() => setInputFocused(true)}
                       onBlur={() => setInputFocused(false)}
                       rows={2}
-                      className="w-full bg-transparent text-[#FBF5E9] placeholder:text-[#FBF5E9]/55 text-sm sm:text-base font-medium outline-none resize-none"
+                      className="block w-full min-h-24 appearance-none rounded-xl border border-white/20 bg-[#092b2d] px-4 py-3 text-[#FBF5E9] placeholder:text-[#FBF5E9]/55 text-base font-medium outline-none resize-y focus:border-[#2EC4B6] focus:ring-2 focus:ring-[#2EC4B6]/25"
                     />
                   </div>
 
@@ -1961,6 +1961,7 @@ export default function LandingPage() {
             <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-[#FBF5E9] tracking-tight">
               Pilih Gaya Perjalananmu
             </h2>
+            <p className="mt-3 text-sm text-[#FBF5E9]/75">Ilustrasi cara kerja mode di Yogyakarta. Hasil perjalananmu dihitung dari tujuan, kategori, dan budget yang kamu isi di atas.</p>
           </div>
 
           <div className="bg-gradient-to-b from-[#0a2325]/95 to-[#081a1b]/95 border border-[#2EC4B6]/20 rounded-3xl p-5 sm:p-8 shadow-2xl">

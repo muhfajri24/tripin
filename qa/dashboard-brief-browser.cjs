@@ -21,7 +21,7 @@ const output = 'qa/release/dashboard-brief-browser.json';
     let firstIds;
     await step('complete dashboard brief generates directly', async () => {
       await page.goto(base);
-      await page.getByLabel('Ceritakan perjalananmu').fill(
+      await page.getByLabel('Mau liburan ke mana?').fill(
         'Saya mau ke Semarang 1 hari bersama pasangan, kuliner dan budaya, budget Rp800.000 total'
       );
       const plan = page.waitForResponse((res) => res.url().endsWith('/itineraries/plan') && res.request().method() === 'POST');
@@ -50,7 +50,7 @@ const output = 'qa/release/dashboard-brief-browser.json';
     });
     await step('incomplete brief opens only missing questions', async () => {
       await page.goto(base);
-      await page.getByLabel('Ceritakan perjalananmu').fill('Saya mau ke Semarang 3 hari');
+      await page.getByLabel('Mau liburan ke mana?').fill('Saya mau ke Semarang 3 hari');
       await page.getByRole('button', { name: 'Susun Perjalanan' }).first().click();
       await page.getByRole('heading', { name: /Tempat seperti apa yang mau kamu kunjungi di Semarang/ }).waitFor();
       await page.getByRole('button', { name: /Budaya & Sejarah/ }).click();

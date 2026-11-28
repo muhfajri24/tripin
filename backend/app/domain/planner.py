@@ -625,7 +625,7 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
             )
         if req.objective == "travel_time":
             return (direct.estimatedDurationMin, -relevance, p.id)
-        return (-relevance, direct.estimatedDurationMin, p.id)
+        return (-relevance, price is None, direct.estimatedDurationMin + (price or 0) / 10000, p.id)
 
     invalid_prices = []
     valid_candidates = []
@@ -657,7 +657,7 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
         ]
     )
     used = set(frozen_ids)
-    failures = invalid_prices
+    failures = list(invalid_prices)
     for p in pending:
         if not p:
             continue
@@ -666,7 +666,7 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
         best = None
         reason = "Tidak ada penyisipan feasible"
         for i in range(req.days):
-            if len(orders[i]) + len(frozen.get(i, [])) >= 4:
+            if len(orders[i]) + len(frozen.get(i, [])) >= (6 if req.objective == "budget" else 4):
                 continue
             for position in range(len(orders[i]) + 1):
                 trial = [list(x) for x in orders]
@@ -694,13 +694,14 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
                         for pref in req.periodPreferences
                         if pref.period == period
                     )
-                    metric = (
-                        -fit,
-                        len(orders[i]),
-                        value["totals"]["travelMin"],
-                        i,
-                        position,
-                    )
+                    travel_minutes = value["totals"]["travelMin"]
+                    cost = value["totals"]["knownCostIdr"]
+                    if req.objective == "travel_time":
+                        metric = (-fit, travel_minutes, len(orders[i]), i, position)
+                    elif req.objective == "budget":
+                        metric = (-fit, cost, len(orders[i]), travel_minutes, i, position)
+                    else:
+                        metric = (-fit, len(orders[i]), travel_minutes + cost / 10000, i, position)
                     if best is None or metric < best[0]:
                         best = (metric, trial, value)
                 except Conflict as exc:
@@ -716,7 +717,8 @@ def generate(req, repo, previous=None, disruption=None, selection=None, locks=No
         return None, [
             "Tidak ada kandidat sesuai data dan constraint. " + "; ".join(failures[:3])
         ]
-    result["uncertainties"] += failures[:6]
+    # Retain actionable catalog price errors; scheduling rejections are internal diagnostics.
+    result["uncertainties"] += invalid_prices[:1]
     itinerary = Itinerary.model_validate(result)
     errors = validate_schedule(itinerary, repo)
     if errors:
